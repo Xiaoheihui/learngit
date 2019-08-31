@@ -15,4 +15,4 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'test1.settings')
 
 application = get_wsgi_application()
 
-# 哈哈哈哈哈
+# 哈哈哈哈哈sd
