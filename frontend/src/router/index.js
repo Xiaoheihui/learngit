@@ -6,16 +6,17 @@ import test from '@/components/test'
 Vue.use(Router)
 
 export default new Router({
+  mode:"history",
   routes: [
     {
       path: '/',
       name: 'HelloWorld',
-      component: test
+      component: HelloWorld
     },
     {
       path: '/test',
       name: 'test',
-      components: test
+      component: test
     }
   ]
 })

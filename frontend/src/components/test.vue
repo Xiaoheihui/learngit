@@ -11,6 +11,7 @@
 
 <script>
   export default {
+    name:'test',
     data:function () {
       return{
         d1:['默认列表数据1','默认列表数据2'],
@@ -19,14 +20,13 @@
     },
     methods:{
       init:function(){
-        let _this = this
-        this.$http.request({
-          url:_this.$url+'course/',
-          method:'get'
-        }).then(function (response){
-
-        }).catch(function (response){
-
+        this.$api.test.test({
+        }).then((res)=>{
+          if(res.data.status==200)
+            console.log(res)
+          let info = res.data.data
+          console.log(info)
+          this.d1 = info
         })
       }
     }
