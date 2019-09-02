@@ -24,7 +24,7 @@
         }).then((res)=>{
           if(res.data.status==200)
             console.log(res)
-          let info = res.data.data
+          let info = res.data.content
           console.log(info)
           this.d1 = info
         })

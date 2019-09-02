@@ -63,14 +63,14 @@ const errorHandle = (status, other) => {
       break;
     // 403 token过期
     // 清除token并跳转登录页
-    // case 403:
-    //   tip('登录过期，请重新登录');
-    //   localStorage.removeItem('token');
-    //   store.dispatch('UserLogout')
-    //   setTimeout(() => {
-    //     toLogin();
-    //   }, 1000);
-    //   break;
+    case 403:
+      tip('登录过期，请重新登录');
+      localStorage.removeItem('token');
+      store.dispatch('UserLogout')
+      setTimeout(() => {
+        toLogin();
+      }, 1000);
+      break;
     // 404请求不存在
     case 404:
       tip('请求的资源不存在');

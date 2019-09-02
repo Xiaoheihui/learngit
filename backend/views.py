@@ -23,8 +23,9 @@ def test(request):
     try:
         response["msg"] = 'success'
         response["status"] = 200
-        response["data"] = ['1', '2']
+        response["content"] = ['1', '2']
     except Exception as e:
         response["msg"] = str(e)
         response["status"] = 404
     return JsonResponse(response)
+
