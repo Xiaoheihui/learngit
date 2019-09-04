@@ -1,4 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 # Create your models here.
@@ -46,28 +49,32 @@ class UserMessage(models.Model):
     UPostCount	    Int	        Not null	    用户发帖数
     URepCount	    Int	        Not null	    用户回帖数
     UIfAdmin	    bool	    Not null	    是否管理员
+    nickname        varchar     not null        昵称
     """
-    Uid = models.AutoField(primary_key=True, verbose_name=u"用户编号")
-    # 注册信息相关
-    UName     = models.CharField(u'用户名', default="", max_length=10)
-    UPassword = models.CharField(u'用户密码', default="", max_length=16)
-    UEmail    = models.EmailField(verbose_name=u'用户Email', default="")
+    UserBase = models.OneToOneField(User, on_delete=models.CASCADE)
     # 个人资料
     UBirthday  = models.DateField(u'用户生日', null=True, blank=True)
     USex       = models.CharField(u'用户性别', max_length=2, default='保密', null=True, blank=True)
     UStatement = models.CharField(u'用户个人说明', max_length=150, default='', null=True, blank=True)
+    Unickname   = models.CharField(u'用户昵称', max_length=10, default='', blank=True)
     # 系统信息
-    URegDate        = models.DateField(u'注册时间', auto_now_add=True)
-    ULastOnlineDate = models.DateField(u'用户最后上线时间', null=True, blank=True)
     UPostCount      = models.PositiveSmallIntegerField( u'用户发帖数', default=0)
     URepCount       = models.PositiveSmallIntegerField( u'用户回帖数', default=0)
-    UIfAdmin        = models.BooleanField( u'是否管理员', default=False)
 
     class mate:
         db_table = "Users"
         verbose_name = '用户信息'
         verbose_name_plural = '用户列表'
 
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserMessage.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_userMessage(sender, instance, **kwargs):
+    instance.UserMessage.save()
 
 class BBSSection(models.Model):
     """
@@ -86,6 +93,7 @@ class BBSSection(models.Model):
     SClickCount = models.PositiveSmallIntegerField(default=0,   verbose_name=u"版块总点击次数")
     SRepCount   = models.PositiveSmallIntegerField(default=0,   verbose_name=u"板块总回复数")
     STopicCount = models.PositiveSmallIntegerField(default=0,   verbose_name=u"版块主贴数")
+    # 外键
     SClassId    = models.ForeignKey(CompClass, on_delete=models.CASCADE, verbose_name=u"比赛类别编号")
 
     class mate:
@@ -108,8 +116,10 @@ class BBSTopic(models.Model):
     TLastClickT	Datetime not null	主帖最后点击时间
     """
     Tid         = models.AutoField(primary_key=True, verbose_name=u"主帖编号")
+    # 外键
     TSid        = models.ForeignKey(BBSSection,  on_delete=models.CASCADE, verbose_name=u"主帖版块编号")
     TUid        = models.ForeignKey(UserMessage, on_delete=models.CASCADE, verbose_name=u"主帖用户编号")
+
     TReplyCount = models.PositiveSmallIntegerField(default=0, verbose_name=u"主帖回复次数")
     TTopic      = models.CharField(max_length=50,  default="", verbose_name=u"主帖标题")
     TContents   = models.TextField(max_length=1500, null=True, verbose_name=u"主帖内容")
@@ -135,9 +145,11 @@ class BBSReply(models.Model):
     RLevelNum	int	        Not null	    在主贴中对应楼层
     """
     Rid       = models.AutoField(primary_key=True, verbose_name=u"回贴编号")
+    # 外键
     RTid      = models.ForeignKey(BBSTopic, on_delete=models.CASCADE,    verbose_name=u"主贴编号")
     RSid      = models.ForeignKey(BBSSection, on_delete=models.CASCADE,  verbose_name=u"板块编号")
     RUid      = models.ForeignKey(UserMessage, on_delete=models.CASCADE, verbose_name=u"回复者用户编号")
+
     RTime     = models.DateField(auto_now_add=True, verbose_name=u"回复时间")
     RContent  = models.TextField(max_length=500,  default="", verbose_name=u"回复内容")
     RLevelNum = models.PositiveSmallIntegerField( default=0,  verbose_name=u"在主贴中对应楼层")
@@ -165,8 +177,10 @@ class CompInfo(models.Model):
     IStatement	    text	    Not null	    赛事介绍
     """
     Iid     = models.AutoField(primary_key=True, verbose_name="赛事编号")
+    # 外键
     IClass  = models.ForeignKey(CompClass, on_delete=models.CASCADE, verbose_name="竞赛类别编号")
     IAreaID = models.ForeignKey(Area, on_delete=models.CASCADE, verbose_name="赛事地区编号")
+
     IName   = models.CharField(max_length=60, default="", verbose_name="赛事名称")
     IApplyStartTime = models.DateField(verbose_name="报名开始时间")
     IApplyEndTime   = models.DateField(verbose_name="报名结束时间")
@@ -195,11 +209,17 @@ class CompRecord(models.Model):
     RClickCount	    Int	        Not null	    点击数
     RTime	        Datetime	Not null	    发布日期
     RMarkCount	    Int	        Not null	    收藏人数
+    RMarkUser       int         null            收藏者
     """
     RID             = models.AutoField(primary_key=True, verbose_name=u"记录编号")
+    # 外键
     RClassID        = models.ForeignKey(CompClass,   on_delete=models.CASCADE, verbose_name=u"赛事类别编号")
     RContentID      = models.OneToOneField(CompInfo, on_delete=models.CASCADE, verbose_name=u"赛事内容编号")
-    RPromulgatorID  = models.ForeignKey(UserMessage, on_delete=models.CASCADE, verbose_name=u"发布者编号")
+    RPromulgatorID  = models.ForeignKey(UserMessage, on_delete=models.CASCADE,
+                                        related_name="Promulgator_set", verbose_name=u"发布者编号")
+    RMarkUser       = models.ManyToManyField(UserMessage, through='MarkMessage',
+                                        related_name="MarkUser_set", symmetrical=False, verbose_name="收藏者")
+
     RTitle          = models.CharField(max_length=60,  default="", verbose_name=u"记录标题")
     RStatement      = models.CharField(max_length=100, default="", verbose_name=u"记录简要说明")
     RTime       = models.DateField(auto_now_add=True,  verbose_name=u"发布日期")
@@ -211,3 +231,14 @@ class CompRecord(models.Model):
         verbose_name = '赛事记录'
         verbose_name_plural = '赛事记录列表'
 
+
+class MarkMessage(models.Model):
+    """
+        表中列名	        数据类型	    可否为空	        说明
+        CompRecordId	Int	        not null	    记录编号
+        UsersId     	Int	        not null	    用户编号
+        MarkTime        datetime    not null        收藏时间
+    """
+    CompRecordId = models.ForeignKey(CompRecord, on_delete=models.CASCADE, verbose_name="记录编号")
+    UsersId      = models.ForeignKey(UserMessage, on_delete=models.CASCADE, verbose_name="用户编号")
+    MarkTime     = models.DateField(auto_now_add=True, verbose_name="收藏时间")

@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.core import serializers
 from django.http import JsonResponse
+from django.contrib.auth.models import User
+from .forms import RegisterForm
 import json
 
 # Create your views here.
@@ -20,12 +22,21 @@ def index(request):
 @require_http_methods(["POST"])
 def test(request):
     response = {}
-    try:
+    form = RegisterForm(request.POST)
+    if form.is_valid():
+        username = form.cleaned_data.get('username')
+        email = form.cleaned_data.get('email')
+        password = form.cleaned_data.get('password')
+
+        User.objects.create_user(name=username, email=email, password=password)
+
         response["msg"] = 'success'
-        response["status"] = 200
+        response["status"] = 0
         response["content"] = ['1', '2']
-    except Exception as e:
-        response["msg"] = str(e)
-        response["status"] = 404
+
+    else:
+        response["msg"] = "注册失败"
+        response["status"] = 1
+
     return JsonResponse(response)
 
