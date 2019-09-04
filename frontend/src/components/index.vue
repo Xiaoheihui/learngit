@@ -8,9 +8,18 @@
         <div class="header-right">
           <div class="user">
             <i class="el-icon-user"></i>
-            <router-link :to="{ path: '/login'}" replace><span>登录</span></router-link>
-            <el-divider direction="vertical"></el-divider>
-            <router-link :to="{ path: '/register'}" replace><span>注册</span></router-link>
+            <router-link :to="{ path: '/login'}" replace  v-if="username==null"><span>登录</span></router-link>
+            <el-divider direction="vertical" v-if="username==null"></el-divider>
+            <router-link :to="{ path: '/register'}" replace v-if="username==null"><span>注册</span></router-link>
+            <div v-else>
+              <el-dropdown>
+                <span >您好,{{nickName}}</span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item @click.native="userInfoVisible=true">用户信息</el-dropdown-item>
+                  <el-dropdown-item @click.native = "logout">登出</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
           </div>
         </div>
       </div>
@@ -56,7 +65,11 @@
                 {id:2,idView:require("../static/img/game3.jpg")},
                 {id:3,idView:require("../static/img/game4.jpg")},
                 {id:4,idView:require("../static/img/game5.jpg")},
-              ]
+              ],
+              username:null,
+              nickName:'',
+              userId:'',
+
             }
         },
       methods:{
