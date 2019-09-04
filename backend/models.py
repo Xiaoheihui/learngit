@@ -54,7 +54,7 @@ class UserMessage(models.Model):
     UserBase = models.OneToOneField(User, on_delete=models.CASCADE)
     # 个人资料
     UBirthday  = models.DateField(u'用户生日', null=True, blank=True)
-    USex       = models.CharField(u'用户性别', max_length=2, default='保密', null=True, blank=True)
+    USex       = models.CharField(u'用户性别', max_length=2, default='', null=True, blank=True)
     UStatement = models.CharField(u'用户个人说明', max_length=150, default='', null=True, blank=True)
     Unickname   = models.CharField(u'用户昵称', max_length=10, default='', blank=True)
     # 系统信息
@@ -70,11 +70,12 @@ class UserMessage(models.Model):
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        UserMessage.objects.create(user=instance)
+        a = UserMessage.objects.create(UserBase=instance)
+        #a.save()
 
 @receiver(post_save, sender=User)
 def save_user_userMessage(sender, instance, **kwargs):
-    instance.UserMessage.save()
+    instance.usermessage.save()
 
 class BBSSection(models.Model):
     """

@@ -20,13 +20,22 @@
     },
     methods:{
       init:function(){
-        this.$api.test.test({
+        this.$api.user.register({
+          username:'xzh161',
+          email:'1432564581@qq.com',
+          password:'xzh123'
         }).then((res)=>{
-          if(res.data.status==200)
+          if(res.data.status==0)
+          {
             console.log(res)
-          let info = res.data.content
-          console.log(info)
-          this.d1 = info
+            let info = res.data.content
+            this.d1 = info
+            this.$message.success('注册成功！')
+          }
+          else{
+            this.$message.error(res.data.message)
+          }
+
         })
       }
     }

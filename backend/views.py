@@ -20,23 +20,24 @@ def index(request):
 
 
 @require_http_methods(["POST"])
-def test(request):
+def register(request):
     response = {}
     form = RegisterForm(request.POST)
     if form.is_valid():
         username = form.cleaned_data.get('username')
+        print(username)
         email = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password')
 
-        User.objects.create_user(name=username, email=email, password=password)
+        User.objects.create_user(username=username, email=email, password=password)
 
-        response["msg"] = 'success'
+        response["message"] = 'success'
         response["status"] = 0
         response["content"] = ['1', '2']
 
     else:
-        response["msg"] = "注册失败"
+        response["message"] = "用户名已被占用哦，请重新注册！"
         response["status"] = 1
-
+    print(form.get_errors())
     return JsonResponse(response)
 

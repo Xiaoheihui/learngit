@@ -117,7 +117,30 @@
       methods:{
           gotoIndex() {
             this.$router.push('/')
-          }
+          },
+        submitForm(formName) {
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              this.$api.user.register({
+                username:this.ruleForm.username,
+                password:this.ruleForm.pass,
+                email:this.ruleForm.email
+              }).then((res)=>{
+                  if(res.data.status==0){
+                    this.$message.success('注册成功，赶紧登录吧！')
+                    this.$router.push('/login')
+                  }else {
+                    this.$message.error(res.data.message);
+                  }
+                }
+              )
+            } else {
+              this.$message.error('请正确完善注册信息');
+            }
+
+          })
+
+        },
       }
     }
 </script>
