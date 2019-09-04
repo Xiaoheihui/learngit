@@ -13,7 +13,7 @@
             <router-link :to="{ path: '/register'}" replace v-if="username==null"><span>注册</span></router-link>
             <div v-else>
               <el-dropdown>
-                <span >您好,{{nickName}}</span>
+                <span >您好,{{username}}</span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item @click.native="userInfoVisible=true">用户信息</el-dropdown-item>
                   <el-dropdown-item @click.native = "logout">登出</el-dropdown-item>
