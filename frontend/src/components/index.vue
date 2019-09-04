@@ -8,7 +8,7 @@
         <div class="header-right">
           <div class="user">
             <i class="el-icon-user"></i>
-            <router-link :to="{ path: '/login'}" replace  v-if="username==null"><span>登录</span></router-link>
+            <router-link :to="{ path: '/login'}" replace v-if="username==null"><span>登录</span></router-link>
             <el-divider direction="vertical" v-if="username==null"></el-divider>
             <router-link :to="{ path: '/register'}" replace v-if="username==null"><span>注册</span></router-link>
             <div v-else>

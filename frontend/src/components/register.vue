@@ -94,7 +94,7 @@
           return {
             ruleForm:{
               email:'',
-              username:'',
+              username:null,
               pass:'',
               pass_check:''
             },

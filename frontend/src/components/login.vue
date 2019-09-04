@@ -25,7 +25,7 @@
             </el-button>
           </el-form-item>
         </el-form>
-        <p class='register'><router-link to='/register'>还没账号？注册</router-link></p>
+        <p class='register'><router-link to='/register'>还没账号？去注册</router-link></p>
       </div>
     </div>
 </template>
@@ -74,13 +74,37 @@
             ruleForm:{
               username:'',
               pass:''
-            }
+            },
+            username:'',
+            nickName:'',
+            userId:'',
           }
       },
       methods:{
           gotoIndex(){
             this.$router.push('/')
-          }
+          },
+        submitForm(formName) {
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              this.$api.user.login({
+                username:this.ruleForm.username,
+                password:this.ruleForm.pass,
+              }).then((res)=>{
+                  if(res.data.status=='0'){
+
+                  }else {
+                    this.$message.error("用户名/邮箱或密码错误，请重新登录！");
+                  }
+                }
+              )
+            } else {
+              this.$message.error('请正确填写登录信息！');
+            }
+
+          })
+
+        },
       }
     }
 </script>
