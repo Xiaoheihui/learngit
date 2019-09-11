@@ -3,7 +3,7 @@ from django.views.decorators.http import require_http_methods
 from django.core import serializers
 from django.http import JsonResponse
 from django.contrib.auth.models import User
-from .forms import RegisterForm
+from .forms import RegisterForm, MessageForm
 import json
 from django.contrib import auth
 from django.forms.models import model_to_dict
@@ -85,7 +85,10 @@ def getMessage(request):
     user = User.objects.get(pk=id)
     if user is not None:  # 查询成功
         response = Model_To_Dict(user.usermessage, fields=["Unickname", "UBirthday", "USex", "UStatement"])
-        response["UBirthday"] = response["UBirthday"].spilt(" ")[0] # 时间格式
+        if response['UBirthday'] is not None:
+            response["UBirthday"] = response["UBirthday"].spilt(" ")[0] # 时间格式
+        else:
+            response['UBirthday'] = 0
         response["status"] = 0
     else:
         response["status"] = 1
@@ -102,23 +105,26 @@ def alterMessage(request):
     if user is not None:  # 查询成功
         dateStr = request.POST.get("birthday")[:10]# 截取时间字符串
         dateTime = datetime.datetime.strptime(dateStr, '%Y-%m-%d')
+        print(dateTime)
         # 修改POST内容
         data = request.POST.copy()
         data['birthday'] = dateTime
-
-        form = RegisterForm(request.POST)
+        form = MessageForm(data)
         if form.is_valid():
             user.usermessage.UBirthday = form.cleaned_data.get('birthday')
             user.usermessage.Unickname = form.cleaned_data.get('nickname')
             user.usermessage.USex = form.cleaned_data.get('sex')
             user.usermessage.UStatement = form.cleaned_data.get('statement')
+            user.save()
+            print(model_to_dict(user.usermessage))
             response["status"] = 0
         else:
             if 'nickname' in form.errors.keys():
                 response["message"] = form.errors["nickname"][0]
-            elif 'statement' in form.errors().keys():
+            elif 'statement' in form.errors.keys():
                 response["message"] = form.errors["statement"][0]
             else:
+                print(form.errors)
                 response["message"] = "信息修改失败！未知错误。"
                 response["status"] = 1
     else:

@@ -1,6 +1,6 @@
 <template>
     <div class="userInfo">
-      <el-form ref="'form" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="昵称" prop="nickName">
           <el-input v-model="form.nickName" autocomplete="off" :disabled="!judge"></el-input>
         </el-form-item>
@@ -28,14 +28,17 @@
           id:this.userId
         }).then((res)=>{
           if(res.data.status==0){
+            console.log(res)
             let info = res.data
-            this.form.nickName = info['nickname']
-            let sex = info['sex']
+            this.form.nickName = info['Unickname']
+            let sex = info['USex']
             if(sex=='M')
               this.form.sex = true
             else this.form.sex = false
-            this.form.birthday = new Date(Date.parse(info['birthday']))
-            this.form.selfInfo = info['statement']
+            if(info['UBirthday'] != 0)
+              this.form.birthday = new Date(Date.parse(info['UBirthday']))
+            else this.form.birthday = new Date()
+            this.form.selfInfo = info['UStatement']
           }
           else{
             console.log(res.data.message)
@@ -80,8 +83,10 @@
               if(this.form.sex)
                 this.sexString = 'M'
               else this.sexString = 'F'
+              console.log(this.form.nickName)
               this.$api.user.alterMessage({
-                nickname:this.form.nickname,
+                id:this.userId,
+                nickname:this.form.nickName,
                 sex:this.sexString,
                 statement:this.form.selfInfo,
                 birthday:this.form.birthday
