@@ -19,7 +19,7 @@
             <router-link :to="{ path: '/register'}" replace v-if="username==null"><span>注册</span></router-link>
             <div v-else>
               <el-dropdown>
-                <span>您好,{{username}}</span>
+                <span>您好,{{nickName}}</span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item @click.native="userInfoVisible=true">用户信息</el-dropdown-item>
                   <el-dropdown-item @click.native = "logout">登出</el-dropdown-item>
@@ -68,7 +68,7 @@
           this.username = sessionStorage.getItem('username')
           this.userId = sessionStorage.getItem('userId')
           this.nickName = sessionStorage.getItem('nickName')
-          if(this.nickName=='')
+          if(!this.nickName)
             this.nickName = this.username
           this.email = sessionStorage.getItem('email')
         },

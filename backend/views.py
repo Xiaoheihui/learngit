@@ -8,7 +8,10 @@ import json
 from django.contrib import auth
 from django.forms.models import model_to_dict
 
-import datetime, re
+import datetime,pytz
+
+tz = pytz.timezone('Asia/Shanghai')
+
 
 # Create your views here.
 # from rest_framework.views import APIView
@@ -69,7 +72,9 @@ def login(request):
     if user is not None:  # 登陆成功
         response1 = Model_To_Dict(user)
         response2 = Model_To_Dict(user.usermessage)
-        response = response1.update(response2)
+        response = {**response1, **response2}
+        user.last_login = datetime.datetime.now() + datetime.timedelta(hours=8)
+        user.save()
         response["status"] = 0
     else:
         response["status"] = 1
@@ -86,7 +91,7 @@ def getMessage(request):
     if user is not None:  # 查询成功
         response = Model_To_Dict(user.usermessage, fields=["Unickname", "UBirthday", "USex", "UStatement"])
         if response['UBirthday'] is not None:
-            response["UBirthday"] = response["UBirthday"].spilt(" ")[0] # 时间格式
+            response["UBirthday"] = response["UBirthday"].strftime("%Y-%m-%d")
         else:
             response['UBirthday'] = 0
         response["status"] = 0

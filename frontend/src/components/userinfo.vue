@@ -93,6 +93,7 @@
               }).then((res)=>{
                   if(res.data.status==0){
                     this.$message.success('用户信息修改成功！')
+                    sessionStorage.setItem('nickName', this.form.nickName)
                     this.judge = false
                   }else {
                     this.$message.error(res.data.message);
