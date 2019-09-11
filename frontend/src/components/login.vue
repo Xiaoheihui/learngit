@@ -92,7 +92,17 @@
                 password:this.ruleForm.pass,
               }).then((res)=>{
                   if(res.data.status=='0'){
-
+                    let info = res.data.content
+                    let userId = info['userId']
+                    sessionStorage.setItem('userId', userId)
+                    let username = info['username']
+                    sessionStorage.setItem('username', username)
+                    let nickName = info['nickName']
+                    sessionStorage.setItem('nickName', nickName)
+                    let email = info['email']
+                    sessionStorage.setItem('email', email)
+                    this.$message.success('登录成功！')
+                    this.$router.push('/')
                   }else {
                     this.$message.error("用户名/邮箱或密码错误，请重新登录！");
                   }

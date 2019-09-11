@@ -1,5 +1,10 @@
 <template>
     <div class="index">
+      <el-dialog title="用户信息"
+                 :visible.sync="userInfoVisible"
+                 customClass="customWidth">
+        <userinfo></userinfo>
+      </el-dialog>
       <div class="header">
         <div class="header-left">
           <img src="../static/img/timg.jpg">
@@ -13,7 +18,7 @@
             <router-link :to="{ path: '/register'}" replace v-if="username==null"><span>注册</span></router-link>
             <div v-else>
               <el-dropdown>
-                <span >您好,{{username}}</span>
+                <span >您好,{{nickName}}</span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item @click.native="userInfoVisible=true">用户信息</el-dropdown-item>
                   <el-dropdown-item @click.native = "logout">登出</el-dropdown-item>
@@ -54,8 +59,18 @@
 </template>
 
 <script>
+  import userinfo from './userinfo'
     export default {
         name: "index",
+        components:{userinfo},
+        mounted(){
+          this.username = sessionStorage.getItem('username')
+          this.userId = sessionStorage.getItem('userId')
+          this.nickName = sessionStorage.getItem('nickName')
+          if(this.nickName=='')
+            this.nickName = this.username
+          this.email = sessionStorage.getItem('email')
+        },
         data(){
             return{
               activeIndex:'1',
@@ -69,7 +84,7 @@
               username:null,
               nickName:'',
               userId:'',
-
+              userInfoVisible:false,
             }
         },
       methods:{
@@ -81,7 +96,11 @@
 </script>
 
 <style lang="scss">
-    .header{
+  .customWidth{
+    width:40%!important;
+  }
+
+  .header{
       position: fixed;
       left:0px;
       top:0px;
