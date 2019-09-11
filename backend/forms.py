@@ -46,3 +46,10 @@ class RegisterForm(forms.Form):
             new_errors[key] = messages
         # 返回自定义错误信息的字典
         return new_errors
+
+
+class MessageForm(forms.Form):
+    nickname = forms.CharField(max_length=20, min_length=1)
+    birthday = forms.DateField()
+    sex = forms.CharField(max_length=2)
+    statement = forms.CharField(max_length=150, required=False)

@@ -49,7 +49,7 @@ class UserMessage(models.Model):
     UPostCount	    Int	        Not null	    用户发帖数
     URepCount	    Int	        Not null	    用户回帖数
     UIfAdmin	    bool	    Not null	    是否管理员
-    Unickname        varchar     not null        昵称
+    Unickname       varchar     not null        昵称
     """
     UserBase = models.OneToOneField(User, on_delete=models.CASCADE)
     # 个人资料

@@ -8,7 +8,7 @@ import json
 from django.contrib import auth
 from django.forms.models import model_to_dict
 
-import datetime
+import datetime, re
 
 # Create your views here.
 # from rest_framework.views import APIView
@@ -37,9 +37,8 @@ def register(request):
         response["message"] = 'success'
         response["status"] = 0
         response["content"] = ['1', '2']
-
-        # user = auth.authenticate(username=username, password=password)
-        # print(Model_To_Dict(user))
+        user = User.objects.get(username=username)
+        print(Model_To_Dict(user.usermessage, fields=["Unickname", "UBirthday", "USex", "UStatement"]))
 
     else:
         if 'email' in form.get_errors().keys():
@@ -53,7 +52,7 @@ def register(request):
 
     return JsonResponse(response)
 
-
+# 登录函数
 @require_http_methods(["POST"])
 def login(request):
     response = {}
@@ -61,7 +60,9 @@ def login(request):
     pwd = request.POST.get('password')
     user = auth.authenticate(username=user, password=pwd)  # 自动校验user表
     if user is not None:  # 登陆成功
-        response = Model_To_Dict(user)
+        response1 = Model_To_Dict(user)
+        response2 = Model_To_Dict(user.usermessage)
+        response = response1.update(response2)
         response["status"] = 0
     else:
         response["status"] = 1
@@ -69,7 +70,57 @@ def login(request):
     return JsonResponse(response)
 
 
+# 获取用户信息
+@require_http_methods(["POST"])
+def getMessage(request):
+    response = {}
+    id = request.POST.get("id")
+    user = User.objects.get(pk=id)
+    if user is not None:  # 查询成功
+        response = Model_To_Dict(user.usermessage, fields=["Unickname", "UBirthday", "USex", "UStatement"])
+        response["UBirthday"] = response["UBirthday"].spilt(" ")[0] # 时间格式
+        response["status"] = 0
+    else:
+        response["status"] = 1
 
+    return JsonResponse(response)
+
+
+# 修改用户信息
+@require_http_methods(["POST"])
+def alterMessage(request):
+    response = {}
+    id = request.POST.get("id")
+    user = User.objects.get(pk=id)
+    if user is not None:  # 查询成功
+        dateStr = request.POST.get("birthday")[:10]# 截取时间字符串
+        dateTime = datetime.datetime.strptime(dateStr, '%Y-%m-%d')
+        # 修改POST内容
+        data = request.POST.copy()
+        data['birthday'] = dateTime
+
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user.usermessage.UBirthday = form.cleaned_data.get('birthday')
+            user.usermessage.Unickname = form.cleaned_data.get('nickname')
+            user.usermessage.USex = form.cleaned_data.get('sex')
+            user.usermessage.UStatement = form.cleaned_data.get('statement')
+            response["status"] = 0
+        else:
+            if 'nickname' in form.errors.keys():
+                response["message"] = form.errors["nickname"][0]
+            elif 'statement' in form.errors().keys():
+                response["message"] = form.errors["statement"][0]
+            else:
+                response["message"] = "信息修改失败！未知错误。"
+                response["status"] = 1
+    else:
+        response["status"] = 1
+
+    return JsonResponse(response)
+
+
+# 辅助函数：
 def Model_To_Dict(model, fields=None, exclude=None):
     dic = model_to_dict(model, fields, exclude)
     for key in dic:
