@@ -22,6 +22,13 @@ def index(request):
     request.META["CSRF_COOKIE_USED"] = True
     return render(request, 'index.html')
 
+@require_http_methods(["POST"])
+def test(request):
+    response = {}
+    birthday = request.POST.get('birthday')
+    print(type(birthday))
+    print(birthday)
+    return JsonResponse(response)
 
 @require_http_methods(["POST"])
 def register(request):

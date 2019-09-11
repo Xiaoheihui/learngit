@@ -92,8 +92,9 @@
                 password:this.ruleForm.pass,
               }).then((res)=>{
                   if(res.data.status=='0'){
-                    let info = res.data.content
-                    let userId = info['userId']
+                    console.log(res)
+                    let info = res.data
+                    let userId = info['id']
                     sessionStorage.setItem('userId', userId)
                     let username = info['username']
                     sessionStorage.setItem('username', username)

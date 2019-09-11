@@ -2,6 +2,7 @@
     <div class="index">
       <el-dialog title="用户信息"
                  :visible.sync="userInfoVisible"
+                 v-if="userInfoVisible==true"
                  customClass="customWidth">
         <userinfo></userinfo>
       </el-dialog>
@@ -18,7 +19,7 @@
             <router-link :to="{ path: '/register'}" replace v-if="username==null"><span>注册</span></router-link>
             <div v-else>
               <el-dropdown>
-                <span >您好,{{nickName}}</span>
+                <span>您好,{{username}}</span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item @click.native="userInfoVisible=true">用户信息</el-dropdown-item>
                   <el-dropdown-item @click.native = "logout">登出</el-dropdown-item>
@@ -90,6 +91,17 @@
       methods:{
         handleSelect(key, keyPath) {
           console.log(key, keyPath);
+        },
+        logout(){
+          sessionStorage.clear();
+          this.$store.dispatch('UserLogout')
+          if(! this.$store.state.token){
+
+            this.$router.go(0)
+          }else{
+            this.$message.error('退出失败');
+          }
+
         }
       }
     }
@@ -97,7 +109,7 @@
 
 <style lang="scss">
   .customWidth{
-    width:40%!important;
+    width:45%!important;
   }
 
   .header{
@@ -123,6 +135,15 @@
         }
         span{
           color:#2C537A
+        }
+        .user{
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          span{
+            font-size:17px;
+          }
         }
       }
       .header-left{
