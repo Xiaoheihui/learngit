@@ -4,11 +4,12 @@ from . import models
 from django.contrib.auth.models import User
 
 class RegisterForm(forms.Form):
-    username = forms.CharField(max_length=150)
-    password = forms.CharField(max_length=10)
+    username = forms.CharField(max_length=10, min_length=5)
+    password = forms.CharField(max_length=16, min_length=6)
     email = forms.CharField(max_length=50)
 
     # 这个函数名字不能随便取，只能是  `clean_需要附件验证的字段名字`。
+    # 用户名唯一
     def clean_username(self):
         username = self.cleaned_data.get('username')
         exists = User.objects.filter(username=username).exists()
@@ -16,6 +17,16 @@ class RegisterForm(forms.Form):
             # 验证失败抛出的异常
             raise forms.ValidationError(message='此用户名已经被注册')
         return username
+
+    # 邮箱唯一
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        exists = User.objects.filter(email=email).exists()
+        if exists:
+            # 验证失败抛出的异常
+            raise forms.ValidationError(message='此邮箱已经被注册')
+        return email
+
 
     def get_errors(self):
         # 通过self.errors.get_json_data()获取错误的信息

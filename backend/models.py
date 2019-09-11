@@ -49,7 +49,7 @@ class UserMessage(models.Model):
     UPostCount	    Int	        Not null	    用户发帖数
     URepCount	    Int	        Not null	    用户回帖数
     UIfAdmin	    bool	    Not null	    是否管理员
-    nickname        varchar     not null        昵称
+    Unickname        varchar     not null        昵称
     """
     UserBase = models.OneToOneField(User, on_delete=models.CASCADE)
     # 个人资料
@@ -125,7 +125,7 @@ class BBSTopic(models.Model):
     TTopic      = models.CharField(max_length=50,  default="", verbose_name=u"主帖标题")
     TContents   = models.TextField(max_length=1500, null=True, verbose_name=u"主帖内容")
     TClickCount = models.PositiveSmallIntegerField(default=0, verbose_name=u"主帖点击次数")
-    TTime       = models.DateField(verbose_name=u"发帖时间",  auto_now_add=True)
+    TTime       = models.DateField(verbose_name=u"发帖时间",  auto_now_add=True, editable=True)
     TLastClickT = models.DateField(verbose_name=u"主帖最后点击时间")
 
     class mate:
@@ -151,7 +151,7 @@ class BBSReply(models.Model):
     RSid      = models.ForeignKey(BBSSection, on_delete=models.CASCADE,  verbose_name=u"板块编号")
     RUid      = models.ForeignKey(UserMessage, on_delete=models.CASCADE, verbose_name=u"回复者用户编号")
 
-    RTime     = models.DateField(auto_now_add=True, verbose_name=u"回复时间")
+    RTime     = models.DateField(auto_now_add=True, verbose_name=u"回复时间", editable=True)
     RContent  = models.TextField(max_length=500,  default="", verbose_name=u"回复内容")
     RLevelNum = models.PositiveSmallIntegerField( default=0,  verbose_name=u"在主贴中对应楼层")
 
@@ -223,7 +223,7 @@ class CompRecord(models.Model):
 
     RTitle          = models.CharField(max_length=60,  default="", verbose_name=u"记录标题")
     RStatement      = models.CharField(max_length=100, default="", verbose_name=u"记录简要说明")
-    RTime       = models.DateField(auto_now_add=True,  verbose_name=u"发布日期")
+    RTime       = models.DateField(auto_now_add=True, editable=True,  verbose_name=u"发布日期")
     RClickCount = models.PositiveSmallIntegerField(default=0, verbose_name=u"点击数")
     RMarkCount  = models.PositiveSmallIntegerField(default=0, verbose_name=u"收藏人数")
 
@@ -242,4 +242,4 @@ class MarkMessage(models.Model):
     """
     CompRecordId = models.ForeignKey(CompRecord, on_delete=models.CASCADE, verbose_name="记录编号")
     UsersId      = models.ForeignKey(UserMessage, on_delete=models.CASCADE, verbose_name="用户编号")
-    MarkTime     = models.DateField(auto_now_add=True, verbose_name="收藏时间")
+    MarkTime     = models.DateField(auto_now_add=True, editable=True, verbose_name="收藏时间")

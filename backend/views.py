@@ -5,6 +5,10 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from .forms import RegisterForm
 import json
+from django.contrib import auth
+from django.forms.models import model_to_dict
+
+import datetime
 
 # Create your views here.
 # from rest_framework.views import APIView
@@ -25,7 +29,6 @@ def register(request):
     form = RegisterForm(request.POST)
     if form.is_valid():
         username = form.cleaned_data.get('username')
-        print(username)
         email = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password')
 
@@ -35,9 +38,42 @@ def register(request):
         response["status"] = 0
         response["content"] = ['1', '2']
 
+        # user = auth.authenticate(username=username, password=password)
+        # print(Model_To_Dict(user))
+
     else:
-        response["message"] = "用户名已被占用哦，请重新注册！"
+        if 'email' in form.get_errors().keys():
+            response["message"] = form.errors["email"][0]
+        elif 'username' in form.get_errors().keys():
+            response["message"] = form.errors["username"][0]
+        else:
+            response["message"] = "注册失败！未知错误。"
         response["status"] = 1
-    print(form.get_errors())
+
+
     return JsonResponse(response)
 
+
+@require_http_methods(["POST"])
+def login(request):
+    response = {}
+    user = request.POST.get('username')
+    pwd = request.POST.get('password')
+    user = auth.authenticate(username=user, password=pwd)  # 自动校验user表
+    if user is not None:  # 登陆成功
+        response = Model_To_Dict(user)
+        response["status"] = 0
+    else:
+        response["status"] = 1
+
+    return JsonResponse(response)
+
+
+
+def Model_To_Dict(model, fields=None, exclude=None):
+    dic = model_to_dict(model, fields, exclude)
+    for key in dic:
+        if isinstance(dic[key], datetime.datetime):
+           dic[key] = dic[key].strftime("%Y-%m-%d %H:%M")
+
+    return dic
