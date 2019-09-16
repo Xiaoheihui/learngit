@@ -68,14 +68,26 @@ def login(request):
     response = {}
     user = request.POST.get('username')
     pwd = request.POST.get('password')
-    user = auth.authenticate(username=user, password=pwd)  # 自动校验user表
-    if user is not None:  # 登陆成功
-        response1 = Model_To_Dict(user)
-        response2 = Model_To_Dict(user.usermessage)
+    user_name = auth.authenticate(username=user, password=pwd)  # 自动校验user表 用户账号校验
+    userEmail = User.objects.get(email=user)
+    if user_name is not None:  # 登陆成功
+        response1 = Model_To_Dict(user_name)
+        response2 = Model_To_Dict(user_name.usermessage)
         response = {**response1, **response2}
-        user.last_login = datetime.datetime.now() + datetime.timedelta(hours=8)
-        user.save()
+        user_name.last_login = datetime.datetime.now() + datetime.timedelta(hours=8)
+        user_name.save()
         response["status"] = 0
+    elif userEmail is not None:
+        user_email = auth.authenticate(username=userEmail, password=pwd)  # 自动校验user表 用户邮箱校验
+        if user_email is not None:
+            response1 = Model_To_Dict(user_email)
+            response2 = Model_To_Dict(user_email.usermessage)
+            response = {**response1, **response2}
+            user_email.last_login = datetime.datetime.now() + datetime.timedelta(hours=8)
+            user_email.save()
+            response["status"] = 0
+        else:
+            response["status"] = 1
     else:
         response["status"] = 1
 
@@ -109,7 +121,7 @@ def alterMessage(request):
     user = User.objects.get(pk=id)
     if user is not None:  # 查询成功
         dateStr = request.POST.get("birthday")[:10]# 截取时间字符串
-        dateTime = datetime.datetime.strptime(dateStr, '%Y-%m-%d')
+        dateTime = datetime.datetime.strptime(dateStr, '%Y-%m-%d') + datetime.timedelta(hours=24)
         print(dateTime)
         # 修改POST内容
         data = request.POST.copy()

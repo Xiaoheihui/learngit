@@ -98,7 +98,7 @@
                     sessionStorage.setItem('userId', userId)
                     let username = info['username']
                     sessionStorage.setItem('username', username)
-                    let nickName = info['nickName']
+                    let nickName = info['Unickname']
                     sessionStorage.setItem('nickName', nickName)
                     let email = info['email']
                     sessionStorage.setItem('email', email)

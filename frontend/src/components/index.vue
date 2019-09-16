@@ -4,7 +4,7 @@
                  :visible.sync="userInfoVisible"
                  v-if="userInfoVisible==true"
                  customClass="customWidth">
-        <userinfo></userinfo>
+        <userInfo></userInfo>
       </el-dialog>
       <div class="header">
         <div class="header-left">
@@ -60,10 +60,10 @@
 </template>
 
 <script>
-  import userinfo from './userinfo'
+  import userInfo from './userInfo'
     export default {
         name: "index",
-        components:{userinfo},
+        components:{userInfo},
         mounted(){
           this.username = sessionStorage.getItem('username')
           this.userId = sessionStorage.getItem('userId')

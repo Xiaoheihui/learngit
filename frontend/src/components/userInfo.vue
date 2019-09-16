@@ -1,6 +1,12 @@
 <template>
     <div class="userInfo">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="账号" prop="username">
+          {{this.username}}
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          {{this.email}}
+        </el-form-item>
         <el-form-item label="昵称" prop="nickName">
           <el-input v-model="form.nickName" autocomplete="off" :disabled="!judge"></el-input>
         </el-form-item>
@@ -24,18 +30,18 @@
         name: "userinfo",
       mounted(){
           this.userId = sessionStorage.getItem('userId')
+        this.username = sessionStorage.getItem('username')
+        this.email = sessionStorage.getItem('email')
         this.$api.user.getMessage({
           id:this.userId
         }).then((res)=>{
-          if(res.data.status==0){
+          if(res.data.status===0){
             console.log(res)
             let info = res.data
-            this.form.nickName = info['Unickname']
+            this.form.nickName = info['Unickname'];
             let sex = info['USex']
-            if(sex=='M')
-              this.form.sex = true
-            else this.form.sex = false
-            if(info['UBirthday'] != 0)
+            this.form.sex = sex === 'M';
+            if(info['UBirthday'] !== 0)
               this.form.birthday = new Date(Date.parse(info['UBirthday']))
             else this.form.birthday = new Date()
             this.form.selfInfo = info['UStatement']
@@ -57,6 +63,8 @@
           return{
             judge:false,
             userId:null,
+            username:'',
+            email:'',
             form:{
               nickName:'',
               sex:true,
@@ -83,7 +91,7 @@
               if(this.form.sex)
                 this.sexString = 'M'
               else this.sexString = 'F'
-              console.log(this.form.nickName)
+              console.log(this.form.birthday)
               this.$api.user.alterMessage({
                 id:this.userId,
                 nickname:this.form.nickName,
