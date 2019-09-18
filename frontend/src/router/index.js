@@ -6,6 +6,7 @@ import index from '@/components/index'
 import login from '@/components/login'
 import register from '@/components/register'
 import userInfo from '@/components/userInfo'
+import classInfo from '@/components/classInfo'
 
 Vue.use(Router)
 
@@ -36,6 +37,11 @@ export default new Router({
       path: '/user',
       name: 'userInfo',
       component: userInfo
+    },
+    {
+      path: '/classInfo',
+      name: 'classInfo',
+      component: classInfo
     },
   ]
 })

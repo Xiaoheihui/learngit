@@ -2,10 +2,10 @@
     <div class="userInfo">
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="账号" prop="username">
-          {{this.username}}
+          <el-tag>{{this.username}}</el-tag>
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
-          {{this.email}}
+          <el-tag>{{this.email}}</el-tag>
         </el-form-item>
         <el-form-item label="昵称" prop="nickName">
           <el-input v-model="form.nickName" autocomplete="off" :disabled="!judge"></el-input>
