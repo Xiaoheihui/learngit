@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from .forms import RegisterForm, MessageForm
 import json
 from django.contrib import auth
+from django.db import models
 from django.forms.models import model_to_dict
 
 import datetime,pytz
@@ -69,7 +70,11 @@ def login(request):
     user = request.POST.get('username')
     pwd = request.POST.get('password')
     user_name = auth.authenticate(username=user, password=pwd)  # 自动校验user表 用户账号校验
-    userEmail = User.objects.get(email=user)
+    try:
+        userEmail = User.objects.get(email=user)
+    except:
+        userEmail = None
+
     if user_name is not None:  # 登陆成功
         response1 = Model_To_Dict(user_name)
         response2 = Model_To_Dict(user_name.usermessage)

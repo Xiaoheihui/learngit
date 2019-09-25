@@ -105,7 +105,7 @@
                     this.$message.success('登录成功！')
                     this.$router.push('/')
                   }else {
-                    this.$message.error("用户名/邮箱或密码错误，请重新登录！");
+                    this.$message.error("用户名/邮箱或密码错误，请重试！");
                   }
                 }
               )
