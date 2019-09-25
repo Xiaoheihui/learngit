@@ -23,15 +23,34 @@ class CompClass(models.Model):
         verbose_name = '赛事类别'
         verbose_name_plural = '赛事类别列表'
 
+    def __str__(self):
+        return self.CName
+
+
+class CompLevel(models.Model):
+    ID        = models.AutoField(primary_key=True, verbose_name=u"赛事等级编号")
+    Name      = models.CharField(max_length=5, default="", verbose_name=u"赛事等级名字")
+    Statement = models.CharField(max_length=100, null=True, verbose_name=u"赛事等级说明")
+    class mate:
+        db_table = "CompLevel"
+        verbose_name = '赛事等级'
+        verbose_name_plural = '赛事等级表'
+
+    def __str__(self):
+        return self.Name+"赛事"
+
 
 class Area(models.Model):
-    ID   = models.AutoField(primary_key=True, verbose_name="地区编号")
-    Name = models.CharField(max_length=5, default="全国", verbose_name="地区名字")
+    ID   = models.AutoField(primary_key=True, verbose_name=u"地区编号")
+    Name = models.CharField(max_length=5, default=u"全国", verbose_name=u"地区名字")
 
     class mate:
         db_table = "Area"
         verbose_name = '地区'
         verbose_name_plural = '地区列表'
+
+    def __str__(self):
+        return self.Name
 
 
 class UserMessage(models.Model):
@@ -162,25 +181,27 @@ class BBSReply(models.Model):
 
 
 class CompInfo(models.Model):
-    """
-    表中列名	        数据类型	    可否为空	        说明
-    Iid             Int	        not null(主键)	赛事编号
-    IName	        varchar	    not null	    赛事名称
-    IApplyStartTime	datetime	Not null	    赛事报名开始时间
-    IApplyEndTime	datetime	Not null	    赛事报名结束时间
-    IClass	        Varchar	    Not null	    竞赛类别
-    IAreaID	        Int	        Not null	    赛事地区编号
-    IOrganizers	    Varchar	    Not null	    主办单位
-    IObject	        text        Not null	    参赛对象
-    IMethods	    text	    Not null	    参赛方法
-    ISchedule	    text	    Not null	    赛程信息
-    Iurls	        Varchar	    Null	        赛事官网
-    IStatement	    text	    Not null	    赛事介绍
-    """
+    # """
+    # 表中列名	        数据类型	    可否为空	        说明
+    # Iid               Int	        not null(主键)	赛事编号
+    # IName	            varchar	    not null	    赛事名称
+    # IApplyStartTime	datetime	Not null	    赛事报名开始时间
+    # IApplyEndTime	    datetime	Not null	    赛事报名结束时间
+    # IClass	        Varchar	    Not null	    竞赛类别
+    # IAreaID	        Int	        Not null	    赛事地区编号
+    # IOrganizers	    Varchar	    Not null	    主办单位
+    # IObject	        text        Not null	    参赛对象
+    # IMethods	        text	    Not null	    参赛方法
+    # ISchedule	        text	    Not null	    赛程信息
+    # Iurls	            Varchar	    Null	        赛事官网
+    # IStatement	    text	    Not null	    赛事介绍
+    # ILevel            int         not null        赛事等级编号
+    # """
     Iid     = models.AutoField(primary_key=True, verbose_name="赛事编号")
     # 外键
     IClass  = models.ForeignKey(CompClass, on_delete=models.CASCADE, verbose_name="竞赛类别编号")
-    IAreaID = models.ForeignKey(Area, on_delete=models.CASCADE, verbose_name="赛事地区编号")
+    IAreaID = models.ForeignKey(Area, on_delete=models.CASCADE, default='', verbose_name="赛事地区编号")
+    ILevel  = models.ForeignKey(CompLevel, on_delete=models.CASCADE, verbose_name="赛事等级编号")
 
     IName   = models.CharField(max_length=60, default="", verbose_name="赛事名称")
     IApplyStartTime = models.DateField(verbose_name="报名开始时间")
@@ -189,6 +210,7 @@ class CompInfo(models.Model):
     IObject     = models.TextField(default="（空）", verbose_name="参赛对象")
     IMethods    = models.TextField(default="（空）", verbose_name="参赛方法")
     ISchedule   = models.TextField(default="（空）", verbose_name="赛程信息")
+    IForm       = models.TextField(default="（空）", verbose_name="参赛形式")
     IStatement  = models.TextField(default="（空）", verbose_name="赛事介绍")
     Iurls = models.URLField(default="", verbose_name="赛事官网")
 
@@ -196,6 +218,13 @@ class CompInfo(models.Model):
         db_table = "CompInfo"
         verbose_name = '赛事信息'
         verbose_name_plural = '赛事列表'
+
+    @staticmethod
+    def list_all_member(s):
+        list = []
+        for name, value in vars().items():
+            list.append(name)
+        return list
 
 
 class CompRecord(models.Model):
@@ -243,3 +272,7 @@ class MarkMessage(models.Model):
     CompRecordId = models.ForeignKey(CompRecord, on_delete=models.CASCADE, verbose_name="记录编号")
     UsersId      = models.ForeignKey(UserMessage, on_delete=models.CASCADE, verbose_name="用户编号")
     MarkTime     = models.DateField(auto_now_add=True, editable=True, verbose_name="收藏时间")
+
+
+class test11(models.Model):
+    name = models.CharField(max_length=10)
