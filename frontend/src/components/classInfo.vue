@@ -31,13 +31,14 @@
       </div>
       <div class="body">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-          <el-menu-item index="1" @click="gotoIndex">平台首页</el-menu-item>
+          <el-menu-item index="0" @click="gotoIndex">平台首页</el-menu-item>
+          <el-menu-item index="1" @click="gotoClassInfo('1')">科技创新</el-menu-item>
           <el-menu-item index="2" @click="gotoClassInfo('2')">创业商业</el-menu-item>
-          <el-menu-item index="3" @click="gotoClassInfo('3')">体育竞技</el-menu-item>
-          <el-menu-item index="4" @click="gotoClassInfo('4')">学科竞赛</el-menu-item>
-          <el-menu-item index="5" @click="gotoClassInfo('5')">游戏动漫</el-menu-item>
-          <el-menu-item index="6" @click="gotoClassInfo('6')">广告公益</el-menu-item>
-          <el-menu-item index="7" @click="gotoClassInfo('7')">科技创新</el-menu-item>
+          <el-menu-item index="3" @click="gotoClassInfo('3')">艺术爱好</el-menu-item>
+          <el-menu-item index="4" @click="gotoClassInfo('4')">游戏动漫</el-menu-item>
+          <el-menu-item index="5" @click="gotoClassInfo('5')">广告公益</el-menu-item>
+          <el-menu-item index="6" @click="gotoClassInfo('6')">学科竞赛</el-menu-item>
+          <el-menu-item index="7" @click="gotoClassInfo('7')">体育竞赛</el-menu-item>
           <el-menu-item index="8" @click="gotoClassInfo('8')">社区论坛</el-menu-item>
         </el-menu>
         <el-table
@@ -98,6 +99,16 @@
         },
         handleSelect(key, keyPath) {
           // console.log(key, keyPath);
+        },
+        logout(){
+          sessionStorage.clear();
+          this.$store.dispatch('UserLogout')
+          if(! this.$store.state.token){
+
+            this.$router.go(0)
+          }else{
+            this.$message.error('退出失败');
+          }
         },
       }
     }
