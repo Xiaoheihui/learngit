@@ -42,8 +42,9 @@
           <el-menu-item index="8" @click="gotoClassInfo('8')">社区论坛</el-menu-item>
         </el-menu>
         <el-table
-          :data="tableData"
-          style="width:80%;margin-left:10%;">
+          :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
+          style="width:80%;margin-left:10%;"
+          max-height="1000">
           <el-table-column
             prop="gameId"
             label="比赛ID"
@@ -51,13 +52,27 @@
           </el-table-column>
           <el-table-column
             prop="gameName"
-            label="比赛名称">
+            label="比赛名称"
+            width="450">
+          </el-table-column>
+          <el-table-column
+            prop="startTime"
+            label="报名开始时间">
           </el-table-column>
           <el-table-column
             prop="deltaTime"
             label="报名截止时间">
           </el-table-column>
         </el-table>
+        <div class="tabListPage">
+          <el-pagination @size-change="handleSizeChange"
+                         @current-change="handlesCurrentChange"
+                         :current-page="currentPage"
+                         :page-sizes="pageSizes"
+                         :page-size="PageSize" layout="total, prev, pager, next, jumper"
+                         :total="totalCount">
+          </el-pagination>
+        </div>
       </div>
     </div>
 </template>
@@ -77,6 +92,27 @@
         if(!this.nickName)
           this.nickName = this.username
         this.email = sessionStorage.getItem('email')
+        this.$api.comp.getCompInfoByClassId({
+          classId:parseInt(this.activeIndex)
+        }).then((res)=>{
+          if(res.data.status==0){
+            let infos = res.data.compInfo
+            console.log(infos[0])
+            this.totalCount = infos.length
+            for(let i=0;i<infos.length;++i){
+              let gameName = infos[i]['IName']
+              let gameId = infos[i]['Iid']
+              let gameApplyEndTime = infos[i]['IApplyEndTime']
+              let gameApplyStartTime = infos[i]['IApplyStartTime']
+              this.tableData.push({
+                gameName:gameName,
+                gameId:gameId,
+                deltaTime:gameApplyEndTime,
+                startTime:gameApplyStartTime
+              })
+            }
+          }
+        })
       },
       data(){
       return{
@@ -85,10 +121,25 @@
         username:null,
         nickName:'',
         userId:'',
-        tableData:[]
+        tableData:[],
+        currentPage:1,
+        totalCount:0,
+        PageSize:8,
       }
       },
       methods:{
+        // 每页显示的条数
+        handleSizeChange(val) {
+          // 改变每页显示的条数
+          this.PageSize=val
+          // 注意：在改变每页显示的条数时，要将页码显示到第一页
+          this.currentPage=1
+        },
+        // 显示第几页
+        handlesCurrentChange(val) {
+          // 改变默认的页数
+          this.currentPage=val
+        },
       gotoClassInfo(classNum){
         // this.activeIndex = classNum
         this.$router.push({path:'/classInfo', query:{classNum:classNum}})

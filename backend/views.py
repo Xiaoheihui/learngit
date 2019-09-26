@@ -8,6 +8,7 @@ import json
 from django.contrib import auth
 from django.db import models
 from django.forms.models import model_to_dict
+from .models import CompInfo
 
 import datetime,pytz
 
@@ -154,6 +155,24 @@ def alterMessage(request):
 
     return JsonResponse(response)
 
+
+# 获取比赛信息
+@require_http_methods(["POST"])
+def getCompInfoByClassId(request):
+    response = {}
+    comp = []
+    classId = int(request.POST.get("classId"))
+    compInfo = CompInfo.objects.filter(IClass_id=classId)
+    if compInfo is not None:
+        for info in compInfo:
+            comp.append(Model_To_Dict(info))
+        response['compInfo'] = comp
+        response['status'] = 0
+        response['messsage'] = '比赛信息返回成功'
+    else:
+        response['status'] = 1
+        response['message'] = '比赛信息返回失败，请重试！'
+    return JsonResponse(response)
 
 # 辅助函数：
 def Model_To_Dict(model, fields=None, exclude=None):

@@ -6,4 +6,6 @@ urlpatterns = [
     url(r'login$', backend.views.login),
     url(r'test$', backend.views.test),
     url(r'getMessage$', backend.views.getMessage),
-    url(r'alterMessage$', backend.views.alterMessage),]
+    url(r'alterMessage$', backend.views.alterMessage),
+    url(r'getCompInfoByClassId$', backend.views.getCompInfoByClassId),
+]
