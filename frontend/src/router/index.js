@@ -7,6 +7,7 @@ import login from '@/components/login'
 import register from '@/components/register'
 import userInfo from '@/components/userInfo'
 import classInfo from '@/components/classInfo'
+import gameDetail from '@/components/gameDetail'
 
 Vue.use(Router)
 
@@ -42,6 +43,11 @@ export default new Router({
       path: '/classInfo',
       name: 'classInfo',
       component: classInfo
+    },
+    {
+      path: '/gameDetail',
+      name: 'gameDetail',
+      component: gameDetail
     },
   ]
 })

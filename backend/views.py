@@ -8,7 +8,7 @@ import json
 from django.contrib import auth
 from django.db import models
 from django.forms.models import model_to_dict
-from .models import CompInfo
+from .models import CompInfo, CompClass, CompLevel, Area
 
 import datetime,pytz
 
@@ -173,6 +173,31 @@ def getCompInfoByClassId(request):
         response['status'] = 1
         response['message'] = '比赛信息返回失败，请重试！'
     return JsonResponse(response)
+
+
+# 根据比赛信息id获得单条比赛信息
+@require_http_methods(["POST"])
+def getCompInfoByCompId(request):
+    response = {}
+    compId = int(request.POST.get('compId'))
+    compInfo = CompInfo.objects.get(Iid=compId)
+    if compInfo is not None:
+        response = model_to_dict(compInfo)
+        compLevelinfo = CompLevel.objects.get(ID=response['ILevel'])
+        compLevel = Model_To_Dict(compLevelinfo)['Name']
+        compClassinfo = CompClass.objects.get(Cid=response['IClass'])
+        compClass = Model_To_Dict(compClassinfo)['CName']
+        compAreainfo = Area.objects.get(ID=response['IAreaID'])
+        compArea = Model_To_Dict(compAreainfo)['Name']
+        response['status'] = 0
+        response['compLevel'] = compLevel
+        response['compClass'] = compClass
+        response['compArea'] = compArea
+    else:
+        response['status'] = 1
+        response['message'] = '该比赛信息不存在，请重试！'
+    return JsonResponse(response)
+
 
 # 辅助函数：
 def Model_To_Dict(model, fields=None, exclude=None):

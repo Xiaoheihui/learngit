@@ -1,6 +1,6 @@
 <template>
   <div class="userInfo">
-    <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-form ref="form" :model="form" :rules="rules" label-width="70px">
       <el-form-item label="账号" prop="username">
         <el-tag>{{this.username}}</el-tag>
       </el-form-item>
@@ -20,8 +20,11 @@
         <el-input type="textarea" v-model="form.selfInfo"  placeholder="最长不能超过150个字符" autocomplete="off" :disabled="!judge"></el-input>
       </el-form-item>
     </el-form>
-    <el-button type="primary" @click="judge=true" :disabled="judge">编辑</el-button>
-    <el-button type="primary" @click="submitForm('form')" :disabled="!judge">保存</el-button>
+    <div class="buttonGroup">
+      <el-button type="primary" @click="judge=true" :disabled="judge">编辑</el-button>
+      <el-button type="primary" @click="submitForm('form')" :disabled="!judge">保存</el-button>
+    </div>
+
   </div>
 </template>
 
@@ -119,6 +122,19 @@
   }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+  .userInfo{
+    .buttonGroup{
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      .el-button{
+        width:30%;
+      }
+    }
+    .el-tag{
+      font-size:15px;
+    }
+  }
 </style>

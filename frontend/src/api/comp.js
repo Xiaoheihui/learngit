@@ -2,11 +2,11 @@ import axios from './http';
 import qs from 'qs'
 
 const comp = {
-  //用户注册
-  register(params){
-    return axios.post('/api/register', qs.stringify(params))
+  //获取单个赛事信息
+  getCompInfoByCompId(params){
+    return axios.post('/api/getCompInfoByCompId', qs.stringify(params))
   },
-  //用户登录
+  //获取分类赛事信息
   getCompInfoByClassId(params){
     return axios.post('/api/getCompInfoByClassId', qs.stringify(params))
   }

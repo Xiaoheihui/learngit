@@ -1,34 +1,6 @@
 <template>
     <div class="classInfo">
-      <el-dialog title="用户信息"
-                 :visible.sync="userInfoVisible"
-                 v-if="userInfoVisible==true"
-                 customClass="customWidth">
-        <userInfo></userInfo>
-      </el-dialog>
-      <div class="header">
-        <div class="header-left">
-          <img src="../static/img/timg.jpg">
-          <span>大学生赛事平台</span>
-        </div>
-        <div class="header-right">
-          <div class="user">
-            <i class="el-icon-user"></i>
-            <router-link :to="{ path: '/login'}" replace v-if="username==null"><span>登录</span></router-link>
-            <el-divider direction="vertical" v-if="username==null"></el-divider>
-            <router-link :to="{ path: '/register'}" replace v-if="username==null"><span>注册</span></router-link>
-            <div v-else>
-              <el-dropdown>
-                <span>您好,{{nickName}}</span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item @click.native="userInfoVisible=true">用户信息</el-dropdown-item>
-                  <el-dropdown-item @click.native = "logout">登出</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-          </div>
-        </div>
-      </div>
+      <site-header></site-header>
       <div class="body">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
           <el-menu-item index="0" @click="gotoIndex">平台首页</el-menu-item>
@@ -43,8 +15,10 @@
         </el-menu>
         <el-table
           :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
+          :default-sort = "{prop: 'startTime', order: 'descending'}"
+          @row-click="openDetails"
           style="width:80%;margin-left:10%;"
-          max-height="1000">
+          stripe>
           <el-table-column
             prop="gameId"
             label="比赛ID"
@@ -57,10 +31,12 @@
           </el-table-column>
           <el-table-column
             prop="startTime"
+            sortable
             label="报名开始时间">
           </el-table-column>
           <el-table-column
             prop="deltaTime"
+            sortable
             label="报名截止时间">
           </el-table-column>
         </el-table>
@@ -79,8 +55,9 @@
 
 <script>
   import userInfo from './userInfo'
+  import siteHeader from './siteHeader'
     export default {
-    components:{userInfo},
+    components:{userInfo, siteHeader},
         name: "classInfo",
       mounted(){
       console.log(this.$route.query.classNum)
@@ -97,7 +74,6 @@
         }).then((res)=>{
           if(res.data.status==0){
             let infos = res.data.compInfo
-            console.log(infos[0])
             this.totalCount = infos.length
             for(let i=0;i<infos.length;++i){
               let gameName = infos[i]['IName']
@@ -117,7 +93,7 @@
       data(){
       return{
         userInfoVisible:false,
-        activeIndex:"2",
+        activeIndex:"1",
         username:null,
         nickName:'',
         userId:'',
@@ -125,6 +101,7 @@
         currentPage:1,
         totalCount:0,
         PageSize:8,
+        pageSizes:[1,2,3,4]
       }
       },
       methods:{
@@ -161,78 +138,35 @@
             this.$message.error('退出失败');
           }
         },
+        openDetails(row){
+          this.$router.push({path:'/gameDetail', query:{gameId:row.gameId}})
+        }
       }
     }
 </script>
 
 <style lang="scss">
   .customWidth{
-    width:45%!important;
+    width:40%!important;
   }
 
-  .header{
-    position: fixed;
-    left:0px;
-    top:0px;
-    background-color: #f7f7f7;
-    width:100%;
-    height:100px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    .header-right{
-      height:100%;
-      width:20%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      a {
-        text-decoration: none;
-      }
-      span{
-        color:#2C537A
-      }
-      .user{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        span{
-          font-size:17px;
-        }
-      }
-    }
-    .header-left{
-      height:100%;
-      width:30%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-around;
-      img{
-        width:110px;
-        height:94%;
-        margin-top:3%;
-        margin-bottom:3%;
-      }
-      span{
-        font-size:32px;
-      }
-    }
-  }
   .body{
     width:100%;
     margin:0;
     padding:0;
-    position:fixed;
-    left:0;
-    top:100px;
     .el-menu{
+      position:fixed;
+      left:0;
+      top:100px;
+      width:100%;
+      z-index:10;
       li{
         font-size:17px;
       }
+    }
+    .el-table{
+      margin-top:180px;
+
     }
   }
 </style>

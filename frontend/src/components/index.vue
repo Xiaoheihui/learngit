@@ -1,34 +1,6 @@
 <template>
     <div class="index">
-      <el-dialog title="用户信息"
-                 :visible.sync="userInfoVisible"
-                 v-if="userInfoVisible==true"
-                 customClass="customWidth">
-        <userInfo></userInfo>
-      </el-dialog>
-      <div class="header">
-        <div class="header-left">
-          <img src="../static/img/timg.jpg">
-          <span>大学生赛事平台</span>
-        </div>
-        <div class="header-right">
-          <div class="user">
-            <i class="el-icon-user"></i>
-            <router-link :to="{ path: '/login'}" replace v-if="username==null"><span>登录</span></router-link>
-            <el-divider direction="vertical" v-if="username==null"></el-divider>
-            <router-link :to="{ path: '/register'}" replace v-if="username==null"><span>注册</span></router-link>
-            <div v-else>
-              <el-dropdown>
-                <span>您好,{{nickName}}</span>
-                <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item @click.native="userInfoVisible=true">用户信息</el-dropdown-item>
-                  <el-dropdown-item @click.native = "logout">登出</el-dropdown-item>
-                </el-dropdown-menu>
-              </el-dropdown>
-            </div>
-          </div>
-        </div>
-      </div>
+      <site-header></site-header>
       <div class="body">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
           <el-menu-item index="0" @click="gotoIndex">平台首页</el-menu-item>
@@ -62,9 +34,10 @@
 
 <script>
   import userInfo from './userInfo'
+  import siteHeader from './siteHeader'
     export default {
         name: "index",
-        components:{userInfo},
+        components:{userInfo,siteHeader},
         mounted(){
           this.username = sessionStorage.getItem('username')
           this.userId = sessionStorage.getItem('userId')
@@ -93,16 +66,6 @@
         handleSelect(key, keyPath) {
           console.log(key, keyPath);
         },
-        logout(){
-          sessionStorage.clear();
-          this.$store.dispatch('UserLogout')
-          if(! this.$store.state.token){
-
-            this.$router.go(0)
-          }else{
-            this.$message.error('退出失败');
-          }
-        },
         gotoClassInfo(classNum){
           this.$router.push({path:'/classInfo', query:{classNum:classNum}})
         },
@@ -115,70 +78,17 @@
 
 <style lang="scss">
   .customWidth{
-    width:45%!important;
+    width:40%!important;
   }
 
-  .header{
-      position: fixed;
-      left:0px;
-      top:0px;
-      background-color: #f7f7f7;
-      width:100%;
-      height:100px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      .header-right{
-        height:100%;
-        width:20%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        a {
-          text-decoration: none;
-        }
-        span{
-          color:#2C537A
-        }
-        .user{
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-          span{
-            font-size:17px;
-          }
-        }
-      }
-      .header-left{
-        height:100%;
-        width:30%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-around;
-        img{
-          width:110px;
-          height:94%;
-          margin-top:3%;
-          margin-bottom:3%;
-        }
-        span{
-          font-size:32px;
-        }
-      }
-    }
+
   .body{
     width:100%;
     margin:0;
     padding:0;
-    position:fixed;
-    left:0;
-    top:100px;
     .body-header{
-      margin-top:40px;
+      margin-top:200px;
+      z-index:-1;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -200,6 +110,10 @@
       }
     }
     .el-menu{
+      position:fixed;
+      left:0;
+      top:100px;
+      width:100%;
       li{
         font-size:17px;
       }
