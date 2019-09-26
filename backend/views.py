@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.core import serializers
 from django.http import JsonResponse
+from django.db.models import Q, F
 from django.contrib.auth.models import User
 from .forms import RegisterForm, MessageForm
 import json
@@ -196,6 +197,42 @@ def getCompInfoByCompId(request):
     else:
         response['status'] = 1
         response['message'] = '该比赛信息不存在，请重试！'
+    return JsonResponse(response)
+
+
+# 根据筛选信息获取比赛信息
+@require_http_methods(["POST"])
+def getCompInfoBySelect(request):
+    response = {}
+    comp = []
+    gamelevel = int(request.POST.get('gameLevel'))
+    gameClass = int(request.POST.get('gameClass'))
+    selectStart = request.POST.get('selectStart')
+    selectEnd = request.POST.get('selectEnd')
+    if selectStart == '':
+        startTime = datetime.datetime.strptime('1900-01-01', '%Y-%m-%d')
+    else:
+        dateStr = selectStart[:10]  # 截取时间字符串
+        startTime = datetime.datetime.strptime(dateStr, '%Y-%m-%d') + datetime.timedelta(hours=24)
+    if selectEnd == '':
+        endTime = datetime.datetime.strptime('2100-01-01', '%Y-%m-%d')
+    else:
+        dateStr = selectEnd[:10]  # 截取时间字符串
+        endTime = datetime.datetime.strptime(dateStr, '%Y-%m-%d') + datetime.timedelta(hours=24)
+    print(startTime,endTime)
+    if gamelevel == 0:
+        compinfos = CompInfo.objects.filter(IClass=gameClass, IApplyStartTime__gte=startTime, IApplyEndTime__lte=endTime)
+    else:
+        compinfos = CompInfo.objects.filter(IClass=gameClass, ILevel=gamelevel, IApplyStartTime__gte=startTime, IApplyEndTime__lte=endTime)
+    if compinfos is not None:
+        for item in compinfos:
+            comp.append(Model_To_Dict(item))
+        response['compInfo'] = comp
+        response['status'] = 0
+        response['message'] = '筛选成功!'
+    else:
+        response['status'] = 1
+        response['message'] = '信息筛选失败，请重试！'
     return JsonResponse(response)
 
 

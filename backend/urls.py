@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'alterMessage$', backend.views.alterMessage),
     url(r'getCompInfoByClassId$', backend.views.getCompInfoByClassId),
     url(r'getCompInfoByCompId$', backend.views.getCompInfoByCompId),
+    url(r'getCompInfoBySelect$', backend.views.getCompInfoBySelect),
 ]

@@ -9,7 +9,11 @@ const comp = {
   //获取分类赛事信息
   getCompInfoByClassId(params){
     return axios.post('/api/getCompInfoByClassId', qs.stringify(params))
-  }
+  },
+  //筛选获取赛事信息
+  getCompInfoBySelect(params){
+    return axios.post('/api/getCompInfoBySelect', qs.stringify(params))
+  },
 }
 
 export default comp;

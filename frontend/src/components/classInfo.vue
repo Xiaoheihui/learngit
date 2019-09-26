@@ -13,6 +13,36 @@
           <el-menu-item index="7" @click="gotoClassInfo('7')">体育竞赛</el-menu-item>
           <el-menu-item index="8" @click="gotoClassInfo('8')">社区论坛</el-menu-item>
         </el-menu>
+        <div class="select">
+          <div>
+            <el-radio-group v-model="gameLevel">
+              <el-tag>竞赛级别</el-tag>
+              <el-radio :label="0">全部</el-radio>
+              <el-radio :label="1">A类</el-radio>
+              <el-radio :label="2">B类</el-radio>
+              <el-radio :label="3">C类</el-radio>
+              <el-radio :label="4">D类</el-radio>
+            </el-radio-group>
+          </div>
+          <div>
+            <el-radio-group v-model="gameArea">
+              <el-tag>比赛地区</el-tag>
+              <el-radio :label="0">全部</el-radio>
+              <el-radio :label="1">全国</el-radio>
+              <el-radio :label="36">全球</el-radio>
+              <el-radio :label="2">北京</el-radio>
+              <el-radio :label="20">广东</el-radio>
+              <el-radio :label="100">其他</el-radio>
+            </el-radio-group>
+          </div>
+          <div class="selectSon">
+            <el-tag>报名开始时间</el-tag>
+            <el-date-picker type="date" placeholder="选择日期" v-model="selectStart"></el-date-picker>
+            <el-tag>报名结束时间</el-tag>
+            <el-date-picker type="date" placeholder="选择日期" v-model="selectEnd"></el-date-picker>
+          </div>
+          <el-button type="primary" @click="select">筛选</el-button>
+        </div>
         <el-table
           :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
           :default-sort = "{prop: 'startTime', order: 'descending'}"
@@ -88,6 +118,9 @@
               })
             }
           }
+          else{
+            this.$message.error(res.data.message)
+          }
         })
       },
       data(){
@@ -101,7 +134,11 @@
         currentPage:1,
         totalCount:0,
         PageSize:8,
-        pageSizes:[1,2,3,4]
+        pageSizes:[1,2,3,4],
+        gameLevel:0,
+        gameArea:0,
+        selectStart:null,
+        selectEnd:null,
       }
       },
       methods:{
@@ -140,6 +177,48 @@
         },
         openDetails(row){
           this.$router.push({path:'/gameDetail', query:{gameId:row.gameId}})
+        },
+        select(){
+          console.log(this.selectEnd)
+          if(this.selectStart!=null&&this.selectEnd!=null&&this.selectEnd<this.selectStart)
+          {
+            this.$message.error('请正确选择时间！')
+            return
+          }
+          let start = this.selectStart
+          let end = this.selectEnd
+          if(start==null)
+            start = ''
+          if(end==null)
+            end = ''
+          this.$api.comp.getCompInfoBySelect({
+            gameClass:this.activeIndex,
+            gameLevel: this.gameLevel,
+            selectStart:start,
+            selectEnd: end
+          }).then((res)=>{
+            if(res.data.status==0){
+              let infos = res.data.compInfo
+              this.tableData = []
+              this.totalCount = infos.length
+              for(let i=0;i<infos.length;++i){
+                let gameName = infos[i]['IName']
+                let gameId = infos[i]['Iid']
+                let gameApplyEndTime = infos[i]['IApplyEndTime']
+                let gameApplyStartTime = infos[i]['IApplyStartTime']
+                this.tableData.push({
+                  gameName:gameName,
+                  gameId:gameId,
+                  deltaTime:gameApplyEndTime,
+                  startTime:gameApplyStartTime
+                })
+              }
+              this.$message.success(res.data.message)
+            }
+            else{
+              this.$message.error(res.data.message)
+            }
+          })
         }
       }
     }
@@ -154,6 +233,31 @@
     width:100%;
     margin:0;
     padding:0;
+    .select{
+      margin-top:180px;
+      width:56%;
+      margin-left:22%;
+      .el-radio-group{
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+      }
+      div{
+        margin-bottom:14px;
+      }
+      .selectSon{
+        margin-bottom:20px;
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+      }
+      .el-button{
+        width:60%;
+        border-radius:50px;
+      }
+    }
     .el-menu{
       position:fixed;
       left:0;
@@ -165,7 +269,7 @@
       }
     }
     .el-table{
-      margin-top:180px;
+      margin-top:20px;
 
     }
   }
