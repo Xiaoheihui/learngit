@@ -5,7 +5,7 @@
                  v-if="userInfoVisible===true"
                  append-to-body
                  customClass="customWidth">
-        <userInfo></userInfo>
+        <userInfo v-on:childsay="listenChild"></userInfo>
       </el-dialog>
       <div class="header-left">
         <img src="../static/img/timg.jpg">
@@ -64,6 +64,10 @@
             this.$message.error('退出失败');
           }
         },
+        listenChild:function(data){
+          console.log('change')
+          this.nickName = data
+        }
       }
     }
 </script>
