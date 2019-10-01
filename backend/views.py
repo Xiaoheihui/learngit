@@ -207,6 +207,7 @@ def getCompInfoBySelect(request):
     comp = []
     gamelevel = int(request.POST.get('gameLevel'))
     gameClass = int(request.POST.get('gameClass'))
+    gamearea = int(request.POST.get('gameArea'))
     selectStart = request.POST.get('selectStart')
     selectEnd = request.POST.get('selectEnd')
     if selectStart == '':
@@ -219,11 +220,21 @@ def getCompInfoBySelect(request):
     else:
         dateStr = selectEnd[:10]  # 截取时间字符串
         endTime = datetime.datetime.strptime(dateStr, '%Y-%m-%d') + datetime.timedelta(hours=24)
-    print(startTime,endTime)
+    print(startTime, endTime)
     if gamelevel == 0:
-        compinfos = CompInfo.objects.filter(IClass=gameClass, IApplyStartTime__gte=startTime, IApplyEndTime__lte=endTime)
+        if gamearea == 0:
+            compinfos = CompInfo.objects.filter(IClass=gameClass, IApplyStartTime__gte=startTime, IApplyEndTime__lte=endTime)
+        elif gamearea == 100:
+            compinfos = CompInfo.objects.filter(IClass=gameClass, IApplyStartTime__gte=startTime, IApplyEndTime__lte=endTime).exclude(IAreaID=1).exclude(IAreaID=2).exclude(IAreaID=20).exclude(IAreaID=36)
+        else:
+            compinfos = CompInfo.objects.filter(IClass=gameClass, IApplyStartTime__gte=startTime, IApplyEndTime__lte=endTime, IAreaID=gamearea)
     else:
-        compinfos = CompInfo.objects.filter(IClass=gameClass, ILevel=gamelevel, IApplyStartTime__gte=startTime, IApplyEndTime__lte=endTime)
+        if gamearea == 0:
+            compinfos = CompInfo.objects.filter(IClass=gameClass, ILevel=gamelevel, IApplyStartTime__gte=startTime, IApplyEndTime__lte=endTime)
+        elif gamearea == 100:
+            compinfos = CompInfo.objects.filter(IClass=gameClass, ILevel=gamelevel, IApplyStartTime__gte=startTime, IApplyEndTime__lte=endTime).exclude(IAreaID=1).exclude(IAreaID=2).exclude(IAreaID=20).exclude(IAreaID=36)
+        else:
+            compinfos = CompInfo.objects.filter(IClass=gameClass, ILevel=gamelevel, IApplyStartTime__gte=startTime, IApplyEndTime__lte=endTime, IAreaID=gamearea)
     if compinfos is not None:
         for item in compinfos:
             comp.append(Model_To_Dict(item))

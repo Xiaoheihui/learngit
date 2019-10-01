@@ -8,6 +8,7 @@ import register from '@/components/register'
 import userInfo from '@/components/userInfo'
 import classInfo from '@/components/classInfo'
 import gameDetail from '@/components/gameDetail'
+import community from '@/components/community'
 
 Vue.use(Router)
 
@@ -48,6 +49,11 @@ export default new Router({
       path: '/gameDetail',
       name: 'gameDetail',
       component: gameDetail
+    },
+    {
+      path: '/community',
+      name: 'community',
+      component: community
     },
   ]
 })

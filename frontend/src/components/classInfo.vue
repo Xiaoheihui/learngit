@@ -11,7 +11,7 @@
           <el-menu-item index="5" @click="gotoClassInfo('5')">广告公益</el-menu-item>
           <el-menu-item index="6" @click="gotoClassInfo('6')">学科竞赛</el-menu-item>
           <el-menu-item index="7" @click="gotoClassInfo('7')">体育竞赛</el-menu-item>
-          <el-menu-item index="8" @click="gotoClassInfo('8')">社区论坛</el-menu-item>
+          <el-menu-item index="8" @click="gotoCommunity">社区论坛</el-menu-item>
         </el-menu>
         <div class="select">
           <div>
@@ -165,6 +165,9 @@
         handleSelect(key, keyPath) {
           // console.log(key, keyPath);
         },
+        gotoCommunity(){
+          this.$router.push({name:'community'})
+        },
         logout(){
           sessionStorage.clear();
           this.$store.dispatch('UserLogout')
@@ -194,6 +197,7 @@
           this.$api.comp.getCompInfoBySelect({
             gameClass:this.activeIndex,
             gameLevel: this.gameLevel,
+            gameArea:this.gameArea,
             selectStart:start,
             selectEnd: end
           }).then((res)=>{
