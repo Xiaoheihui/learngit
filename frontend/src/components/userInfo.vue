@@ -132,6 +132,7 @@
       flex-direction: row;
       .el-button{
         width:30%;
+        border-radius: 30px;
       }
     }
     .el-tag{

@@ -83,7 +83,9 @@
   .customWidth{
     width:40%!important;
   }
-
+  .el-button{
+    border-radius:30px;
+  }
 
   .body{
     width:100%;

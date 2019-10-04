@@ -14,7 +14,7 @@
           <el-menu-item index="8" @click="gotoCommunity">社区论坛</el-menu-item>
         </el-menu>
         <div class="information">
-          <el-tabs :tab-position="tabPosition" style="height:600px;" v-model="tableActive" type="border-card">
+          <el-tabs :tab-position="tabPosition" v-model="tableActive" type="border-card">
             <el-tab-pane label="科技创新" :key="1" :name="'1'">
               <bbs-info :bbsClass="1" :bbsClassName="'科技创新'"></bbs-info>
             </el-tab-pane>
