@@ -10,4 +10,7 @@ urlpatterns = [
     url(r'getCompInfoByClassId$', backend.views.getCompInfoByClassId),
     url(r'getCompInfoByCompId$', backend.views.getCompInfoByCompId),
     url(r'getCompInfoBySelect$', backend.views.getCompInfoBySelect),
+    url(r'sendBBS$', backend.views.sendBBS),
+    url(r'getBBSByClassId$', backend.views.getBBSByClassId),
+    url(r'getBBSByUserId$', backend.views.getBBSByUserId),
 ]

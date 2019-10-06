@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CompInfo, Area, CompClass,test11
+from .models import CompInfo, Area, CompClass,test11, BBSSection
 # Register your models here.
 # test1
 @admin.register(CompInfo)
@@ -14,6 +14,10 @@ class AreaAdmin(admin.ModelAdmin):
 @admin.register(CompClass)
 class CompClassAdmin(admin.ModelAdmin):
     list_display = ('CName',)
+
+@admin.register(BBSSection)
+class CompClassAdmin(admin.ModelAdmin):
+    list_display = ('SName',)
 
 @admin.register(test11)
 class testAdmin(admin.ModelAdmin):

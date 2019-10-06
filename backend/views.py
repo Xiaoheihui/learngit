@@ -9,7 +9,7 @@ import json
 from django.contrib import auth
 from django.db import models
 from django.forms.models import model_to_dict
-from .models import CompInfo, CompClass, CompLevel, Area
+from .models import CompInfo, CompClass, CompLevel, Area, UserMessage, BBSSection, BBSTopic, BBSReply
 
 import datetime,pytz
 
@@ -244,6 +244,75 @@ def getCompInfoBySelect(request):
     else:
         response['status'] = 1
         response['message'] = '信息筛选失败，请重试！'
+    return JsonResponse(response)
+
+# 用户发送帖子
+@require_http_methods(["POST"])
+def sendBBS(request):
+    response = {}
+    userid = int(request.POST.get('userId'))
+    bbsClass = int(request.POST.get('bbsClass'))
+    bbsName = request.POST.get('bbsName')
+    bbsContent = request.POST.get('bbsContent')
+    sendTime = datetime.datetime.now()
+    user = UserMessage.objects.get(id=userid)
+    bbssection = BBSSection.objects.get(Sid=bbsClass)
+    bbsinfo = {
+        'TTopic':bbsName,
+        'TContents':bbsContent,
+        'TUid':user,
+        'TSid':bbssection,
+        'TLastClickT':sendTime
+    }
+    try:
+        BBSTopic.objects.create(**bbsinfo)
+        response['status'] = 0
+        response['message'] = '发送成功!'
+    except:
+        response['status'] = 1
+        response['message'] = '发送失败，请重试!'
+    return JsonResponse(response)
+
+# 根据板块ID获取帖子信息
+@require_http_methods(["POST"])
+def getBBSByClassId(request):
+    response = {}
+    bbsinfos = []
+    bbsId = int(request.POST.get('bbsId'))
+    try:
+        bbslist = BBSTopic.objects.filter(TSid=bbsId)
+        for bbs in bbslist:
+            bbsinfo = Model_To_Dict(bbs)
+            userinfo = Model_To_Dict(UserMessage.objects.get(id=bbsinfo['TUid']))
+            bbsinfo['userName'] = userinfo
+            bbsinfos.append(dict(bbsinfo, **userinfo))
+        response['bbsinfo'] = bbsinfos
+        response['status'] = 0
+        response['message'] = '帖子信息返回成功！'
+    except:
+        response['status'] = 1
+        response['message'] = '帖子信息返回失败，请重试！'
+    return JsonResponse(response)
+
+# 根据用户ID获取帖子信息
+@require_http_methods(["POST"])
+def getBBSByUserId(request):
+    response = {}
+    bbsinfos = []
+    userId = int(request.POST.get('userId'))
+    try:
+        bbslist = BBSTopic.objects.filter(TUid=userId)
+        for bbs in bbslist:
+            bbsinfo = Model_To_Dict(bbs)
+            userinfo = Model_To_Dict(UserMessage.objects.get(id=bbsinfo['TUid']))
+            bbsinfo['userName'] = userinfo
+            bbsinfos.append(dict(bbsinfo, **userinfo))
+        response['bbsinfo'] = bbsinfos
+        response['status'] = 0
+        response['message'] = '帖子信息返回成功！'
+    except:
+        response['status'] = 1
+        response['message'] = '帖子信息返回失败，请重试！'
     return JsonResponse(response)
 
 

@@ -7,6 +7,13 @@
                  customClass="customWidth">
         <userInfo v-on:childsay="listenChild"></userInfo>
       </el-dialog>
+      <el-dialog title="我的论坛"
+                 :visible.sync="myBBSVisible"
+                 v-if="myBBSVisible===true"
+                 append-to-body
+                 customClass="customWidth">
+        <myBBS :userId=userId></myBBS>
+      </el-dialog>
       <div class="header-left">
         <img src="../static/img/timg.jpg">
         <span>大学生赛事平台</span>
@@ -22,6 +29,7 @@
               <span>您好,{{nickName}}</span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item @click.native="userInfoVisible=true">用户信息</el-dropdown-item>
+                <el-dropdown-item @click.native="myBBSVisible=true">我的论坛</el-dropdown-item>
                 <el-dropdown-item @click.native = "logout">登出</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -33,12 +41,13 @@
 
 <script>
   import userInfo from './userInfo'
+  import myBBS from './myBBS'
     export default {
       name: "siteHeader",
-      components:{userInfo},
+      components:{userInfo, myBBS},
       mounted(){
         this.username = sessionStorage.getItem('username')
-        this.userId = sessionStorage.getItem('userId')
+        this.userId = parseInt(sessionStorage.getItem('userId'))
         this.nickName = sessionStorage.getItem('nickName')
         if(!this.nickName)
           this.nickName = this.username
@@ -47,9 +56,10 @@
       data(){
         return{
           userInfoVisible:false,
+          myBBSVisible:false,
           username:null,
           nickName:'',
-          userId:'',
+          userId:null,
           email:''
         }
       },

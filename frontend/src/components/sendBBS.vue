@@ -26,6 +26,9 @@
           type:String
         }
       },
+      mounted(){
+        this.userId = sessionStorage.getItem('userId')
+      },
       data(){
         var checkBBSName = (rule, value, callback) => {
           if (!value) {
@@ -44,6 +47,8 @@
           },1000);
         };
         return{
+          userId:'',
+          tableData:[],
           form:{
             bbsName:'',
             bbsContent:''
@@ -62,7 +67,22 @@
         send(formName){
           this.$refs[formName].validate((valid)=>{
             if(valid){
-
+              this.$api.bbs.sendBBS({
+                userId:this.userId,
+                bbsClass:this.bbsClass,
+                bbsName:this.form.bbsName,
+                bbsContent:this.form.bbsContent,
+              }).then((res)=>{
+                if(res.data.status==0){
+                  this.$message.success(res.data.message)
+                }
+                else{
+                  this.$message.error(res.data.message)
+                }
+              })
+            }
+            else{
+              this.$message.error('请完善发帖信息哦！')
             }
           })
         }
