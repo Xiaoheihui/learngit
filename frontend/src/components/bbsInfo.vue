@@ -15,7 +15,7 @@
         </div>
         <div class="send">
           <el-button type="primary" @click="bbsVisible=true"><i class="el-icon-edit-outline"></i>发帖</el-button>
-          <el-button type="primary"><i class="el-icon-refresh" @click="refresh"></i>刷新</el-button>
+          <el-button type="primary"><i class="el-icon-refresh" @click="refreshPage"></i>刷新</el-button>
         </div>
       </div>
       <div class="bbslist">
@@ -119,7 +119,7 @@
           // 改变默认的页数
           this.currentPage=val
         },
-        refresh(){
+        refreshPage(){
           this.loading = true
           let tableData = []
           this.$api.bbs.getBBSByClassId({

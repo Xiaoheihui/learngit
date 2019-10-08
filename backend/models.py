@@ -144,8 +144,8 @@ class BBSTopic(models.Model):
     TTopic      = models.CharField(max_length=50,  default="", verbose_name=u"主帖标题")
     TContents   = models.TextField(max_length=1500, null=True, verbose_name=u"主帖内容")
     TClickCount = models.PositiveSmallIntegerField(default=0, verbose_name=u"主帖点击次数")
-    TTime       = models.DateField(verbose_name=u"发帖时间",  auto_now_add=True, editable=True)
-    TLastClickT = models.DateField(verbose_name=u"主帖最后点击时间")
+    TTime       = models.DateTimeField(verbose_name=u"发帖时间",  auto_now_add=True, editable=True)
+    TLastClickT = models.DateTimeField(verbose_name=u"主帖最后点击时间")
 
     class mate:
         db_table = "BBSTopic"
@@ -170,7 +170,7 @@ class BBSReply(models.Model):
     RSid      = models.ForeignKey(BBSSection, on_delete=models.CASCADE,  verbose_name=u"板块编号")
     RUid      = models.ForeignKey(UserMessage, on_delete=models.CASCADE, verbose_name=u"回复者用户编号")
 
-    RTime     = models.DateField(auto_now_add=True, verbose_name=u"回复时间", editable=True)
+    RTime     = models.DateTimeField(auto_now_add=True, verbose_name=u"回复时间", editable=True)
     RContent  = models.TextField(max_length=500,  default="", verbose_name=u"回复内容")
     RLevelNum = models.PositiveSmallIntegerField( default=0,  verbose_name=u"在主贴中对应楼层")
 
@@ -252,7 +252,7 @@ class CompRecord(models.Model):
 
     RTitle          = models.CharField(max_length=60,  default="", verbose_name=u"记录标题")
     RStatement      = models.CharField(max_length=100, default="", verbose_name=u"记录简要说明")
-    RTime       = models.DateField(auto_now_add=True, editable=True,  verbose_name=u"发布日期")
+    RTime       = models.DateTimeField(auto_now_add=True, editable=True,  verbose_name=u"发布日期")
     RClickCount = models.PositiveSmallIntegerField(default=0, verbose_name=u"点击数")
     RMarkCount  = models.PositiveSmallIntegerField(default=0, verbose_name=u"收藏人数")
 

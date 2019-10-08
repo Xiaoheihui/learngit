@@ -315,6 +315,21 @@ def getBBSByUserId(request):
         response['message'] = '帖子信息返回失败，请重试！'
     return JsonResponse(response)
 
+# 根据帖子ID来删除帖子
+@require_http_methods(["POST"])
+def deleteBBS(request):
+    response = {}
+    bbsId = request.POST.get('bbsId')
+    try:
+        BBSTopic.objects.get(Tid=bbsId).delete()
+        BBSReply.objects.filter(RTid=bbsId).delete()
+        response['status'] = 0
+        response['message'] = '帖子删除成功！'
+    except:
+        response['status'] = 1
+        response['message'] = '帖子删除失败，请重试！'
+    return JsonResponse(response)
+
 
 # 辅助函数：
 def Model_To_Dict(model, fields=None, exclude=None):

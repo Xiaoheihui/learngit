@@ -14,6 +14,10 @@ const bbs = {
   getBBSByUserId(params){
     return axios.post('/api/getBBSByUserId', qs.stringify(params))
   },
+  //根据帖子ID删除帖子信息与回帖信息
+  deleteBBS(params){
+    return axios.post('/api/deleteBBS', qs.stringify(params))
+  }
 }
 
 export default bbs;
