@@ -9,17 +9,17 @@
       </el-dialog>
       <h1>欢迎进入{{this.bbsClassName}}板块！</h1>
       <div class="search-header">
-        <div class="search">
-          <el-input v-model="search_input" placeholder="请输入内容" style="width:70%;"></el-input>
-          <el-button type="primary" style="width:25%;">搜索</el-button>
-        </div>
+        <!--<div class="search">-->
+          <!--<el-input v-model="search_input" placeholder="请输入内容" style="width:70%;"></el-input>-->
+          <!--<el-button type="primary" style="width:25%;">搜索</el-button>-->
+        <!--</div>-->
         <div class="send">
           <el-button type="primary" @click="bbsVisible=true"><i class="el-icon-edit-outline"></i>发帖</el-button>
-          <el-button type="primary"><i class="el-icon-refresh" @click="refreshPage"></i>刷新</el-button>
+          <el-button type="primary"><i class="el-icon-refresh" v-on:click="freshData"></i>刷新</el-button>
         </div>
       </div>
       <div class="bbslist">
-        <el-table :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
+        <el-table :data="tables.slice((currentPage-1)*PageSize,currentPage*PageSize)"
                   :show-header="true"
                   v-loading="loading"
                   element-loading-text="拼命加载中"
@@ -28,7 +28,7 @@
           <el-table-column
             prop="bbsComments"
             label="评论数"
-            width="250">
+            width="150">
             <template slot-scope="scope">
               <i class="el-icon-chat-dot-square"></i>
               <span style="margin-left: 8px">{{ scope.row.bbsComments }}</span>
@@ -43,6 +43,19 @@
             <template slot-scope="scope">
               <i class="el-icon-user"></i>
               <span style="margin-left: 8px">{{ scope.row.bbsSender }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center">
+            <template slot="header" slot-scope="scope">
+              <el-input
+                v-model="search"
+                placeholder="输入关键字搜索"/>
+            </template>
+            <template slot-scope="scope">
+              <el-button
+                size="small"
+                type="primary"
+                @click="gotobbsDetail">查看</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -94,6 +107,21 @@
           type:String
         }
       },
+      computed: {
+        tables () {
+          const search = this.search
+          if (search) {
+            console.log('this.tableData', this.tableData)
+            return this.tableData.filter(dataNews => {
+              return Object.keys(dataNews).some(key => {
+                return String(dataNews[key]).toLowerCase().indexOf(search) > -1
+              })
+            })
+          }
+          console.log('this.tableData', this.tableData)
+          return this.tableData
+        }
+      },
       data(){
           return{
             search_input:'',
@@ -103,10 +131,14 @@
             totalCount:0,
             PageSize:8,
             pageSizes:[1,2,3,4],
-            loading:false
+            loading:false,
+            search:''
           }
       },
       methods:{
+        gotobbsDetail(){
+          this.$router.push({path:'/bbsDetail'})
+        },
         // 每页显示的条数
         handleSizeChange(val) {
           // 改变每页显示的条数
@@ -119,7 +151,7 @@
           // 改变默认的页数
           this.currentPage=val
         },
-        refreshPage(){
+        freshData(){
           this.loading = true
           let tableData = []
           this.$api.bbs.getBBSByClassId({
@@ -163,18 +195,19 @@
       text-align: left;
     }
     .search-header{
-      margin-top:10px;
-      width:100%;
-      flex-direction: row;
-      display:flex;
-      justify-content: space-between;
+      float:right;
+      margin-bottom:20px;
+      /*width:100%;*/
+      /*flex-direction: row;*/
+      /*display:flex;*/
+      /*justify-content: space-between;*/
 
-      .search{
-        width:50%;
-        flex-direction: row;
-        display:flex;
-        justify-content: space-between;
-      }
+      /*.search{*/
+        /*width:50%;*/
+        /*flex-direction: row;*/
+        /*display:flex;*/
+        /*justify-content: space-between;*/
+      /*}*/
     }
     .bbslist{
       .el-table{

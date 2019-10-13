@@ -9,6 +9,7 @@ import userInfo from '@/components/userInfo'
 import classInfo from '@/components/classInfo'
 import gameDetail from '@/components/gameDetail'
 import community from '@/components/community'
+import bbsDetail from '@/components/bbsDetail'
 
 Vue.use(Router)
 
@@ -54,6 +55,11 @@ export default new Router({
       path: '/community',
       name: 'community',
       component: community
+    },
+    {
+      path: '/bbsDetail',
+      name: 'bbsDetail',
+      component: bbsDetail
     },
   ]
 })

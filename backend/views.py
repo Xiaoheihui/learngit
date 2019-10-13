@@ -305,7 +305,9 @@ def getBBSByUserId(request):
         for bbs in bbslist:
             bbsinfo = Model_To_Dict(bbs)
             userinfo = Model_To_Dict(UserMessage.objects.get(id=bbsinfo['TUid']))
+            bbsClass = Model_To_Dict(BBSSection.objects.get(Sid=bbsinfo['TSid']))['SName']
             bbsinfo['userName'] = userinfo
+            bbsinfo['bbsClass'] = bbsClass
             bbsinfos.append(dict(bbsinfo, **userinfo))
         response['bbsinfo'] = bbsinfos
         response['status'] = 0

@@ -5,7 +5,10 @@
           <el-table :data="tableData1">
             <el-table-column prop="bbsId"
                              label="#"
-                              width="120"></el-table-column>
+                              width="80"></el-table-column>
+            <el-table-column prop="bbsClass"
+                             label="板块"
+                             width="120"></el-table-column>
             <el-table-column prop="bbsName"
                              label="帖子标题"></el-table-column>
             <el-table-column
@@ -44,7 +47,8 @@
             for(let i=0;i<info.length;++i){
               this.tableData1.push({
                 bbsName:info[i]['TTopic'],
-                bbsId:info[i]['Tid']
+                bbsId:info[i]['Tid'],
+                bbsClass:info[i]['bbsClass']
               })
             }
           }
