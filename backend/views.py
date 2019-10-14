@@ -1,4 +1,4 @@
-from django.shortcuts import render
+﻿from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.core import serializers
 from django.http import JsonResponse
@@ -85,7 +85,7 @@ def login(request):
         response1 = Model_To_Dict(user_name)
         response2 = Model_To_Dict(user_name.usermessage)
         response = {**response1, **response2}
-        user_name.last_login = datetime.datetime.now() + datetime.timedelta(hours=8)
+        user_name.last_login = datetime.datetime.now()# + datetime.timedelta(hours=8)
         user_name.save()
         response["status"] = 0
     elif userEmail is not None:
