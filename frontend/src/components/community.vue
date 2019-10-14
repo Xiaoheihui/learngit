@@ -60,7 +60,7 @@
           console.log(key, keyPath);
         },
         gotoClassInfo(classNum){
-          this.$router.push({path:'/classInfo', query:{classNum:classNum}})
+          this.$router.push({path:'/classInfo/'+classNum})
         },
         gotoIndex(){
           this.$router.push({name:'index'})

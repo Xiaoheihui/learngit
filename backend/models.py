@@ -274,7 +274,7 @@ def create_compRecord(sender, instance, created, **kwargs):
     if created:
         a = CompRecord.objects.create(RContentID=instance,
                                       RClassID=instance.IClass,
-                                      RPromulgatorID=UserMessage.objects.get(pk=1),
+                                      RPromulgatorID=User.objects.get(pk=3),
                                       RTitle=instance.IName)
 
 @receiver(post_save, sender=CompInfo)

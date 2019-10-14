@@ -42,12 +42,12 @@ export default new Router({
       component: userInfo
     },
     {
-      path: '/classInfo',
+      path: '/classInfo/:classNum',
       name: 'classInfo',
       component: classInfo
     },
     {
-      path: '/gameDetail',
+      path: '/gameDetail/:gameId',
       name: 'gameDetail',
       component: gameDetail
     },

@@ -17,9 +17,9 @@
           <div class="detail-header">
             <h1>{{this.gameName}}</h1>
             <div class="recordinfo">
-              <span><i class="el-icon-time"></i>2019-08-11 12:23:22</span>
-              <span><i class="el-icon-user"></i>嘿嘿嘿灰灰</span>
-              <span><i class="el-icon-view"></i>1234</span>
+              <span><i class="el-icon-time"></i> {{time}}</span>
+              <span><i class="el-icon-user"></i> {{promulgator}}</span>
+              <span><i class="el-icon-view"></i> {{chickCount}}</span>
               <el-button size="small" type="primary" icon="el-icon-star-on" @click="addFavorite">收藏</el-button>
             </div>
           </div>
@@ -99,7 +99,7 @@
       name: "gameDetail",
       components:{siteHeader},
       mounted(){
-        this.gameId = this.$route.query.gameId
+        this.gameId = this.$route.params.gameId
         this.userId = sessionStorage.getItem('userId')
         this.$api.comp.getCompInfoByCompId({
           compId:this.gameId
@@ -122,6 +122,9 @@
             this.gameTime = info['ISchedule']
             this.activeIndex = String(info['IClass'])
             this.recordId = info['Rid']
+            this.promulgator = info['promulgator']
+            this.time = info['time']
+            this.chickCount = info['chickCount']
             this.tableData1.push({
               gameApplyEndTime:this.gameApplyEndTime,
               gameApplyStartTime:this.gameApplyStartTime,
@@ -166,6 +169,9 @@
           gameStatement:'',
           gameTime:'',
           recordId:'',
+          promulgator:'',
+          time:'',
+          chickCount:0,
           tableData1:[],
           tableData2:[],
           tableData3:[]
@@ -173,7 +179,7 @@
       },
       methods:{
         gotoClassInfo(classNum){
-          this.$router.push({path:'/classInfo', query:{classNum:classNum}})
+          this.$router.push({path:'/classInfo/'+classNum})
         },
         gotoIndex(){
           this.$router.push({name:'index'})
@@ -193,6 +199,7 @@
             compId:this.recordId,
             userId:this.userId
           }).then((res)=>{
+            console.log(res)
             if(res.data.status==0){
               this.$message.success('收藏成功！')
             }
@@ -237,8 +244,8 @@
           color:#36648B
         }
         .recordinfo{
-          width:50%;
-          margin-left:25%;
+          width:44%;
+          margin-left:28%;
           display:flex;
           justify-content: space-around;
           align-items: center;

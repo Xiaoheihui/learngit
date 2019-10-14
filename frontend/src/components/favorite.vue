@@ -3,7 +3,7 @@
       <el-table :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)">
         <el-table-column
           prop="gameId"
-          width="120"
+          width="80"
           label="#"></el-table-column>
         <el-table-column
           prop="gameName"
@@ -14,7 +14,7 @@
           width="100">
           <template slot-scope="scope">
             <el-button type="text" @click="gotoGameDetail(scope.row.gameId)">查看</el-button>
-            <el-button type="text" @click="deleteFavorite(scope.row.gameId)">删除</el-button>
+            <el-button type="text" @click="deleteFavorite(scope.row.gameId)">取消</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -42,8 +42,16 @@
         this.$api.user.getFavorite({
           userId:this.userId
         }).then((res)=>{
+          console.log(res.data)
           if(res.data.status==0){
-            let info = res.data
+            let info = res.data.markMessages
+            this.totalCount = info.length
+            for(let i=0;i<info.length;++i){
+              this.tableData.push({
+                gameId:info[i]['compInfoId'],
+                gameName:info[i]['compTitle']
+              })
+            }
           }
         })
       },
@@ -76,8 +84,9 @@
           }).then((res)=>{
            if(res.data.status==0){
              for(let i=0;i<this.tableData.length;++i){
-               if(this.tableData1[i]['gameId']==compId){
-                 this.tableData1.splice(i, 1)
+               if(this.tableData[i]['gameId']==compId){
+                 this.tableData.splice(i, 1)
+                 this.totalCount = this.totalCount - 1
                  break;
                }
              }

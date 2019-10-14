@@ -99,9 +99,9 @@
     components:{userInfo, siteHeader},
         name: "classInfo",
       mounted(){
-      console.log(this.$route.query.classNum)
-        if(this.$route.query.classNum)
-          this.activeIndex = this.$route.query.classNum
+      console.log(this.$route.params.classNum)
+        if(this.$route.params.classNum)
+          this.activeIndex = this.$route.params.classNum
         this.username = sessionStorage.getItem('username')
         this.userId = sessionStorage.getItem('userId')
         this.nickName = sessionStorage.getItem('nickName')
@@ -181,7 +181,7 @@
         },
       gotoClassInfo(classNum){
         // this.activeIndex = classNum
-        this.$router.push({path:'/classInfo', query:{classNum:classNum}})
+        this.$router.push({path:'/classInfo/'+classNum})
         this.$router.go(0)
       },
         gotoIndex(){
@@ -204,7 +204,7 @@
           }
         },
         openDetails(row){
-          this.$router.push({path:'/gameDetail', query:{gameId:row.gameId}})
+          this.$router.push({path:'/gameDetail/'+row.gameId})
         },
         select(){
           console.log(this.selectEnd)

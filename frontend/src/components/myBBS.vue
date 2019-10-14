@@ -106,6 +106,7 @@
                 for(let i=0;i<this.tableData1.length;++i){
                   if(this.tableData1[i]['bbsId']==bbsId){
                     this.tableData1.splice(i, 1)
+                    this.totalCount1 = this.totalCount1 - 1
                     break;
                   }
                 }

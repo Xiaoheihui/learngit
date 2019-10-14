@@ -197,7 +197,7 @@ def Excel_Write_into_DataBase(tabObj, tabData):
 
 
 if __name__ == "__main__":
-    filePath = 'D:\\微信\\WeChat Files\shaonian14-\\FileStorage\\File\\2019-09\\test.xls'
+    filePath = 'D:\资料\django\\test.xls'
     tableName = 'test'
     Tab_Obj = Read_Table_of_ExcelFile(filePath, tableName)
     Excel_Write_into_DataBase(Tab_Obj, CompInfo)
