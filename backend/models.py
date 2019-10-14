@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-
+import datetime
 # Create your models here.
 class CompClass(models.Model):
     """
@@ -259,7 +259,7 @@ class CompRecord(models.Model):
 
     RTitle          = models.CharField(max_length=60,  default="", verbose_name=u"记录标题")
     RStatement      = models.CharField(max_length=100, default="", verbose_name=u"记录简要说明")
-    RTime       = models.DateTimeField(auto_now_add=True, editable=True,  verbose_name=u"发布日期")
+    RTime       = models.DateTimeField(auto_now_add=True, verbose_name=u"发布日期")
     RClickCount = models.PositiveSmallIntegerField(default=0, verbose_name=u"点击数")
     RMarkCount  = models.PositiveSmallIntegerField(default=0, verbose_name=u"收藏人数")
 
@@ -274,7 +274,7 @@ def create_compRecord(sender, instance, created, **kwargs):
     if created:
         a = CompRecord.objects.create(RContentID=instance,
                                       RClassID=instance.IClass,
-                                      RPromulgatorID=UserMessage.objects.get(pk=1),
+                                      RPromulgatorID=User.objects.get(pk=1),
                                       RTitle=instance.IName)
 
 @receiver(post_save, sender=CompInfo)

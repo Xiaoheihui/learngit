@@ -85,7 +85,7 @@ def login(request):
         response1 = Model_To_Dict(user_name)
         response2 = Model_To_Dict(user_name.usermessage)
         response = {**response1, **response2}
-        user_name.last_login = datetime.datetime.now() + datetime.timedelta(hours=8)
+        user_name.last_login = datetime.datetime.now()# + datetime.timedelta(hours=8)
         user_name.save()
         response["status"] = 0
     elif userEmail is not None:
@@ -199,7 +199,7 @@ def getCompInfoByCompId(request):
         promulgatorID = int(compInfo.comprecord.RPromulgatorID.id)
         response['promulgator'] = User.objects.get(id=promulgatorID).usermessage.Unickname # 昵称
         response['statement'] = compInfo.comprecord.RStatement
-        response['time'] = compInfo.comprecord.RTime
+        response['time'] = Model_To_Dict(compInfo.comprecord)['RTime']
         response['chickCount'] = compInfo.comprecord.RClickCount
         response['markCount'] = compInfo.comprecord.RMarkCount
         response['Rid'] = compInfo.comprecord.RID # 记录id
