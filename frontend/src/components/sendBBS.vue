@@ -47,7 +47,7 @@
           },1000);
         };
         return{
-          userId:'',
+          userId:null,
           tableData:[],
           form:{
             bbsName:'',
@@ -65,6 +65,10 @@
       },
     methods:{
         send(formName){
+          if(!this.userId){
+            this.$message.warning('登录后才可以发帖哦！')
+            return
+          }
           this.$refs[formName].validate((valid)=>{
             if(valid){
               this.$api.bbs.sendBBS({

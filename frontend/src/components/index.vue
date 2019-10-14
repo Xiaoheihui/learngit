@@ -23,7 +23,6 @@
             <el-tabs type="border-card">
               <el-tab-pane label="最新比赛">最新比赛</el-tab-pane>
               <el-tab-pane label="最热比赛">最热比赛</el-tab-pane>
-              <el-tab-pane label="评论最多">评论最多</el-tab-pane>
             </el-tabs>
           </div>
         </div>

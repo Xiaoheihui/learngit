@@ -44,15 +44,15 @@
           <el-button type="primary" @click="select">筛选</el-button>
         </div>
         <el-table
-          :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)"
+          :data="tables.slice((currentPage-1)*PageSize,currentPage*PageSize)"
           :default-sort = "{prop: 'startTime', order: 'descending'}"
           @row-click="openDetails"
           style="width:80%;margin-left:10%;"
           stripe>
           <el-table-column
             prop="gameId"
-            label="比赛ID"
-            width="250">
+            label="#"
+            width="120">
           </el-table-column>
           <el-table-column
             prop="gameName"
@@ -62,12 +62,21 @@
           <el-table-column
             prop="startTime"
             sortable
-            label="报名开始时间">
+            label="报名开始时间"
+            width="160">
           </el-table-column>
           <el-table-column
             prop="deltaTime"
             sortable
-            label="报名截止时间">
+            label="报名截止时间"
+            width="160">
+          </el-table-column>
+          <el-table-column align="center">
+            <template slot="header" slot-scope="scope">
+              <el-input
+                v-model="search"
+                placeholder="输入关键字搜索"/>
+            </template>
           </el-table-column>
         </el-table>
         <div class="tabListPage">
@@ -126,7 +135,7 @@
       data(){
       return{
         userInfoVisible:false,
-        activeIndex:"1",
+        activeIndex:"-1",
         username:null,
         nickName:'',
         userId:'',
@@ -139,7 +148,23 @@
         gameArea:0,
         selectStart:null,
         selectEnd:null,
+        search:''
       }
+      },
+      computed: {
+        tables () {
+          const search = this.search
+          if (search) {
+            console.log('this.tableData', this.tableData)
+            return this.tableData.filter(dataNews => {
+              return Object.keys(dataNews).some(key => {
+                return String(dataNews[key]).toLowerCase().indexOf(search) > -1
+              })
+            })
+          }
+          console.log('this.tableData', this.tableData)
+          return this.tableData
+        }
       },
       methods:{
         // 每页显示的条数
@@ -277,7 +302,9 @@
     }
     .el-table{
       margin-top:20px;
-
+      .el-input__inner{
+        border-radius: 30px;
+      }
     }
   }
 </style>

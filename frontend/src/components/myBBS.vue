@@ -2,7 +2,7 @@
     <div class="myBBS">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="我的发帖" name="first">
-          <el-table :data="tableData1">
+          <el-table :data="tableData1.slice((currentPage1-1)*PageSize1,currentPage1*PageSize1)">
             <el-table-column prop="bbsId"
                              label="#"
                               width="80"></el-table-column>
@@ -21,6 +21,15 @@
               </template>
             </el-table-column>
           </el-table>
+          <div class="tabListPage">
+            <el-pagination @size-change="handleSizeChange1"
+                           @current-change="handlesCurrentChange1"
+                           :current-page="currentPage1"
+                           :page-sizes="pageSizes1"
+                           :page-size="PageSize1" layout="total, prev, pager, next, jumper"
+                           :total="totalCount1">
+            </el-pagination>
+          </div>
         </el-tab-pane>
         <el-tab-pane label="我的回帖" name="second">
 
@@ -44,6 +53,7 @@
         }).then((res)=>{
           if(res.data.status==0){
             let info = res.data.bbsinfo
+            this.totalCount1 = info.length
             for(let i=0;i<info.length;++i){
               this.tableData1.push({
                 bbsName:info[i]['TTopic'],
@@ -61,9 +71,25 @@
           return{
             activeName:'first',
             tableData1:[],
+            currentPage1:1,
+            totalCount1:0,
+            PageSize1:8,
+            pageSizes1:[1,2,3,4],
           }
       },
       methods:{
+        // 每页显示的条数
+        handleSizeChange1(val) {
+          // 改变每页显示的条数
+          this.PageSize1=val
+          // 注意：在改变每页显示的条数时，要将页码显示到第一页
+          this.currentPage1=1
+        },
+        // 显示第几页
+        handlesCurrentChange1(val) {
+          // 改变默认的页数
+          this.currentPage1=val
+        },
         handleClick(tab, event) {
           console.log(tab, event);
         },

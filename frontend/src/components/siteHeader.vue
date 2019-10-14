@@ -14,6 +14,13 @@
                  customClass="customWidth">
         <myBBS :userId=userId></myBBS>
       </el-dialog>
+      <el-dialog title="我的收藏"
+                 :visible.sync="favoriteVisible"
+                 v-if="favoriteVisible===true"
+                 append-to-body
+                 customClass="customWidth">
+        <favorite :userId=userId></favorite>
+      </el-dialog>
       <div class="header-left">
         <img src="../static/img/timg.jpg">
         <span>大学生赛事平台</span>
@@ -30,6 +37,7 @@
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item @click.native="userInfoVisible=true">用户信息</el-dropdown-item>
                 <el-dropdown-item @click.native="myBBSVisible=true">我的论坛</el-dropdown-item>
+                <el-dropdown-item @click.native="favoriteVisible=true">我的收藏</el-dropdown-item>
                 <el-dropdown-item @click.native = "logout">登出</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -42,9 +50,10 @@
 <script>
   import userInfo from './userInfo'
   import myBBS from './myBBS'
+  import favorite from './favorite'
     export default {
       name: "siteHeader",
-      components:{userInfo, myBBS},
+      components:{userInfo, myBBS, favorite},
       mounted(){
         this.username = sessionStorage.getItem('username')
         this.userId = parseInt(sessionStorage.getItem('userId'))
@@ -57,6 +66,7 @@
         return{
           userInfoVisible:false,
           myBBSVisible:false,
+          favoriteVisible:false,
           username:null,
           nickName:'',
           userId:null,

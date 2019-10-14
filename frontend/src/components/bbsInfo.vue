@@ -15,7 +15,7 @@
         <!--</div>-->
         <div class="send">
           <el-button type="primary" @click="bbsVisible=true"><i class="el-icon-edit-outline"></i>发帖</el-button>
-          <el-button type="primary"><i class="el-icon-refresh" v-on:click="freshData"></i>刷新</el-button>
+          <el-button type="primary"><i class="el-icon-refresh" @click="gamerouter.go(0);"></i>刷新</el-button>
         </div>
       </div>
       <div class="bbslist">
@@ -26,6 +26,15 @@
                   element-loading-spinner="el-icon-loading"
         >
           <el-table-column
+            prop="bbsId"
+            label="#"
+            width="100"
+          ></el-table-column>
+          <el-table-column
+              prop="bbsName"
+              label="帖子标题">
+          </el-table-column>
+          <el-table-column
             prop="bbsComments"
             label="评论数"
             width="150">
@@ -35,11 +44,7 @@
             </template>
           </el-table-column>
           <el-table-column
-              prop="bbsName"
-              label="帖子标题">
-          </el-table-column>
-          <el-table-column
-            prop="bbsSender" label="发帖用户">
+            prop="bbsSender" label="作者">
             <template slot-scope="scope">
               <i class="el-icon-user"></i>
               <span style="margin-left: 8px">{{ scope.row.bbsSender }}</span>
@@ -51,12 +56,12 @@
                 v-model="search"
                 placeholder="输入关键字搜索"/>
             </template>
-            <template slot-scope="scope">
-              <el-button
-                size="small"
-                type="primary"
-                @click="gotobbsDetail">查看</el-button>
-            </template>
+            <!--<template slot-scope="scope">-->
+              <!--<el-button-->
+                <!--size="small"-->
+                <!--type="primary"-->
+                <!--@click="gotobbsDetail">查看</el-button>-->
+            <!--</template>-->
           </el-table-column>
         </el-table>
         <div class="tabListPage">
@@ -78,6 +83,7 @@
       name: "bbsInfo",
       components:{sendBBS},
       mounted(){
+        this.gamerouter = this.$router
         this.$api.bbs.getBBSByClassId({
           bbsId:this.bbsClass
         }).then((res)=>{
@@ -89,7 +95,8 @@
               this.tableData.push({
                 bbsComments:info[i]['TReplyCount'],
                 bbsName:info[i]['TTopic'],
-                bbsSender:info[i]['Unickname']
+                bbsSender:info[i]['Unickname'],
+                bbsId:info[i]['Tid']
               })
             }
             this.loading=false
@@ -132,7 +139,8 @@
             PageSize:8,
             pageSizes:[1,2,3,4],
             loading:false,
-            search:''
+            search:'',
+            gamerouter:null
           }
       },
       methods:{
@@ -164,7 +172,8 @@
                 tableData.push({
                   bbsComments:info[i]['TReplyCount'],
                   bbsName:info[i]['TTopic'],
-                  bbsSender:info[i]['Unickname']
+                  bbsSender:info[i]['Unickname'],
+                  bbsId:info[i]['Tid']
                 })
               }
               this.tableData = tableData

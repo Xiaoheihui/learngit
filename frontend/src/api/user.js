@@ -18,6 +18,18 @@ const user = {
   getMessage(params){
     return axios.post('/api/getMessage', qs.stringify(params))
   },
+  //收藏单场比赛
+  addFavorite(params) {
+    return axios.post('/api/markComp', qs.stringify(params))
+  },
+  //取消单条收藏比赛记录
+  deleteFavorite(params){
+    return axios.post('/api/DeleteMarkMessage', qs.stringify(params))
+  },
+  //获取用户收藏比赛信息
+  getFavorite(params){
+    return axios.post('/api/getMarkMessage', qs.stringify(params))
+  },
 }
 
 export default user;

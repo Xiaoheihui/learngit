@@ -16,7 +16,12 @@
         <div class="detail">
           <div class="detail-header">
             <h1>{{this.gameName}}</h1>
-            <span>发布时间：2019-08-11 12:23:22 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;发布者：嘿嘿嘿灰灰</span>
+            <div class="recordinfo">
+              <span><i class="el-icon-time"></i>2019-08-11 12:23:22</span>
+              <span><i class="el-icon-user"></i>嘿嘿嘿灰灰</span>
+              <span><i class="el-icon-view"></i>1234</span>
+              <el-button size="small" type="primary" icon="el-icon-star-on" @click="addFavorite">收藏</el-button>
+            </div>
           </div>
           <el-table :data="tableData1"
                                border
@@ -95,6 +100,7 @@
       components:{siteHeader},
       mounted(){
         this.gameId = this.$route.query.gameId
+        this.userId = sessionStorage.getItem('userId')
         this.$api.comp.getCompInfoByCompId({
           compId:this.gameId
         }).then((res)=>{
@@ -115,6 +121,7 @@
             this.gameStatement = info['IStatement']
             this.gameTime = info['ISchedule']
             this.activeIndex = String(info['IClass'])
+            this.recordId = info['Rid']
             this.tableData1.push({
               gameApplyEndTime:this.gameApplyEndTime,
               gameApplyStartTime:this.gameApplyStartTime,
@@ -143,6 +150,7 @@
       data(){
         return{
           activeIndex:'',
+          userId:null,
           gameName:'',
           gameId:0,
           gameApplyEndTime:'',
@@ -157,6 +165,7 @@
           gameArea:'',
           gameStatement:'',
           gameTime:'',
+          recordId:'',
           tableData1:[],
           tableData2:[],
           tableData3:[]
@@ -174,6 +183,26 @@
         },
         gotoCommunity(){
           this.$router.push({name:'community'})
+        },
+        addFavorite(){
+          if(!this.userId){
+            this.$message.warning('登录后才可以收藏哦！')
+            return
+          }
+          this.$api.user.addFavorite({
+            compId:this.recordId,
+            userId:this.userId
+          }).then((res)=>{
+            if(res.data.status==0){
+              this.$message.success('收藏成功！')
+            }
+            else if(res.data.status==2){
+              this.$message.warning(res.data.message)
+            }
+            else{
+              this.$message.error('收藏失败，请重试！')
+            }
+          })
         }
       }
     }
@@ -200,9 +229,20 @@
     .detail{
       margin-top:200px;
       .detail-header{
+        .el-button{
+          border-radius:30px;
+        }
         h1{
           font-size:30px;
           color:#36648B
+        }
+        .recordinfo{
+          width:50%;
+          margin-left:25%;
+          display:flex;
+          justify-content: space-around;
+          align-items: center;
+          flex-direction: row;
         }
       }
       .gameText{
