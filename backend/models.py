@@ -85,6 +85,9 @@ class UserMessage(models.Model):
         verbose_name = '用户信息'
         verbose_name_plural = '用户列表'
 
+    def __str__(self):
+        return self.UserBase.username
+
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -95,6 +98,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_userMessage(sender, instance, **kwargs):
     instance.usermessage.save()
+
 
 class BBSSection(models.Model):
     """
@@ -226,6 +230,9 @@ class CompInfo(models.Model):
             list.append(name)
         return list
 
+    def __str__(self):
+        return self.IName
+
 
 class CompRecord(models.Model):
     """
@@ -245,7 +252,7 @@ class CompRecord(models.Model):
     # 外键
     RClassID        = models.ForeignKey(CompClass,   on_delete=models.CASCADE, verbose_name=u"赛事类别编号")
     RContentID      = models.OneToOneField(CompInfo, on_delete=models.CASCADE, verbose_name=u"赛事内容编号")
-    RPromulgatorID  = models.ForeignKey(UserMessage, on_delete=models.CASCADE,
+    RPromulgatorID  = models.ForeignKey(User, on_delete=models.CASCADE,
                                         related_name="Promulgator_set", verbose_name=u"发布者编号")
     RMarkUser       = models.ManyToManyField(UserMessage, through='MarkMessage',
                                         related_name="MarkUser_set", symmetrical=False, verbose_name="收藏者")
@@ -262,6 +269,19 @@ class CompRecord(models.Model):
         verbose_name_plural = '赛事记录列表'
 
 
+@receiver(post_save, sender=CompInfo)
+def create_compRecord(sender, instance, created, **kwargs):
+    if created:
+        a = CompRecord.objects.create(RContentID=instance,
+                                      RClassID=instance.IClass,
+                                      RPromulgatorID=UserMessage.objects.get(pk=1),
+                                      RTitle=instance.IName)
+
+@receiver(post_save, sender=CompInfo)
+def save_user_userMessage(sender, instance, **kwargs):
+    instance.comprecord.save()
+
+
 class MarkMessage(models.Model):
     """
         表中列名	        数据类型	    可否为空	        说明
@@ -271,7 +291,7 @@ class MarkMessage(models.Model):
     """
     CompRecordId = models.ForeignKey(CompRecord, on_delete=models.CASCADE, verbose_name="记录编号")
     UsersId      = models.ForeignKey(UserMessage, on_delete=models.CASCADE, verbose_name="用户编号")
-    MarkTime     = models.DateField(auto_now_add=True, editable=True, verbose_name="收藏时间")
+    MarkTime     = models.DateTimeField(auto_now_add=True, editable=True, verbose_name="收藏时间")
 
 
 class test11(models.Model):

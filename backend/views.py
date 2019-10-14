@@ -9,7 +9,8 @@ import json
 from django.contrib import auth
 from django.db import models
 from django.forms.models import model_to_dict
-from .models import CompInfo, CompClass, CompLevel, Area, UserMessage, BBSSection, BBSTopic, BBSReply
+from .models import CompInfo, CompClass, CompLevel, Area, UserMessage, BBSSection, BBSTopic, \
+    BBSReply, MarkMessage, CompRecord
 
 import datetime,pytz
 
@@ -36,6 +37,7 @@ def test(request):
     print(birthday)
     return JsonResponse(response)
 
+# 注册
 @require_http_methods(["POST"])
 def register(request):
     response = {}
@@ -51,6 +53,8 @@ def register(request):
         response["status"] = 0
         response["content"] = ['1', '2']
         user = User.objects.get(username=username)
+        user.usermessage.Unickname = username # 默认昵称
+        user.save()
         print(Model_To_Dict(user.usermessage, fields=["Unickname", "UBirthday", "USex", "UStatement"]))
 
     else:
@@ -183,6 +187,7 @@ def getCompInfoByCompId(request):
     compId = int(request.POST.get('compId'))
     compInfo = CompInfo.objects.get(Iid=compId)
     if compInfo is not None:
+        # 具体赛事信息
         response = model_to_dict(compInfo)
         compLevelinfo = CompLevel.objects.get(ID=response['ILevel'])
         compLevel = Model_To_Dict(compLevelinfo)['Name']
@@ -190,6 +195,20 @@ def getCompInfoByCompId(request):
         compClass = Model_To_Dict(compClassinfo)['CName']
         compAreainfo = Area.objects.get(ID=response['IAreaID'])
         compArea = Model_To_Dict(compAreainfo)['Name']
+        # 赛事记录
+        promulgatorID = int(compInfo.comprecord.RPromulgatorID.id)
+        response['promulgator'] = User.objects.get(id=promulgatorID).usermessage.Unickname # 昵称
+        response['statement'] = compInfo.comprecord.RStatement
+        response['time'] = compInfo.comprecord.RTime
+        response['chickCount'] = compInfo.comprecord.RClickCount
+        response['markCount'] = compInfo.comprecord.RMarkCount
+        response['Rid'] = compInfo.comprecord.RID # 记录id
+
+        # 点击数+1
+        compInfo.comprecord.RClickCount += 1
+        compInfo.comprecord.save()
+
+
         response['status'] = 0
         response['compLevel'] = compLevel
         response['compClass'] = compClass
@@ -331,6 +350,82 @@ def deleteBBS(request):
         response['status'] = 1
         response['message'] = '帖子删除失败，请重试！'
     return JsonResponse(response)
+
+
+@require_http_methods(["POST"])
+def markComp(request):
+    response = {}
+    compId = int(request.POST.get('compId'))
+    userId = int(request.POST.get('userId'))
+    try:
+        compRecord = CompRecord.objects.get(RID=compId)
+        user = User.objects.get(pk=userId)
+        # 判断传入用户、帖子数据是否存在数据库中
+        if compRecord is not None and user is not None:
+            ifMark = MarkMessage.objects.get(CompRecordId=compRecord, UsersId=user)
+            if ifMark is not None:
+                MarkMessage.objects.create(CompRecordId=compRecord, UsersId=user)
+                response['status'] = 0
+                response['message'] = '收藏成功！'
+            else:
+                response['status'] = 2
+                response['message'] = '您已收藏过该条记录，请勿重复操作。'
+        else:
+            response['status'] = 1
+            response['message'] = '收藏失败，赛事记录可能已被删除，请刷新后重试！'
+    except:
+        response['status'] = 1
+        response['message'] = '收藏失败，请稍后重试！'
+    return JsonResponse(response)
+
+
+@require_http_methods(["POST"])
+def DeleteMarkMessage(request):
+    response = {}
+    compId = int(request.POST.get('compId'))
+    userId = int(request.POST.get('userId'))
+    try:
+        compRecord = CompInfo.objects.get(RID=compId).comprecord
+        user = User.objects.get(pk=userId)
+        MarkMessage.objects.get(CompRecordId=compRecord, UsersId=user).delete()
+        response['status'] = 0
+        response['message'] = '成功取消收藏！'
+    except:
+        response['status'] = 1
+        response['message'] = '取消收藏失败，请刷新后重试！'
+    return JsonResponse(response)
+
+@require_http_methods(["POST"])
+def getMarkMessage(request):
+    response = {}
+    userId = int(request.POST.get('userId'))
+    try:
+        user = User.objects.get(pk=userId)
+        marklist = MarkMessage.objects.filter(UsersId=user)
+        markMessages = []
+        for message in marklist:
+            compInfoId = int(CompInfo.objects.get(Iid=message.CompRecordId.RContentID).Iid)
+            compTitle  = CompRecord.objects.get(Iid=message.CompRecordId).RTitle
+            markMessages.append(
+                {"compInfoId": compInfoId,
+                 "compTitle" : compTitle },
+            )
+        response['markMessages'] = markMessages
+        response['markMessagesCount'] = len(markMessages)
+        response['status'] = 0
+        response['message'] = '查询成功'
+    except:
+        response['status'] = 1
+        response['message'] = '查询失败，请稍后重试！'
+    return JsonResponse(response)
+
+
+
+@require_http_methods(["POST"])
+def getMarkMessage(request):
+    response = {}
+    userId = int(request.POST.get('userId'))
+    user = User.objects.get(pk=userId)
 
 
 # 辅助函数：

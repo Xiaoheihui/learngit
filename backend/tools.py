@@ -72,4 +72,4 @@ if __name__ == "__main__":
     # writeCompClass()
     # test11.objects.create(name="sd")
     # writeBBSSection()
-    print(CompInfo.__doc__)
+    print(CompInfo.objects.get(pk=970).IAreaID)
