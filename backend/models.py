@@ -1,7 +1,8 @@
 ﻿from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
+import PIL
 
 import datetime
 # Create your models here.
@@ -77,8 +78,8 @@ class UserMessage(models.Model):
     USex       = models.CharField(u'用户性别', max_length=2, default='', null=True, blank=True)
     UStatement = models.CharField(u'用户个人说明', max_length=150, default='', null=True, blank=True)
     Unickname   = models.CharField(u'用户昵称', max_length=10, default='', blank=True)
-    # 系统信息
     UPostCount      = models.PositiveSmallIntegerField( u'用户发帖数', default=0)
+    # 系统信息
     URepCount       = models.PositiveSmallIntegerField( u'用户回帖数', default=0)
 
     class Meta:
@@ -312,6 +313,18 @@ class MarkMessage(models.Model):
         verbose_name = '收藏记录'
         verbose_name_plural = '收藏列表'
 
+@receiver(post_save, sender=MarkMessage)
+def MarkCountAdd(sender, instance, created, **kwargs):
+    if created:
+        instance.CompRecordId.RMarkCount += 1
+        instance.CompRecordId.save()
+
+@receiver(pre_delete, sender=MarkMessage)
+def MarkCountSub(sender, instance, **kwargs):
+    instance.CompRecordId.RMarkCount -= 1
+    instance.CompRecordId.save()
+
 
 class test11(models.Model):
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=3)
+    img = models.ImageField(upload_to='uploads', name='testImg', default='')
