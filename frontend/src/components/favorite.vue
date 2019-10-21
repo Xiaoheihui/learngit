@@ -98,7 +98,7 @@
           })
         },
         gotoGameDetail(gameId){
-          this.$router.push({path:'/gameDetail', query:{gameId:gameId}})
+          this.$router.push({path:'/gameDetail/'+gameId})
         }
       }
     }
