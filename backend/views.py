@@ -10,7 +10,8 @@ from django.contrib import auth
 from django.db import models
 from django.forms.models import model_to_dict
 from .models import CompInfo, CompClass, CompLevel, Area, UserMessage, BBSSection, BBSTopic, \
-    BBSReply, MarkMessage, CompRecord
+    BBSReply, MarkMessage, CompRecord, test11
+from django.core.files.base import ContentFile
 
 import datetime,pytz
 
@@ -362,7 +363,7 @@ def markComp(request):
         compRecord = CompRecord.objects.get(RID=compId)
         user = User.objects.get(pk=userId).usermessage
         # 判断传入用户、帖子数据是否存在数据库中
-        try:
+        try :
             ifMark = MarkMessage.objects.get(CompRecordId=compRecord, UsersId=user)
             response['status'] = 2
             response['message'] = '您已收藏过该条记录，请勿重复操作。'
@@ -370,8 +371,8 @@ def markComp(request):
                 MarkMessage.objects.create(CompRecordId=compRecord, UsersId=user)
                 response['status'] = 0
                 response['message'] = '收藏成功！'
-        #     else:
-        #
+            #     else:
+            #
         # else:
         #     response['status'] = 1
         #     response['message'] = '收藏失败，赛事记录可能已被删除，请刷新后重试！'
@@ -386,15 +387,15 @@ def DeleteMarkMessage(request):
     response = {}
     compId = int(request.POST.get('compId'))
     userId = int(request.POST.get('userId'))
-    try:
-        compRecord = CompInfo.objects.get(Iid=compId).comprecord
-        user = User.objects.get(pk=userId).usermessage
-        MarkMessage.objects.get(CompRecordId=compRecord, UsersId=user).delete()
-        response['status'] = 0
-        response['message'] = '成功取消收藏！'
-    except:
-        response['status'] = 1
-        response['message'] = '取消收藏失败，请刷新后重试！'
+    # try:
+    compRecord = CompInfo.objects.get(Iid=compId).comprecord
+    user = User.objects.get(pk=userId).usermessage
+    MarkMessage.objects.get(CompRecordId=compRecord, UsersId=user).delete()
+    response['status'] = 0
+    response['message'] = '成功取消收藏！'
+    # except:
+    #     response['status'] = 1
+    #     response['message'] = '取消收藏失败，请刷新后重试！'
     return JsonResponse(response)
 
 @require_http_methods(["POST"])
@@ -421,13 +422,31 @@ def getMarkMessage(request):
         response['message'] = '查询失败，请稍后重试！'
     return JsonResponse(response)
 
+@require_http_methods(["POST"])
+def upLoadImage(request):
+    response = {}
+    file_content = ContentFile(request.FILES['img'].read())
+    img = test11.objects.create(name=request.FILES['img'].name, img=request.FILES['img'])
+    img.save()
+    response['status'] = 0
+    response['message'] = '上传成功！'
+    return JsonResponse(response)
 
+
+@require_http_methods(["POST"])
+def getImage(request):
+    response = {}
+    img = test11.objects.get(pk=1)
+    response['img'] = img.img
+    response['name'] = img.name
+    response['status'] = 0
+    response['message'] = '返回成功！'
+    return JsonResponse(response)
 
 
 # 辅助函数：
 def Model_To_Dict(model, fields=None, exclude=None):
     dic = model_to_dict(model, fields, exclude)
-    print(dic)
     for key in dic:
         if isinstance(dic[key], datetime.datetime):
            dic[key] = dic[key].strftime("%Y-%m-%d %H:%M")

@@ -16,6 +16,10 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+MEDIA_URL = '/media_url/'
+MEDIA_ROOT = BASE_DIR+'/media/'
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -167,3 +171,5 @@ WEBPACK_LOADER = {
     }
 }
 
+if __name__ == "__main__":
+    print(BASE_DIR, " ", MEDIA_ROOT)

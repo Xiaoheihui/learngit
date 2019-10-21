@@ -27,5 +27,6 @@ class testAdmin(admin.ModelAdmin):
 class RecordAdmin(admin.ModelAdmin):
     list_display = ('RTitle', 'RID')
 
+
 # admin.site.register(CompInfo)
 # admin.site.register(Area)

@@ -17,4 +17,6 @@ urlpatterns = [
     url(r'getMarkMessage$', backend.views.getMarkMessage),
     url(r'DeleteMarkMessage$', backend.views.DeleteMarkMessage),
     url(r'markComp$', backend.views.markComp),
+    url(r'upLoadImage$', backend.views.upLoadImage),
+    url(r'getImage$', backend.views.getImage),
 ]
