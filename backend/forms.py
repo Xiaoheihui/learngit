@@ -2,6 +2,7 @@ from django import forms
 from django.core import validators
 from . import models
 from django.contrib.auth.models import User
+from .models import test11
 
 class RegisterForm(forms.Form):
     username = forms.CharField(max_length=10, min_length=5)
@@ -53,3 +54,21 @@ class MessageForm(forms.Form):
     birthday = forms.DateField()
     sex = forms.CharField(max_length=2)
     statement = forms.CharField(max_length=150, required=False)
+
+
+class ImageForm(forms.Form):
+    nickname = forms.CharField(max_length=20, min_length=1)
+    birthday = forms.DateField()
+    sex = forms.CharField(max_length=2)
+    statement = forms.CharField(max_length=150, required=False)
+
+    class ArticleForm(forms.ModelForm):
+        class Meta:
+            model = test11
+            fields = "__all__"
+            error_messages = {
+                'myfile': {
+                    'invalid_image': '请上传正确格式的图片！'
+                }
+
+            }
