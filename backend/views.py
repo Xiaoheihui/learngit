@@ -12,7 +12,8 @@ from django.forms.models import model_to_dict
 from .models import CompInfo, CompClass, CompLevel, Area, UserMessage, BBSSection, BBSTopic, \
     BBSReply, MarkMessage, CompRecord, test11
 from django.core.files.base import ContentFile
-import os
+from PIL import Image
+
 import datetime,pytz
 from test1 import settings
 
@@ -451,33 +452,30 @@ def getMarkMessage(request):
 @require_http_methods(["POST"])
 def upLoadImage(request):
     response = {}
-    # form = ImageForm(request.POST, request.FILES)
-    # # 将数据保存到数据库
-    # if form.is_valid():
-    #     form.save()
-    img = request.FILES['img']
-    imgname = img.name
-    path = settings.BASE_DIR+'/media/uploads/'+imgname
-    with open(path, "wb") as f_write:
-        for line in img:
-            f_write.write(line)
-    # file_content = ContentFile(request.FILES['img'].read())
-    # img = test11.objects.create(name=request.FILES['img'].name, img=file_content)
-    # img.save()
-    response['status'] = 0
-    response['message'] = '上传成功！'
+    userId = int(request.POST.get('userId'))
+    try:
+        User.objects.get(pk=userId).usermessage.img = request.FILES['img']
+        User.objects.get(pk=userId).usermessage.img.save()
+        response['status'] = 0
+        response['message'] = '上传成功！'
+    except:
+        response['status'] = 1
+        response['message'] = '上传失败！请稍后再试。'
     return JsonResponse(response)
 
 
-@require_http_methods(["POST"])
-def getImage(request):
-    response = {}
-    img = test11.objects.get(pk=1)
-    response['img'] = img.img
-    response['name'] = img.name
-    response['status'] = 0
-    response['message'] = '返回成功！'
-    return JsonResponse(response)
+# @require_http_methods(["POST"])
+# def getImage(request):
+#     response = {}
+#     userId = int(request.POST.get('userId'))
+#     try:
+#         headImg = User.objects.get(pk=userId).usermessage.UImg  # 不确定是 UImg 还是 img
+#     img = test11.objects.get(pk=1)
+#     response['img'] = img.img
+#     response['name'] = img.name
+#     response['status'] = 0
+#     response['message'] = '返回成功！'
+#     return JsonResponse(response)
 
 
 # 辅助函数：
