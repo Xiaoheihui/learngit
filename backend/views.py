@@ -4,7 +4,7 @@ from django.core import serializers
 from django.http import JsonResponse
 from django.db.models import Q, F
 from django.contrib.auth.models import User
-from .forms import RegisterForm, MessageForm
+from .forms import RegisterForm, MessageForm, ImageForm
 import json
 from django.contrib import auth
 from django.db import models
@@ -338,6 +338,29 @@ def getBBSByUserId(request):
         response['message'] = '帖子信息返回失败，请重试！'
     return JsonResponse(response)
 
+# # 根据用户ID获取回复信息
+# @require_http_methods(["POST"])
+# def getBBSByUserId(request):
+#     response = {}
+#     bbsinfos = []
+#     userId = int(request.POST.get('userId'))
+#     try:
+#         replylist = BBSReply.objects.filter(RUid=userId)
+#         for reply in replylist:
+#             replyinfo = Model_To_Dict(reply)
+#             userinfo = Model_To_Dict(UserMessage.objects.get(id=replyinfo['RUid']))
+#             replyClass = Model_To_Dict(BBSSection.objects.get(Sid=replyinfo['TSid']))['SName']
+#             replyinfo['userName'] = userinfo
+#             replyinfo['bbsClass'] = bbsClass
+#             bbsinfos.append(dict(bbsinfo, **userinfo))
+#         response['bbsinfo'] = bbsinfos
+#         response['status'] = 0
+#         response['message'] = '帖子信息返回成功！'
+#     except:
+#         response['status'] = 1
+#         response['message'] = '帖子信息返回失败，请重试！'
+#     return JsonResponse(response)
+
 # 根据帖子ID来删除帖子
 @require_http_methods(["POST"])
 def deleteBBS(request):
@@ -353,7 +376,7 @@ def deleteBBS(request):
         response['message'] = '帖子删除失败，请重试！'
     return JsonResponse(response)
 
-
+# 收藏
 @require_http_methods(["POST"])
 def markComp(request):
     response = {}
@@ -381,23 +404,24 @@ def markComp(request):
         response['message'] = '收藏失败，请稍后重试！'
     return JsonResponse(response)
 
-
+# 取消收藏
 @require_http_methods(["POST"])
 def DeleteMarkMessage(request):
     response = {}
     compId = int(request.POST.get('compId'))
     userId = int(request.POST.get('userId'))
-    # try:
-    compRecord = CompInfo.objects.get(Iid=compId).comprecord
-    user = User.objects.get(pk=userId).usermessage
-    MarkMessage.objects.get(CompRecordId=compRecord, UsersId=user).delete()
-    response['status'] = 0
-    response['message'] = '成功取消收藏！'
-    # except:
-    #     response['status'] = 1
-    #     response['message'] = '取消收藏失败，请刷新后重试！'
+    try:
+        compRecord = CompInfo.objects.get(Iid=compId).comprecord
+        user = User.objects.get(pk=userId).usermessage
+        MarkMessage.objects.get(CompRecordId=compRecord, UsersId=user).delete()
+        response['status'] = 0
+        response['message'] = '成功取消收藏！'
+    except:
+        response['status'] = 1
+        response['message'] = '取消收藏失败，请刷新后重试！'
     return JsonResponse(response)
 
+# 获取收藏消息
 @require_http_methods(["POST"])
 def getMarkMessage(request):
     response = {}
@@ -422,12 +446,18 @@ def getMarkMessage(request):
         response['message'] = '查询失败，请稍后重试！'
     return JsonResponse(response)
 
+
 @require_http_methods(["POST"])
 def upLoadImage(request):
     response = {}
-    file_content = ContentFile(request.FILES['img'].read())
-    img = test11.objects.create(name=request.FILES['img'].name, img=request.FILES['img'])
-    img.save()
+    form = ImageForm(request.POST, request.FILES)
+    # 将数据保存到数据库
+    if form.is_valid():
+        form.save()
+
+    # file_content = ContentFile(request.FILES['img'].read())
+    # img = test11.objects.create(name=request.FILES['img'].name, img=request.FILES['img'])
+    # img.save()
     response['status'] = 0
     response['message'] = '上传成功！'
     return JsonResponse(response)
