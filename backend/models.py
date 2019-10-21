@@ -18,7 +18,7 @@ class CompClass(models.Model):
     CStatement = models.CharField(max_length=100, null=True, verbose_name=u"类别说明")
     CCount     = models.PositiveSmallIntegerField(default=0, verbose_name=u"该类别下赛事数量")
 
-    class mate:
+    class Meta:
         db_table = "CompClass"
         verbose_name = '赛事类别'
         verbose_name_plural = '赛事类别列表'
@@ -31,7 +31,8 @@ class CompLevel(models.Model):
     ID        = models.AutoField(primary_key=True, verbose_name=u"赛事等级编号")
     Name      = models.CharField(max_length=5, default="", verbose_name=u"赛事等级名字")
     Statement = models.CharField(max_length=100, null=True, verbose_name=u"赛事等级说明")
-    class mate:
+
+    class Meta:
         db_table = "CompLevel"
         verbose_name = '赛事等级'
         verbose_name_plural = '赛事等级表'
@@ -44,7 +45,7 @@ class Area(models.Model):
     ID   = models.AutoField(primary_key=True, verbose_name=u"地区编号")
     Name = models.CharField(max_length=5, default=u"全国", verbose_name=u"地区名字")
 
-    class mate:
+    class Meta:
         db_table = "Area"
         verbose_name = '地区'
         verbose_name_plural = '地区列表'
@@ -80,7 +81,7 @@ class UserMessage(models.Model):
     UPostCount      = models.PositiveSmallIntegerField( u'用户发帖数', default=0)
     URepCount       = models.PositiveSmallIntegerField( u'用户回帖数', default=0)
 
-    class mate:
+    class Meta:
         db_table = "Users"
         verbose_name = '用户信息'
         verbose_name_plural = '用户列表'
@@ -120,10 +121,13 @@ class BBSSection(models.Model):
     # 外键
     SClassId    = models.ForeignKey(CompClass, on_delete=models.CASCADE, verbose_name=u"比赛类别编号")
 
-    class mate:
+    class Meta:
         db_table = "BBSSection"
         verbose_name = '板块信息'
         verbose_name_plural = '板块列表'
+
+    def __str__(self):
+        return self.SName
 
 
 class BBSTopic(models.Model):
@@ -151,10 +155,13 @@ class BBSTopic(models.Model):
     TTime       = models.DateTimeField(verbose_name=u"发帖时间",  auto_now_add=True, editable=True)
     TLastClickT = models.DateTimeField(verbose_name=u"主帖最后点击时间")
 
-    class mate:
+    class Meta:
         db_table = "BBSTopic"
         verbose_name = '主贴信息'
         verbose_name_plural = '主帖列表'
+
+    def __str__(self):
+        return self.TTopic
 
 
 class BBSReply(models.Model):
@@ -178,10 +185,14 @@ class BBSReply(models.Model):
     RContent  = models.TextField(max_length=500,  default="", verbose_name=u"回复内容")
     RLevelNum = models.PositiveSmallIntegerField( default=0,  verbose_name=u"在主贴中对应楼层")
 
-    class mate:
+    class Meta:
         db_table = "BBSReply"
         verbose_name = '回复信息'
         verbose_name_plural = '回复信息列表'
+
+    def __str__(self):
+        returnTemp = self.RContent + "     "
+        return "回复：" + returnTemp[0:5] + "..."
 
 
 class CompInfo(models.Model):
@@ -218,7 +229,7 @@ class CompInfo(models.Model):
     IStatement  = models.TextField(default="（空）", verbose_name="赛事介绍")
     Iurls = models.URLField(default="", verbose_name="赛事官网")
 
-    class mate:
+    class Meta:
         db_table = "CompInfo"
         verbose_name = '赛事信息'
         verbose_name_plural = '赛事列表'
@@ -263,10 +274,13 @@ class CompRecord(models.Model):
     RClickCount = models.PositiveSmallIntegerField(default=0, verbose_name=u"点击数")
     RMarkCount  = models.PositiveSmallIntegerField(default=0, verbose_name=u"收藏人数")
 
-    class mate:
+    class Meta:
         db_table = "CompRecord"
         verbose_name = '赛事记录'
         verbose_name_plural = '赛事记录列表'
+
+    def __str__(self):
+        return self.RTitle
 
 
 @receiver(post_save, sender=CompInfo)
@@ -292,6 +306,11 @@ class MarkMessage(models.Model):
     CompRecordId = models.ForeignKey(CompRecord, on_delete=models.CASCADE, verbose_name="记录编号")
     UsersId      = models.ForeignKey(UserMessage, on_delete=models.CASCADE, verbose_name="用户编号")
     MarkTime     = models.DateTimeField(auto_now_add=True, editable=True, verbose_name="收藏时间")
+
+    class Meta:
+        db_table = "MarkMessage"
+        verbose_name = '收藏记录'
+        verbose_name_plural = '收藏列表'
 
 
 class test11(models.Model):
