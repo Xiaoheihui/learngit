@@ -1,5 +1,14 @@
 <template>
   <div class="userInfo">
+    <el-upload
+      class="avatar-uploader"
+      action="no"
+      :show-file-list="false"
+      :on-success="handleAvatarSuccess"
+      :before-upload="beforeAvatarUpload">
+      <img v-if="imageUrl" :src="imageUrl" class="avatar">
+      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+    </el-upload>
     <el-form ref="form" :model="form" :rules="rules" label-width="70px">
       <el-form-item label="账号" prop="username">
         <el-tag>{{this.username}}</el-tag>
@@ -7,11 +16,11 @@
       <el-form-item label="邮箱" prop="email">
         <el-tag>{{this.email}}</el-tag>
       </el-form-item>
-      <el-form-item label="昵称" prop="nickName">
-        <el-input v-model="form.nickName" autocomplete="off" :disabled="!judge"></el-input>
-      </el-form-item>
       <el-form-item label="性别" prop="sex">
         <el-switch v-model="form.sex" active-text="男" inactive-text="女" inactive-color="#f56c6c" :disabled="!judge"></el-switch>
+      </el-form-item>
+      <el-form-item label="昵称" prop="nickName">
+        <el-input v-model="form.nickName" autocomplete="off" :disabled="!judge"></el-input>
       </el-form-item>
       <el-form-item label="生日" prop="birthday">
         <el-date-picker type="date" placeholder="选择日期" :picker-options="pickerOptions" v-model="form.birthday" style="width:100%;" :disabled="!judge"></el-date-picker>
@@ -88,6 +97,31 @@
       }
     },
     methods:{
+      handleAvatarSuccess(res, file) {
+        this.imageUrl = URL.createObjectURL(file.raw);
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        let fd = new FormData()
+        fd.append('img', file)
+        fd.append('id', 1)
+        console.log(fd.get('img'))
+        let config = {
+          headers:{'Content-Type':'multipart/form-data'} //这里是重点，需要和后台沟通好请求头，Content-Type不一定是这个值
+        };
+        this.$axios.post('http://127.0.0.1:8080/api/api/upLoadImage', fd, config).then((res)=>{
+
+        })
+        return isJPG && isLt2M;
+      },
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -125,6 +159,31 @@
 
 <style lang="scss">
   .userInfo{
+    .avatar-uploader .el-upload {
+      border: 1.5px dashed #d9d9d9;
+      border-radius: 50%;
+      cursor: pointer;
+      position: absolute;
+      overflow: hidden;
+      right:80px;
+      top:80px;
+    }
+    .avatar-uploader .el-upload:hover {
+      border-color: #409EFF;
+    }
+    .avatar-uploader-icon {
+      font-size: 28px;
+      color: #8c939d;
+      width: 160px;
+      height: 160px;
+      line-height: 160px;
+      text-align: center;
+    }
+    .avatar {
+      width: 160px;
+      height: 160px;
+      display: block;
+    }
     .buttonGroup{
       display:flex;
       justify-content: center;

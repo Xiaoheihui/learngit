@@ -12,8 +12,9 @@ from django.forms.models import model_to_dict
 from .models import CompInfo, CompClass, CompLevel, Area, UserMessage, BBSSection, BBSTopic, \
     BBSReply, MarkMessage, CompRecord, test11
 from django.core.files.base import ContentFile
-
+import os
 import datetime,pytz
+from test1 import settings
 
 tz = pytz.timezone('Asia/Shanghai')
 
@@ -450,13 +451,18 @@ def getMarkMessage(request):
 @require_http_methods(["POST"])
 def upLoadImage(request):
     response = {}
-    form = ImageForm(request.POST, request.FILES)
-    # 将数据保存到数据库
-    if form.is_valid():
-        form.save()
-
+    # form = ImageForm(request.POST, request.FILES)
+    # # 将数据保存到数据库
+    # if form.is_valid():
+    #     form.save()
+    img = request.FILES['img']
+    imgname = img.name
+    path = settings.BASE_DIR+'/media/uploads/'+imgname
+    with open(path, "wb") as f_write:
+        for line in img:
+            f_write.write(line)
     # file_content = ContentFile(request.FILES['img'].read())
-    # img = test11.objects.create(name=request.FILES['img'].name, img=request.FILES['img'])
+    # img = test11.objects.create(name=request.FILES['img'].name, img=file_content)
     # img.save()
     response['status'] = 0
     response['message'] = '上传成功！'

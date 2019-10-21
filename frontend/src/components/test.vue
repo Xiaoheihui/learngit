@@ -8,7 +8,7 @@
     <button @click="init">点击获取数据</button>
     <el-upload
       class="avatar-uploader"
-      action="123"
+      action="no"
       :show-file-list="false"
       :on-success="handleAvatarSuccess"
       :before-upload="beforeAvatarUpload">

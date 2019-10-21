@@ -7,7 +7,7 @@
                  customClass="customWidth">
         <game-user-info :userId="this.promulgatorId"></game-user-info>
       </el-dialog>
-      <site-header></site-header>
+      <site-header v-on:childsay="listenChild"></site-header>
       <div class="body">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
           <el-menu-item index="0" @click="gotoIndex">平台首页</el-menu-item>
@@ -191,6 +191,9 @@
         }
       },
       methods:{
+        listenChild:function(data){
+          this.favor -= 1
+        },
         gotoClassInfo(classNum){
           this.$router.push({path:'/classInfo/'+classNum})
         },

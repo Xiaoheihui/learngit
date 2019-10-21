@@ -90,6 +90,7 @@
                  break;
                }
              }
+             this.$emit('childsay', 1)
              this.$message.success(res.data.message)
            }
            else{

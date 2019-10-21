@@ -19,7 +19,7 @@
                  v-if="favoriteVisible===true"
                  append-to-body
                  customClass="customWidth">
-        <favorite :userId=userId></favorite>
+        <favorite :userId=userId v-on:childsay="listenChild1"></favorite>
       </el-dialog>
       <div class="header-left">
         <img src="../static/img/timg.jpg" @click="this.$router.push({path:'/'})">
@@ -87,6 +87,9 @@
         listenChild:function(data){
           console.log('change')
           this.nickName = data
+        },
+        listenChild1:function(data){
+          this.$emit('childsay', 1)
         }
       }
     }
