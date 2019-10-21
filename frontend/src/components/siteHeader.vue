@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-      <el-dialog title="用户信息"
+      <el-dialog title="我的信息"
                  :visible.sync="userInfoVisible"
                  v-if="userInfoVisible===true"
                  append-to-body
@@ -22,7 +22,7 @@
         <favorite :userId=userId></favorite>
       </el-dialog>
       <div class="header-left">
-        <img src="../static/img/timg.jpg">
+        <img src="../static/img/timg.jpg" @click="this.$router.push({path:'/'})">
         <span>大学生赛事平台</span>
       </div>
       <div class="header-right">
@@ -33,9 +33,9 @@
           <router-link :to="{ path: '/register'}" replace v-if="username==null"><span>注册</span></router-link>
           <div v-else>
             <el-dropdown>
-              <span>您好,{{nickName}}</span>
+              <span>  您好,{{nickName}}</span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="userInfoVisible=true">用户信息</el-dropdown-item>
+                <el-dropdown-item @click.native="userInfoVisible=true">我的信息</el-dropdown-item>
                 <el-dropdown-item @click.native="myBBSVisible=true">我的论坛</el-dropdown-item>
                 <el-dropdown-item @click.native="favoriteVisible=true">我的收藏</el-dropdown-item>
                 <el-dropdown-item @click.native = "logout">登出</el-dropdown-item>
