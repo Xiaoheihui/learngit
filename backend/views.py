@@ -197,7 +197,8 @@ def getCompInfoByCompId(request):
         compArea = Model_To_Dict(compAreainfo)['Name']
         # 赛事记录
         promulgatorID = int(compInfo.comprecord.RPromulgatorID.id)
-        response['promulgator'] = User.objects.get(id=promulgatorID).usermessage.Unickname # 昵称
+        response['unickname'] = User.objects.get(id=promulgatorID).usermessage.Unickname  # 昵称
+        response['promulgator'] = User.objects.get(id=promulgatorID).id
         response['statement'] = compInfo.comprecord.RStatement
         response['time'] = compInfo.comprecord.RTime.strftime("%Y-%m-%d %H:%M")
         # 点击数+1

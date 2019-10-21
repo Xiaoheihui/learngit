@@ -16,7 +16,7 @@
       <el-form-item label="生日" prop="birthday">
         <el-date-picker type="date" placeholder="选择日期" :picker-options="pickerOptions" v-model="form.birthday" style="width:100%;" :disabled="!judge"></el-date-picker>
       </el-form-item>
-      <el-form-item label="备注" prop="selfInfo">
+      <el-form-item label="签名" prop="selfInfo">
         <el-input type="textarea" v-model="form.selfInfo"  placeholder="最长不能超过150个字符" autocomplete="off" :disabled="!judge"></el-input>
       </el-form-item>
     </el-form>

@@ -1,5 +1,12 @@
 <template>
     <div class="gameDetail">
+      <el-dialog title="用户信息"
+                 :visible.sync="gameUserInfoVisible"
+                 v-if="gameUserInfoVisible===true"
+                 append-to-body
+                 customClass="customWidth">
+        <game-user-info :userId="this.promulgatorId"></game-user-info>
+      </el-dialog>
       <site-header></site-header>
       <div class="body">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
@@ -18,9 +25,9 @@
             <h1>{{this.gameName}}</h1>
             <div class="recordinfo">
               <span><i class="el-icon-time"></i> {{time}}</span>
-              <span><i class="el-icon-user"></i> {{promulgator}}</span>
+              <span @click="gameUserInfoVisible=true"><i class="el-icon-user"></i> {{promulgator}}</span>
               <span><i class="el-icon-view"></i> {{chickCount}}</span>
-              <el-button size="small" type="primary" icon="el-icon-star-on" @click="addFavorite">收藏</el-button>
+              <el-button size="small" type="primary" icon="el-icon-star-on" @click="addFavorite">{{this.favor}}</el-button>
             </div>
           </div>
           <el-table :data="tableData1"
@@ -95,9 +102,10 @@
 
 <script>
   import siteHeader from './siteHeader'
+  import gameUserInfo from './gameUserInfo'
     export default {
       name: "gameDetail",
-      components:{siteHeader},
+      components:{siteHeader, gameUserInfo},
       mounted(){
         this.gameId = this.$route.params.gameId
         this.userId = sessionStorage.getItem('userId')
@@ -122,9 +130,11 @@
             this.gameTime = info['ISchedule']
             this.activeIndex = String(info['IClass'])
             this.recordId = info['Rid']
-            this.promulgator = info['promulgator']
+            this.promulgator = info['unickname']
+            this.promulgatorId = info['promulgator']
             this.time = info['time']
             this.chickCount = info['chickCount']
+            this.favor = info['markCount']
             this.tableData1.push({
               gameApplyEndTime:this.gameApplyEndTime,
               gameApplyStartTime:this.gameApplyStartTime,
@@ -154,6 +164,7 @@
         return{
           activeIndex:'',
           userId:null,
+          promulgatorId:null,
           gameName:'',
           gameId:0,
           gameApplyEndTime:'',
@@ -171,10 +182,12 @@
           recordId:'',
           promulgator:'',
           time:'',
+          favor:0,
           chickCount:0,
           tableData1:[],
           tableData2:[],
-          tableData3:[]
+          tableData3:[],
+          gameUserInfoVisible:false,
         }
       },
       methods:{
@@ -201,6 +214,7 @@
           }).then((res)=>{
             console.log(res)
             if(res.data.status==0){
+              this.favor+=1
               this.$message.success('收藏成功！')
             }
             else if(res.data.status==2){
