@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CompInfo, Area, CompClass,test11, BBSSection, CompRecord
+from .models import CompInfo, Area, CompClass,test11, BBSSection, CompRecord, MarkMessage
 # Register your models here.
 # test1
 @admin.register(CompInfo)
@@ -26,6 +26,10 @@ class testAdmin(admin.ModelAdmin):
 @admin.register(CompRecord)
 class RecordAdmin(admin.ModelAdmin):
     list_display = ('RTitle', 'RID')
+
+@admin.register(MarkMessage)
+class MarkAdmin(admin.ModelAdmin):
+    list_display = ('CompRecordId', 'UsersId')
 
 
 # admin.site.register(CompInfo)

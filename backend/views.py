@@ -425,8 +425,10 @@ def getMarkMessage(request):
 @require_http_methods(["POST"])
 def upLoadImage(request):
     response = {}
+    print(type(request.FILES['img']))
     file_content = ContentFile(request.FILES['img'].read())
-    img = test11.objects.create(name=request.FILES['img'].name, img=request.FILES['img'])
+    img = test11.objects.get(pk=1)
+    img.img.save(name=request.FILES['img'].name, img=file_content)
     img.save()
     response['status'] = 0
     response['message'] = '上传成功！'

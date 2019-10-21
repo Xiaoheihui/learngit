@@ -30,6 +30,10 @@ const user = {
   getFavorite(params){
     return axios.post('/api/getMarkMessage', qs.stringify(params))
   },
+  //上传图片
+  upLoadImage(params){
+    return axios.post('/api/upLoadImage', qs.stringify(params))
+  }
 }
 
 export default user;
