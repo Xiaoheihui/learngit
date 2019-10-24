@@ -14,6 +14,14 @@ const comp = {
   getCompInfoBySelect(params){
     return axios.post('/api/getCompInfoBySelect', qs.stringify(params))
   },
+  //获取最新赛事信息
+  getNewestComp(params){
+    return axios.post('/api/getNewestComp', qs.stringify(params))
+  },
+  //获取最热赛事信息
+  getHotestComp(params){
+    return axios.post('/api/getHotestComp', qs.stringify(params))
+  }
 }
 
 export default comp;

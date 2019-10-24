@@ -14,6 +14,7 @@
         {{this.form.selfInfo}}
       </el-form-item>
     </el-form>
+    <img :src=imgurl class="headimg">
   </div>
 </template>
 
@@ -21,6 +22,7 @@
     export default {
       name: "gameUserInfo",
       mounted(){
+        this.imgurl = sessionStorage.getItem('imgurl')
         this.$api.user.getMessage({
           id:this.userId
         }).then((res)=>{
@@ -50,6 +52,7 @@
       },
       data(){
         return{
+          imgurl:'',
           form:{
             nickName:'',
             sex:'',
@@ -61,6 +64,17 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+.gameUserInfo{
+  display:flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  .headimg{
+    width:200px;
+    height:200px;
+    border-radius:50%;
+    margin-bottom:20px;
+  }
+}
 </style>

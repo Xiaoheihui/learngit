@@ -53,6 +53,7 @@
           this.form.nickName = info['Unickname'];
           let sex = info['USex']
           this.form.sex = sex === 'M';
+          this.imageUrl = info['img']
           if(info['UBirthday'] !== 0)
             this.form.birthday = new Date(Date.parse(info['UBirthday']))
           else this.form.birthday = new Date()
@@ -77,6 +78,7 @@
         userId:null,
         username:'',
         email:'',
+        imageUrl:'',
         form:{
           nickName:'',
           sex:true,
@@ -112,13 +114,14 @@
         }
         let fd = new FormData()
         fd.append('img', file)
-        fd.append('id', 1)
-        console.log(fd.get('img'))
+        fd.append('userId', this.userId)
         let config = {
           headers:{'Content-Type':'multipart/form-data'} //这里是重点，需要和后台沟通好请求头，Content-Type不一定是这个值
         };
-        this.$axios.post('http://127.0.0.1:8080/api/api/upLoadImage', fd, config).then((res)=>{
-
+        this.$api.user.upLoadImage(fd, config).then((res)=>{
+          this.imageUrl = res.data.img
+          sessionStorage.setItem('imgurl', res.data.img)
+          this.$emit('childsay1', res.data.img)
         })
         return isJPG && isLt2M;
       },
@@ -165,7 +168,7 @@
       cursor: pointer;
       position: absolute;
       overflow: hidden;
-      right:80px;
+      right:70px;
       top:80px;
     }
     .avatar-uploader .el-upload:hover {

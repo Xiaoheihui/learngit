@@ -88,6 +88,8 @@ def login(request):
         response1 = Model_To_Dict(user_name)
         response2 = Model_To_Dict(user_name.usermessage)
         response = {**response1, **response2}
+        response['img'] = 'http://127.0.0.1:8000/media/' + str(response['img'])
+        print(response['img'])
         user_name.last_login = datetime.datetime.now()# + datetime.timedelta(hours=8)
         user_name.save()
         response["status"] = 0
@@ -115,7 +117,9 @@ def getMessage(request):
     id = request.POST.get("id")
     user = User.objects.get(pk=id)
     if user is not None:  # 查询成功
-        response = Model_To_Dict(user.usermessage, fields=["Unickname", "UBirthday", "USex", "UStatement"])
+        response = Model_To_Dict(user.usermessage, fields=["Unickname", "UBirthday", "USex", "UStatement", 'img'])
+        response['img'] = 'http://127.0.0.1:8000/media/' + str(response['img'])
+        print(response['img'])
         if response['UBirthday'] is not None:
             response["UBirthday"] = response["UBirthday"].strftime("%Y-%m-%d")
         else:
@@ -308,6 +312,7 @@ def getBBSByClassId(request):
             bbsinfo = Model_To_Dict(bbs)
             userinfo = Model_To_Dict(UserMessage.objects.get(id=bbsinfo['TUid']))
             bbsinfo['userName'] = userinfo
+            userinfo['img'] = str(userinfo['img'])
             bbsinfos.append(dict(bbsinfo, **userinfo))
         response['bbsinfo'] = bbsinfos
         response['status'] = 0
@@ -331,6 +336,7 @@ def getBBSByUserId(request):
             bbsClass = Model_To_Dict(BBSSection.objects.get(Sid=bbsinfo['TSid']))['SName']
             bbsinfo['userName'] = userinfo
             bbsinfo['bbsClass'] = bbsClass
+            userinfo['img'] = str(userinfo['img'])
             bbsinfos.append(dict(bbsinfo, **userinfo))
         response['bbsinfo'] = bbsinfos
         response['status'] = 0
@@ -455,15 +461,69 @@ def upLoadImage(request):
     userId = int(request.POST.get('userId'))
     try:
         User.objects.get(pk=userId).usermessage.img = request.FILES['img']
-        User.objects.get(pk=userId).usermessage.img.save()
+        file_content = ContentFile(request.FILES['img'].read())
+        User.objects.get(pk=userId).usermessage.img.save(str(userId)+'.jpg', file_content)
         response['status'] = 0
         response['message'] = '上传成功！'
+        response['img'] = 'http://127.0.0.1:8000/media/' + str(User.objects.get(pk=userId).usermessage.img)
     except:
         response['status'] = 1
         response['message'] = '上传失败！请稍后再试。'
     return JsonResponse(response)
 
 
+@require_http_methods(["POST"])
+def getNewestComp(request):
+    response = {}
+    try:
+        allComp = CompRecord.objects.order_by('-RTime')
+        if len(allComp) >= 7:
+            end = 7
+        else:
+            end = len(allComp)
+        newComp = allComp[:end]
+        compList = []
+        for comp in newComp:
+            gameName = comp.RTitle
+            gameId = str(comp.RContentID)
+            compList.append({
+                'gameName':gameName,
+                'gameId':gameId
+            })
+        response['compList'] = compList
+        response['status'] = 0
+        response['message'] = '获取信息成功！'
+    except:
+        response['status'] = 1
+        response['message'] = '获取信息失败，请重试！'
+    return JsonResponse(response)
+
+
+@require_http_methods(["POST"])
+def getHotestComp(request):
+    response = {}
+    try:
+        allComp = CompRecord.objects.order_by('-RClickCount')
+        if len(allComp) >= 7:
+            end = 7
+        else:
+            end = len(allComp)
+        newComp = allComp[:end]
+        compList = []
+        for comp in newComp:
+            gameName = comp.RTitle
+            gameId = str(comp.RContentID)
+            compList.append({
+                'gameName':gameName,
+                'gameId':gameId
+            })
+        response['compList'] = compList
+        response['status'] = 0
+        response['message'] = '获取信息成功！'
+    except:
+        response['status'] = 1
+        response['message'] = '获取信息失败，请重试！'
+    return JsonResponse(response)
 # @require_http_methods(["POST"])
 # def getImage(request):
 #     response = {}

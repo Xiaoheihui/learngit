@@ -6,6 +6,7 @@
       {{d}}
     </p>
     <button @click="init">点击获取数据</button>
+    <img src="http://127.0.0.1:8000/media/HeadPortrait/3.jpg" class="avatar">
     <el-upload
       class="avatar-uploader"
       action="no"
@@ -99,6 +100,7 @@
   .avatar {
     width: 178px;
     height: 178px;
+    border-radius: 50%;
     display: block;
   }
 </style>

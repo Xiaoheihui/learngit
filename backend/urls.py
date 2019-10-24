@@ -18,5 +18,7 @@ urlpatterns = [
     url(r'DeleteMarkMessage$', backend.views.DeleteMarkMessage),
     url(r'markComp$', backend.views.markComp),
     url(r'upLoadImage$', backend.views.upLoadImage),
+    url(r'getNewestComp$', backend.views.getNewestComp),
+    url(r'getHotestComp$', backend.views.getHotestComp),
     # url(r'getImage$', backend.views.getImage),
 ]

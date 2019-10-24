@@ -102,6 +102,8 @@
                     sessionStorage.setItem('nickName', nickName)
                     let email = info['email']
                     sessionStorage.setItem('email', email)
+                    let imgurl = info['img']
+                    sessionStorage.setItem('imgurl', imgurl)
                     this.$message.success('登录成功！')
                     this.$router.push('/')
                   }else {

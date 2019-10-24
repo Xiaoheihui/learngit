@@ -21,8 +21,22 @@
           </el-carousel>
           <div class="body-header-right">
             <el-tabs type="border-card">
-              <el-tab-pane label="最新比赛">最新比赛</el-tab-pane>
-              <el-tab-pane label="最热比赛">最热比赛</el-tab-pane>
+              <el-tab-pane label="最新比赛">
+                <el-table
+                  style="margin-top:0px;"
+                  :show-header="false"
+                  :data="tableDataNew">
+                  <el-table-column label="比赛名称" prop="gameName"></el-table-column>
+                </el-table>
+              </el-tab-pane>
+              <el-tab-pane label="最热比赛">
+                <el-table
+                  style="margin-top:0px;"
+                  :show-header="false"
+                  :data="tableDataHot">
+                  <el-table-column label="比赛名称" prop="gameName"></el-table-column>
+                </el-table>
+              </el-tab-pane>
             </el-tabs>
           </div>
         </div>
@@ -44,6 +58,28 @@
           if(!this.nickName)
             this.nickName = this.username
           this.email = sessionStorage.getItem('email')
+          this.$api.comp.getNewestComp({}).then((res)=>{
+            if(res.data.status==0){
+              let info = res.data
+              let compList = info['compList']
+              for(let i=0;i<compList.length;++i){
+                this.tableDataNew.push({
+                  gameName:compList[i]['gameName']
+                })
+              }
+            }
+          })
+          this.$api.comp.getHotestComp({}).then((res)=>{
+            if(res.data.status==0){
+              let info = res.data
+              let compList = info['compList']
+              for(let i=0;i<compList.length;++i){
+                this.tableDataHot.push({
+                  gameName:compList[i]['gameName']
+                })
+              }
+            }
+          })
         },
         data(){
             return{
@@ -59,6 +95,8 @@
               nickName:'',
               userId:'',
               userInfoVisible:false,
+              tableDataNew:[],
+              tableDataHot:[]
             }
         },
       methods:{

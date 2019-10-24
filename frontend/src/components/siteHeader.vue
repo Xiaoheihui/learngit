@@ -5,7 +5,7 @@
                  v-if="userInfoVisible===true"
                  append-to-body
                  customClass="customWidth">
-        <userInfo v-on:childsay="listenChild"></userInfo>
+        <userInfo v-on:childsay="listenChild" v-on:childsay1="changeImg"></userInfo>
       </el-dialog>
       <el-dialog title="我的论坛"
                  :visible.sync="myBBSVisible"
@@ -27,7 +27,8 @@
       </div>
       <div class="header-right">
         <div class="user">
-          <i class="el-icon-user"></i>
+          <i class="el-icon-user" v-if="username==null"></i>
+          <img v-else :src=imgurl class="headimg">
           <router-link :to="{ path: '/login'}" replace v-if="username==null"><span>登录</span></router-link>
           <el-divider direction="vertical" v-if="username==null"></el-divider>
           <router-link :to="{ path: '/register'}" replace v-if="username==null"><span>注册</span></router-link>
@@ -58,6 +59,7 @@
         this.username = sessionStorage.getItem('username')
         this.userId = parseInt(sessionStorage.getItem('userId'))
         this.nickName = sessionStorage.getItem('nickName')
+        this.imgurl = sessionStorage.getItem('imgurl')
         if(!this.nickName)
           this.nickName = this.username
         this.email = sessionStorage.getItem('email')
@@ -70,7 +72,8 @@
           username:null,
           nickName:'',
           userId:null,
-          email:''
+          email:'',
+          imgurl:''
         }
       },
       methods:{
@@ -90,6 +93,9 @@
         },
         listenChild1:function(data){
           this.$emit('childsay', 1)
+        },
+        changeImg:function(data){
+          this.imgurl = data
         }
       }
     }
@@ -108,6 +114,7 @@
     align-items: center;
     justify-content: space-between;
     z-index:10;
+
     .header-right{
       height:100%;
       width:20%;
@@ -126,6 +133,12 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        .headimg{
+          width:60px;
+          height:60px;
+          border-radius: 50%;
+          margin-right:20px;
+        }
         span{
           font-size:17px;
         }
