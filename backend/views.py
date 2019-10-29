@@ -485,7 +485,7 @@ def getNewestComp(request):
         compList = []
         for comp in newComp:
             gameName = comp.RTitle
-            gameId = str(comp.RContentID)
+            gameId = str(comp.RContentID.Iid)
             compList.append({
                 'gameName':gameName,
                 'gameId':gameId
@@ -512,7 +512,8 @@ def getHotestComp(request):
         compList = []
         for comp in newComp:
             gameName = comp.RTitle
-            gameId = str(comp.RContentID)
+            gameId = str(comp.RContentID.Iid)
+            print(gameId)
             compList.append({
                 'gameName':gameName,
                 'gameId':gameId

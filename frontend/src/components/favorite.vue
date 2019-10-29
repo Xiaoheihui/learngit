@@ -2,15 +2,12 @@
     <div class="favorite">
       <el-table :data="tableData.slice((currentPage-1)*PageSize,currentPage*PageSize)">
         <el-table-column
-          prop="gameId"
-          width="80"
-          label="#"></el-table-column>
-        <el-table-column
           prop="gameName"
           label="比赛名称"></el-table-column>
         <el-table-column
           fixed="right"
           label="操作"
+          prop="gameId"
           width="100">
           <template slot-scope="scope">
             <el-button type="text" @click="gotoGameDetail(scope.row.gameId)">查看</el-button>

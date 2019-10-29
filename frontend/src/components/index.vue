@@ -23,18 +23,28 @@
             <el-tabs type="border-card">
               <el-tab-pane label="最新比赛">
                 <el-table
+                  @row-click="openDetails"
                   style="margin-top:0px;"
                   :show-header="false"
                   :data="tableDataNew">
-                  <el-table-column label="比赛名称" prop="gameName"></el-table-column>
+                  <el-table-column label="比赛名称" prop="gameName">
+                    <template slot-scope="scope">
+                      {{scope.row.gameName['gameName']}}
+                    </template>
+                  </el-table-column>
                 </el-table>
               </el-tab-pane>
               <el-tab-pane label="最热比赛">
                 <el-table
+                  @row-click="openDetails"
                   style="margin-top:0px;"
                   :show-header="false"
                   :data="tableDataHot">
-                  <el-table-column label="比赛名称" prop="gameName"></el-table-column>
+                  <el-table-column label="比赛名称" prop="gameName">
+                    <template slot-scope="scope">
+                      {{scope.row.gameName['gameName']}}
+                    </template>
+                  </el-table-column>
                 </el-table>
               </el-tab-pane>
             </el-tabs>
@@ -61,10 +71,14 @@
           this.$api.comp.getNewestComp({}).then((res)=>{
             if(res.data.status==0){
               let info = res.data
+              console.log(info)
               let compList = info['compList']
               for(let i=0;i<compList.length;++i){
                 this.tableDataNew.push({
-                  gameName:compList[i]['gameName']
+                  gameName:{
+                    'gameName':compList[i]['gameName'],
+                    'gameId':compList[i]['gameId']
+                  }
                 })
               }
             }
@@ -75,7 +89,10 @@
               let compList = info['compList']
               for(let i=0;i<compList.length;++i){
                 this.tableDataHot.push({
-                  gameName:compList[i]['gameName']
+                  gameName:{
+                    'gameName':compList[i]['gameName'],
+                    'gameId':compList[i]['gameId']
+                  }
                 })
               }
             }
@@ -111,6 +128,9 @@
         },
         gotoCommunity(){
           this.$router.push({name:'community'})
+        },
+        openDetails(row){
+          this.$router.push({path:'/gameDetail/'+row.gameName['gameId']})
         }
       }
     }

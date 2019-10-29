@@ -2,10 +2,7 @@
     <div class="myBBS">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="我的发帖" name="first">
-          <el-table :data="tableData1.slice((currentPage1-1)*PageSize1,currentPage1*PageSize1)">
-            <el-table-column prop="bbsId"
-                             label="#"
-                              width="80"></el-table-column>
+          <el-table :data="tableData1.slice((currentPage1-1)*PageSize1,currentPage1*PageSize1)" border>
             <el-table-column prop="bbsClass"
                              label="板块"
                              width="120"></el-table-column>
@@ -13,6 +10,7 @@
                              label="帖子标题"></el-table-column>
             <el-table-column
               fixed="right"
+              prop="bbsId"
               label="操作"
               width="100">
               <template slot-scope="scope">

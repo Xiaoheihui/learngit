@@ -26,15 +26,6 @@
                   element-loading-spinner="el-icon-loading"
         >
           <el-table-column
-            prop="bbsId"
-            label="#"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-              prop="bbsName"
-              label="帖子标题">
-          </el-table-column>
-          <el-table-column
             prop="bbsComments"
             label="评论数"
             width="150">
@@ -42,6 +33,13 @@
               <i class="el-icon-chat-dot-square"></i>
               <span style="margin-left: 8px">{{ scope.row.bbsComments }}</span>
             </template>
+          </el-table-column>
+          <el-table-column
+              prop="bbsName"
+              label="帖子标题">
+            <template slot-scope="scope">
+            {{scope.row.bbsName['bbsName']}}
+          </template>
           </el-table-column>
           <el-table-column
             prop="bbsSender" label="作者">
@@ -94,9 +92,11 @@
             for(let i=0;i<info.length;++i){
               this.tableData.push({
                 bbsComments:info[i]['TReplyCount'],
-                bbsName:info[i]['TTopic'],
+                bbsName:{
+                  'bbsName':info[i]['TTopic'],
+                  'bbsId':info[i]['Tid']
+                },
                 bbsSender:info[i]['Unickname'],
-                bbsId:info[i]['Tid']
               })
             }
             this.loading=false
