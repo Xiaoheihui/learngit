@@ -78,7 +78,7 @@ class UserMessage(models.Model):
     USex       = models.CharField(u'用户性别', max_length=2, default='', null=True, blank=True)
     UStatement = models.CharField(u'用户个人说明', max_length=150, default='', null=True, blank=True)
     Unickname   = models.CharField(u'用户昵称', max_length=10, default='', blank=True)
-    UImg       = models.ImageField(u'用户头像', upload_to='HeadPortrait', name='img', default='')
+    UImg       = models.ImageField(u'用户头像', upload_to='HeadPortrait', name='img', default='HeadPortrait\\defult.png')
     UPostCount      = models.PositiveSmallIntegerField( u'用户发帖数', default=0)
     # 系统信息
     URepCount       = models.PositiveSmallIntegerField( u'用户回帖数', default=0)

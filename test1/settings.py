@@ -18,6 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR+'/media/'
+URL_MEDIA = 'http://127.0.0.1:8000/' + MEDIA_URL
 
 
 # Quick-start development settings - unsuitable for production
@@ -172,4 +173,4 @@ WEBPACK_LOADER = {
 }
 
 if __name__ == "__main__":
-    print(BASE_DIR, " ", MEDIA_ROOT)
+    print(BASE_DIR, " ", MEDIA_ROOT, " ", URL_MEDIA)
