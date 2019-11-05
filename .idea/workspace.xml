@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4d1087ea-e52a-42e0-bc95-740a81e27182" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/views.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/frontend/node_modules/" />
@@ -38,8 +37,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1250">
-              <caret line="273" column="4" selection-start-line="273" selection-start-column="4" selection-end-line="273" selection-end-column="90" />
+            <state relative-caret-position="248">
+              <caret line="305" column="56" lean-forward="true" selection-start-line="305" selection-start-column="56" selection-end-line="305" selection-end-column="56" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
@@ -113,16 +112,14 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/backend/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="882">
-              <caret line="606" column="43" lean-forward="true" selection-start-line="606" selection-start-column="43" selection-end-line="606" selection-end-column="43" />
+            <state relative-caret-position="333">
+              <caret line="633" column="41" lean-forward="true" selection-start-line="633" selection-start-column="41" selection-end-line="633" selection-end-column="41" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
                 <element signature="e#14410#15307#0" />
-                <element signature="e#15384#15891#0" />
                 <element signature="e#15967#16751#0" />
                 <element signature="e#16822#17813#0" />
                 <element signature="e#17886#18661#0" />
-                <element signature="e#18734#19518#0" />
               </folding>
             </state>
           </provider>
@@ -153,20 +150,19 @@
         <option value="$PROJECT_DIR$/backend/ReadData.py" />
         <option value="$PROJECT_DIR$/backend/tools.py" />
         <option value="$PROJECT_DIR$/backend/admin.py" />
-        <option value="$PROJECT_DIR$/backend/models.py" />
         <option value="$PROJECT_DIR$/../../神经网络作业/第三次作业/work3.py" />
         <option value="$APPLICATION_CONFIG_DIR$/pycharm64.exe.vmoptions" />
         <option value="$PROJECT_DIR$/test1/settings.py" />
         <option value="$PROJECT_DIR$/backend/urls.py" />
+        <option value="$PROJECT_DIR$/backend/models.py" />
         <option value="$PROJECT_DIR$/backend/views.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="-289" />
-    <option name="y" value="17" />
-    <option name="width" value="1668" />
-    <option name="height" value="1022" />
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="-8" />
+    <option name="width" value="977" />
+    <option name="height" value="1038" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -349,12 +345,12 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.ImportData" />
-      <item itemvalue="Python.ReadData" />
-      <item itemvalue="Python.test" />
-      <item itemvalue="Python.tools" />
-      <item itemvalue="Python.views" />
       <item itemvalue="Django server.learn" />
+      <item itemvalue="Python.tools" />
+      <item itemvalue="Python.test" />
+      <item itemvalue="Python.views" />
+      <item itemvalue="Python.ReadData" />
+      <item itemvalue="Python.ImportData" />
     </list>
     <recent_temporary>
       <list>
@@ -385,7 +381,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54650000" />
+    <option name="totallyTimeSpent" value="56276000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -452,16 +448,6 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/backend/test.py" />
     <entry file="file://D:/DataFile/Python/Python35/Lib/site-packages/django/conf/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/backend/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="25" column="27" lean-forward="true" selection-start-line="25" selection-start-column="27" selection-end-line="25" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/backend/migrations/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -495,13 +481,6 @@
     <entry file="file://$PROJECT_DIR$/backend/migrations/0002_auto_20191008_2021.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend/ImportData.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2034">
-          <caret line="140" column="46" lean-forward="true" selection-start-line="140" selection-start-column="46" selection-end-line="140" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/backend/apps.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="92">
@@ -510,9 +489,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test1/wsgi.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/manage.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/test1/urls.py">
@@ -529,16 +505,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/backend/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1250">
-          <caret line="273" column="4" selection-start-line="273" selection-start-column="4" selection-end-line="273" selection-end-column="90" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -562,18 +528,46 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/backend/ImportData.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2034">
+          <caret line="140" column="46" lean-forward="true" selection-start-line="140" selection-start-column="46" selection-end-line="140" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/manage.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="25" column="27" lean-forward="true" selection-start-line="25" selection-start-column="27" selection-end-line="25" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="305" column="56" lean-forward="true" selection-start-line="305" selection-start-column="56" selection-end-line="305" selection-end-column="56" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/backend/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="882">
-          <caret line="606" column="43" lean-forward="true" selection-start-line="606" selection-start-column="43" selection-end-line="606" selection-end-column="43" />
+        <state relative-caret-position="333">
+          <caret line="633" column="41" lean-forward="true" selection-start-line="633" selection-start-column="41" selection-end-line="633" selection-end-column="41" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
             <element signature="e#14410#15307#0" />
-            <element signature="e#15384#15891#0" />
             <element signature="e#15967#16751#0" />
             <element signature="e#16822#17813#0" />
             <element signature="e#17886#18661#0" />
-            <element signature="e#18734#19518#0" />
           </folding>
         </state>
       </provider>

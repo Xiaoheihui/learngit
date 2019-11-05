@@ -562,7 +562,10 @@ def upLoadCompInfo(request):
         ILevel = CompLevel.objects.get(Name=levelStr)
         NameStr = request.POST.get('compName')
         compInfo = CompInfo.objects.get(IName=NameStr)
-        if ICompClass is None or IArea is None or ILevel is None:
+        if not user.is_superuser:
+            response['status'] = 1
+            response['message'] = '非法操作：账号无上传赛事权限！'
+        elif ICompClass is None or IArea is None or ILevel is None:
             response['status'] = 1
             response['message'] = '无效信息。'
         elif compInfo is not None:
@@ -610,6 +613,29 @@ def upLoadCompInfo(request):
         response['message'] = '发布者信息错误。'
     return JsonResponse(response)
 
+# 赛事删除
+@require_http_methods(["POST"])
+def deleteCompInfo(request):
+    response = {}
+    userId = int(request.POST.get('userId'))
+    user = User.objects.get(id=userId)
+    if user is not None:
+        compId = int(request.POST.get('compId'))
+        compInfo = CompInfo.objects.get(Iid=compId)
+        if not user.is_superuser:
+            response['status'] = 1
+            response['message'] = '非法操作：账号无删除赛事权限！'
+        elif compInfo is None:
+            response['status'] = 1
+            response['message'] = '赛事不存在，请勿重复删除。'
+        else:
+            compInfo.delete()
+            response['status'] = 0
+            response['message'] = '删除成功！'
+    else:
+        response['status'] = 1
+        response['message'] = '用户信息错误！'
+    return JsonResponse(response)
 
 # 辅助函数：
 def Model_To_Dict(model, fields=None, exclude=None):
