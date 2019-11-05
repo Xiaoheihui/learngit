@@ -27,9 +27,15 @@
                   style="margin-top:0px;"
                   :show-header="false"
                   :data="tableDataNew">
-                  <el-table-column label="比赛名称" prop="gameName">
+                  <el-table-column label="比赛名称" prop="gameName" width="500">
                     <template slot-scope="scope">
                       {{scope.row.gameName['gameName']}}
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="发布时间" prop="gameTime" >
+                    <template slot-scope="scope">
+                      <i class="el-icon-time"></i>
+                      {{scope.row.gameTime}}
                     </template>
                   </el-table-column>
                 </el-table>
@@ -40,9 +46,15 @@
                   style="margin-top:0px;"
                   :show-header="false"
                   :data="tableDataHot">
-                  <el-table-column label="比赛名称" prop="gameName">
+                  <el-table-column label="比赛名称" prop="gameName" width="550">
                     <template slot-scope="scope">
                       {{scope.row.gameName['gameName']}}
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="浏览量" prop="gameClickCount" >
+                    <template slot-scope="scope">
+                      <i class="el-icon-view"></i>
+                      {{scope.row.gameClickCount}}
                     </template>
                   </el-table-column>
                 </el-table>
@@ -77,8 +89,9 @@
                 this.tableDataNew.push({
                   gameName:{
                     'gameName':compList[i]['gameName'],
-                    'gameId':compList[i]['gameId']
-                  }
+                    'gameId':compList[i]['gameId'],
+                  },
+                  gameTime:compList[i]['gameTime']
                 })
               }
             }
@@ -92,7 +105,8 @@
                   gameName:{
                     'gameName':compList[i]['gameName'],
                     'gameId':compList[i]['gameId']
-                  }
+                  },
+                  gameClickCount:compList[i]['gameClickCount']
                 })
               }
             }

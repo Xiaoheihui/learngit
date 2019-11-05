@@ -485,10 +485,12 @@ def getNewestComp(request):
         compList = []
         for comp in newComp:
             gameName = comp.RTitle
+            gameTime = comp.RTime.strftime("%Y-%m-%d")
             gameId = str(comp.RContentID.Iid)
             compList.append({
                 'gameName':gameName,
-                'gameId':gameId
+                'gameId':gameId,
+                'gameTime':gameTime
             })
         response['compList'] = compList
         response['status'] = 0
@@ -513,10 +515,11 @@ def getHotestComp(request):
         for comp in newComp:
             gameName = comp.RTitle
             gameId = str(comp.RContentID.Iid)
-            print(gameId)
+            gameClickCount = comp.RClickCount
             compList.append({
                 'gameName':gameName,
-                'gameId':gameId
+                'gameId':gameId,
+                'gameClickCount':gameClickCount
             })
         response['compList'] = compList
         response['status'] = 0

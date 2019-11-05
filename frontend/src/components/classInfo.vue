@@ -51,8 +51,10 @@
           stripe>
           <el-table-column
             prop="gameId"
-            label="#"
             width="120">
+            <template slot="header" slot-scope="scope">
+             <i class="el-icon-view"></i>
+            </template>
           </el-table-column>
           <el-table-column
             prop="gameName"
@@ -75,7 +77,7 @@
             <template slot="header" slot-scope="scope">
               <el-input
                 v-model="search"
-                placeholder="输入关键字搜索"/>
+                placeholder="输入关键字搜索"></el-input>
             </template>
           </el-table-column>
         </el-table>
@@ -112,6 +114,7 @@
           classId:parseInt(this.activeIndex)
         }).then((res)=>{
           if(res.data.status==0){
+            console.log(res.data)
             let infos = res.data.compInfo
             this.totalCount = infos.length
             for(let i=0;i<infos.length;++i){

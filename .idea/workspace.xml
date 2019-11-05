@@ -4,10 +4,9 @@
     <list default="true" id="4d1087ea-e52a-42e0-bc95-740a81e27182" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/bbsInfo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/bbsInfo.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/favorite.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/favorite.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/classInfo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/classInfo.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/myBBS.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/myBBS.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/userInfo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/userInfo.vue" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/frontend/node_modules/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,22 +29,23 @@
     <session id="-1859894632">
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="1131" />
+          <entry key="py" value="1259" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="1131" />
+          <entry key="Python" value="1259" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.lifecycle.project">
         <counts>
           <entry key="project.closed" value="3" />
           <entry key="project.open.time.5" value="1" />
+          <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.7" value="3" />
-          <entry key="project.open.time.8" value="1" />
+          <entry key="project.open.time.8" value="2" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="6" />
+          <entry key="project.opened" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -108,11 +108,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/backend/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="305">
-              <caret line="488" column="29" selection-start-line="488" selection-start-column="29" selection-end-line="488" selection-end-column="29" />
+            <state relative-caret-position="153">
+              <caret line="176" column="24" selection-start-line="176" selection-start-column="15" selection-end-line="176" selection-end-column="24" />
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
-                <marker date="1571977317244" expanded="true" signature="17272:18743" ph="..." />
+                <marker date="1572951544307" expanded="true" signature="17272:18904" ph="..." />
               </folding>
             </state>
           </provider>
@@ -188,9 +188,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="877" />
-    <option name="y" value="28" />
-    <option name="width" value="979" />
+    <option name="x" value="677" />
+    <option name="y" value="43" />
+    <option name="width" value="980" />
     <option name="height" value="1040" />
   </component>
   <component name="ProjectView">
@@ -198,7 +198,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -211,15 +210,11 @@
               <item name="learngit" type="462c0819:PsiDirectoryNode" />
               <item name="backend" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="learngit" type="b2602c69:ProjectViewProjectNode" />
-              <item name="learngit" type="462c0819:PsiDirectoryNode" />
-              <item name="test1" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -426,10 +421,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="761" y="0" width="782" height="831" extended-state="0" />
+    <frame x="542" y="35" width="784" height="832" extended-state="1" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.112600535" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.112299465" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -443,7 +438,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32991204" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.39113224" side_tool="true" weight="0.33572453" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.60886776" visible="true" weight="0.22922637" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.60886776" visible="true" weight="0.15164521" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.36363637" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -605,11 +600,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/backend/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="488" column="29" selection-start-line="488" selection-start-column="29" selection-end-line="488" selection-end-column="29" />
+        <state relative-caret-position="153">
+          <caret line="176" column="24" selection-start-line="176" selection-start-column="15" selection-end-line="176" selection-end-column="24" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
-            <marker date="1571977317244" expanded="true" signature="17272:18743" ph="..." />
+            <marker date="1572951544307" expanded="true" signature="17272:18904" ph="..." />
           </folding>
         </state>
       </provider>

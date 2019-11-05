@@ -131,7 +131,7 @@
             if(this.form.sex)
               this.sexString = 'M'
             else this.sexString = 'F'
-            console.log(this.form.birthday)
+            console.log(this.form.nickName)
             this.$api.user.alterMessage({
               id:this.userId,
               nickname:this.form.nickName,
