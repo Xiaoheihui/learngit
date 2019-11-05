@@ -14,6 +14,13 @@
                  customClass="customWidth">
         <myBBS :userId=userId></myBBS>
       </el-dialog>
+      <el-dialog title="比赛发布"
+                 :visible.sync="gamePublishVisible"
+                 v-if="gamePublishVisible===true"
+                 append-to-body
+                 customClass="customWidth">
+        <game-publish></game-publish>
+      </el-dialog>
       <el-dialog title="我的收藏"
                  :visible.sync="favoriteVisible"
                  v-if="favoriteVisible===true"
@@ -36,6 +43,7 @@
             <el-dropdown>
               <span>  您好,{{nickName}}</span>
               <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item @click.native="gamePublishVisible=true">比赛发布</el-dropdown-item>
                 <el-dropdown-item @click.native="userInfoVisible=true">我的信息</el-dropdown-item>
                 <el-dropdown-item @click.native="myBBSVisible=true">我的论坛</el-dropdown-item>
                 <el-dropdown-item @click.native="favoriteVisible=true">我的收藏</el-dropdown-item>
@@ -52,9 +60,10 @@
   import userInfo from './userInfo'
   import myBBS from './myBBS'
   import favorite from './favorite'
+  import gamePublish from './gamePublish'
     export default {
       name: "siteHeader",
-      components:{userInfo, myBBS, favorite},
+      components:{userInfo, myBBS, favorite, gamePublish},
       mounted(){
         this.username = sessionStorage.getItem('username')
         this.userId = parseInt(sessionStorage.getItem('userId'))
@@ -69,6 +78,7 @@
           userInfoVisible:false,
           myBBSVisible:false,
           favoriteVisible:false,
+          gamePublishVisible:false,
           username:null,
           nickName:'',
           userId:null,

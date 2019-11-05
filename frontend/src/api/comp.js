@@ -21,6 +21,10 @@ const comp = {
   //获取最热赛事信息
   getHotestComp(params){
     return axios.post('/api/getHotestComp', qs.stringify(params))
+  },
+  //发布新比赛
+  uploadCompInfo(params){
+    return axios.post('/api/uploadCompInfo', qs.stringify(params))
   }
 }
 
