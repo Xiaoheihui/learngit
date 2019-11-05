@@ -560,18 +560,22 @@ def upLoadCompInfo(request):
         IArea = Area.objects.get(Name=areaStr)
         levelStr = request.POST.get('level')
         ILevel = CompLevel.objects.get(Name=levelStr)
-
+        NameStr = request.POST.get('compName')
+        compInfo = CompInfo.objects.get(IName=NameStr)
         if ICompClass is None or IArea is None or ILevel is None:
             response['status'] = 1
             response['message'] = '无效信息。'
+        elif compInfo is not None:
+            response['status'] = 1
+            response['message'] = '赛事已存在！请检查赛事名称。'
+
         else:
             # 时间
-            IApplyStartTime = request.POST.get('startTime')
-            startTime = datetime.datetime.strptime(IApplyStartTime, '%Y-%m-%d')
-            IApplyEndTime = request.POST.get('endTime')
-            endTime = datetime.datetime.strptime(IApplyEndTime, '%Y-%m-%d')
+            IApplyStartTime = request.POST.get('startTime')[:10]
+            startTime = datetime.datetime.strptime(IApplyStartTime, '%Y-%m-%d') + datetime.timedelta(hours=24)
+            IApplyEndTime = request.POST.get('endTime')[:10]
+            endTime = datetime.datetime.strptime(IApplyEndTime, '%Y-%m-%d') + datetime.timedelta(hours=24)
             # 字符串类型：
-            NameStr = request.POST.get('compName')
             IOrganizers = request.POST.get('organizers')
             IObject = request.POST.get('object')
             IMethods = request.POST.get('methods')
@@ -595,11 +599,10 @@ def upLoadCompInfo(request):
                 "Iurls": Iurls,
             }
             print("接收到的赛事信息： ", info)
-            compInfo = CompInfo.objects.create(**info)
+            CompInfo.objects.create(**info)
+            compInfo = CompInfo.objects.get(IName=NameStr)
             compInfo.comprecord.RPromulgatorID = user
             compInfo.comprecord.save()
-
-            response['compInfo'] = compInfo
             response['status'] = 0
             response['message'] = '赛事发布成功！'
     else:
