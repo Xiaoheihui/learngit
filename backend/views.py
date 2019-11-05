@@ -13,8 +13,9 @@ from .models import CompInfo, CompClass, CompLevel, Area, UserMessage, BBSSectio
     BBSReply, MarkMessage, CompRecord, test11
 from django.core.files.base import ContentFile
 from PIL import Image
+from test1.settings import URL_MEDIA
 
-import datetime,pytz
+import datetime,pytz, os
 from test1 import settings
 
 tz = pytz.timezone('Asia/Shanghai')
@@ -56,7 +57,9 @@ def register(request):
         response["status"] = 0
         response["content"] = ['1', '2']
         user = User.objects.get(username=username)
+
         user.usermessage.Unickname = username # 默认昵称
+        print(user.usermessage.img)
         user.save()
         print(Model_To_Dict(user.usermessage, fields=["Unickname", "UBirthday", "USex", "UStatement"]))
 
@@ -88,17 +91,21 @@ def login(request):
         response1 = Model_To_Dict(user_name)
         response2 = Model_To_Dict(user_name.usermessage)
         response = {**response1, **response2}
-        response['img'] = 'http://127.0.0.1:8000/media/' + str(response['img'])
+
+        response['img'] = str(URL_MEDIA + str(response['img']))
+
         print(response['img'])
         user_name.last_login = datetime.datetime.now()# + datetime.timedelta(hours=8)
         user_name.save()
         response["status"] = 0
+
     elif userEmail is not None:
         user_email = auth.authenticate(username=userEmail, password=pwd)  # 自动校验user表 用户邮箱校验
         if user_email is not None:
             response1 = Model_To_Dict(user_email)
             response2 = Model_To_Dict(user_email.usermessage)
             response = {**response1, **response2}
+            response['img'] = str(URL_MEDIA + str(response['img']))
             user_email.last_login = datetime.datetime.now() + datetime.timedelta(hours=8)
             user_email.save()
             response["status"] = 0
@@ -118,7 +125,7 @@ def getMessage(request):
     user = User.objects.get(pk=id)
     if user is not None:  # 查询成功
         response = Model_To_Dict(user.usermessage, fields=["Unickname", "UBirthday", "USex", "UStatement", 'img'])
-        response['img'] = 'http://127.0.0.1:8000/media/' + str(response['img'])
+        response['img'] = str(URL_MEDIA + str(response['img']))
         print(response['img'])
         if response['UBirthday'] is not None:
             response["UBirthday"] = response["UBirthday"].strftime("%Y-%m-%d")
@@ -138,7 +145,7 @@ def alterMessage(request):
     id = request.POST.get("id")
     user = User.objects.get(pk=id)
     if user is not None:  # 查询成功
-        dateStr = request.POST.get("birthday")[:10]# 截取时间字符串
+        dateStr = request.POST.get("birthday")[:10] # 截取时间字符串
         dateTime = datetime.datetime.strptime(dateStr, '%Y-%m-%d') + datetime.timedelta(hours=24)
         print(dateTime)
         # 修改POST内容
@@ -150,8 +157,8 @@ def alterMessage(request):
             user.usermessage.Unickname = form.cleaned_data.get('nickname')
             user.usermessage.USex = form.cleaned_data.get('sex')
             user.usermessage.UStatement = form.cleaned_data.get('statement')
-            user.save()
-            print(model_to_dict(user.usermessage))
+            user.usermessage.save()
+            # print(model_to_dict(user.usermessage))
             response["status"] = 0
         else:
             if 'nickname' in form.errors.keys():
@@ -454,7 +461,7 @@ def getMarkMessage(request):
         response['message'] = '查询失败，请稍后重试！'
     return JsonResponse(response)
 
-
+# 上传图像
 @require_http_methods(["POST"])
 def upLoadImage(request):
     response = {}
@@ -462,16 +469,25 @@ def upLoadImage(request):
     try:
         User.objects.get(pk=userId).usermessage.img = request.FILES['img']
         file_content = ContentFile(request.FILES['img'].read())
-        User.objects.get(pk=userId).usermessage.img.save(str(userId)+'.jpg', file_content)
+        suffix = os.path.splitext(str(request.FILES['img']))[1]
+
+        if suffix.lower() == '.jpg':
+            User.objects.get(pk=userId).usermessage.img.save(
+                str(userId)+'_'+datetime.datetime.now().strftime("%Y%m%d%H%M")+'.jpg', file_content)
+        elif suffix.lower() == '.png':
+            User.objects.get(pk=userId).usermessage.img.save(
+                str(userId) + '_' + datetime.datetime.now().strftime("%Y%m%d%H%M") + '.png', file_content)
+        else:
+            raise ()
         response['status'] = 0
         response['message'] = '上传成功！'
-        response['img'] = 'http://127.0.0.1:8000/media/' + str(User.objects.get(pk=userId).usermessage.img)
+        response['img'] = URL_MEDIA + str(User.objects.get(pk=userId).usermessage.img)
     except:
         response['status'] = 1
         response['message'] = '上传失败！请稍后再试。'
     return JsonResponse(response)
 
-
+# 最新赛事
 @require_http_methods(["POST"])
 def getNewestComp(request):
     response = {}
@@ -500,7 +516,7 @@ def getNewestComp(request):
         response['message'] = '获取信息失败，请重试！'
     return JsonResponse(response)
 
-
+# 最热赛事
 @require_http_methods(["POST"])
 def getHotestComp(request):
     response = {}
@@ -528,18 +544,10 @@ def getHotestComp(request):
         response['status'] = 1
         response['message'] = '获取信息失败，请重试！'
     return JsonResponse(response)
-# @require_http_methods(["POST"])
-# def getImage(request):
-#     response = {}
-#     userId = int(request.POST.get('userId'))
-#     try:
-#         headImg = User.objects.get(pk=userId).usermessage.UImg  # 不确定是 UImg 还是 img
-#     img = test11.objects.get(pk=1)
-#     response['img'] = img.img
-#     response['name'] = img.name
-#     response['status'] = 0
-#     response['message'] = '返回成功！'
-#     return JsonResponse(response)
+
+@require_http_methods(["POST"])
+def upLordCompRecord(request):
+    pass
 
 
 # 辅助函数：
