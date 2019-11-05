@@ -103,6 +103,7 @@ def save_user_userMessage(sender, instance, **kwargs):
     instance.usermessage.save()
 
 
+
 class BBSSection(models.Model):
     """
     表中列名	    数据类型	可否为空	       说明
