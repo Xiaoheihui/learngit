@@ -552,8 +552,8 @@ def getHotestComp(request):
 def upLoadCompInfo(request):
     response = {}
     userId = int(request.POST.get('userId'))
-    user = User.objects.get(id=userId)
-    if user is not None:
+    try:
+        user = User.objects.get(id=userId)
         classStr = request.POST.get('compClass')
         ICompClass = CompClass.objects.get(CName=classStr)
         areaStr = request.POST.get('area')
@@ -561,14 +561,12 @@ def upLoadCompInfo(request):
         levelStr = request.POST.get('level')
         ILevel = CompLevel.objects.get(Name=levelStr)
         NameStr = request.POST.get('compName')
-        compInfo = CompInfo.objects.get(IName=NameStr)
+        isCompInfoExists = CompInfo.objects.filter(IName=NameStr).exists()
+
         if not user.is_superuser:
             response['status'] = 1
             response['message'] = '非法操作：账号无上传赛事权限！'
-        elif ICompClass is None or IArea is None or ILevel is None:
-            response['status'] = 1
-            response['message'] = '无效信息。'
-        elif compInfo is not None:
+        elif isCompInfoExists:
             response['status'] = 1
             response['message'] = '赛事已存在！请检查赛事名称。'
 
@@ -608,10 +606,11 @@ def upLoadCompInfo(request):
             compInfo.comprecord.save()
             response['status'] = 0
             response['message'] = '赛事发布成功！'
-    else:
+    except:
         response['status'] = 1
-        response['message'] = '发布者信息错误。'
+        response['message'] = '提交信息有误，请稍后重试。'
     return JsonResponse(response)
+
 
 # 赛事删除
 @require_http_methods(["POST"])
