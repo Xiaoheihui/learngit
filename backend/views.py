@@ -94,7 +94,6 @@ def login(request):
 
         response['img'] = str(URL_MEDIA + str(response['img']))
 
-        print(response['img'])
         user_name.last_login = datetime.datetime.now()# + datetime.timedelta(hours=8)
         user_name.save()
         response["status"] = 0
@@ -184,10 +183,12 @@ def getCompInfoByClassId(request):
     compInfo = CompInfo.objects.filter(IClass_id=classId)
     if compInfo is not None:
         for info in compInfo:
-            comp.append(Model_To_Dict(info))
+            info_temp = Model_To_Dict(info)
+            info_temp['clickCounts'] = info.comprecord.RClickCount
+            comp.append(info_temp)
         response['compInfo'] = comp
         response['status'] = 0
-        response['messsage'] = '比赛信息返回成功'
+        response['message'] = '比赛信息返回成功'
     else:
         response['status'] = 1
         response['message'] = '比赛信息返回失败，请重试！'
@@ -545,9 +546,66 @@ def getHotestComp(request):
         response['message'] = '获取信息失败，请重试！'
     return JsonResponse(response)
 
+
+# 赛事上传
 @require_http_methods(["POST"])
-def upLordCompRecord(request):
-    pass
+def upLoadCompInfo(request):
+    response = {}
+    userId = int(request.POST.get('userId'))
+    user = User.objects.get(id=userId)
+    if user is not None:
+        classStr = request.POST.get('compClass')
+        ICompClass = CompClass.objects.get(CName=classStr)
+        areaStr = request.POST.get('area')
+        IArea = Area.objects.get(Name=areaStr)
+        levelStr = request.POST.get('level')
+        ILevel = CompLevel.objects.get(Name=levelStr)
+
+        if ICompClass is None or IArea is None or ILevel is None:
+            response['status'] = 1
+            response['message'] = '无效信息。'
+        else:
+            # 时间
+            IApplyStartTime = request.POST.get('startTime')
+            startTime = datetime.datetime.strptime(IApplyStartTime, '%Y-%m-%d')
+            IApplyEndTime = request.POST.get('endTime')
+            endTime = datetime.datetime.strptime(IApplyEndTime, '%Y-%m-%d')
+            # 字符串类型：
+            NameStr = request.POST.get('compName')
+            IOrganizers = request.POST.get('organizers')
+            IObject = request.POST.get('object')
+            IMethods = request.POST.get('methods')
+            ISchedule = request.POST.get('schedule')
+            IForm = request.POST.get('form')
+            IStatement = request.POST.get('statement')
+            Iurls = request.POST.get('compUrls')
+            info = {
+                "IClass": ICompClass,
+                "IAreaID": IArea,
+                "ILevel": ILevel,
+                "IName": NameStr,
+                "IApplyStartTime": startTime,
+                "IApplyEndTime": endTime,
+                "IOrganizers": IOrganizers,
+                "IObject": IObject,
+                "IMethods": IMethods,
+                "ISchedule": ISchedule,
+                "IForm": IForm,
+                "IStatement": IStatement,
+                "Iurls": Iurls,
+            }
+            print("接收到的赛事信息： ", info)
+            compInfo = CompInfo.objects.create(**info)
+            compInfo.comprecord.RPromulgatorID = user
+            compInfo.comprecord.save()
+
+            response['compInfo'] = compInfo
+            response['status'] = 0
+            response['message'] = '赛事发布成功！'
+    else:
+        response['status'] = 1
+        response['message'] = '发布者信息错误。'
+    return JsonResponse(response)
 
 
 # 辅助函数：
