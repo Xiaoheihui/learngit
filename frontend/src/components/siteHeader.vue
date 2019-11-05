@@ -19,7 +19,7 @@
                  v-if="gamePublishVisible===true"
                  append-to-body
                  customClass="customWidth">
-        <game-publish></game-publish>
+        <game-publish :userId=userId></game-publish>
       </el-dialog>
       <el-dialog title="我的收藏"
                  :visible.sync="favoriteVisible"

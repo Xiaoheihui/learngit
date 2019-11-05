@@ -50,7 +50,7 @@
           style="width:80%;margin-left:10%;"
           stripe>
           <el-table-column
-            prop="gameId"
+            prop="clickCounts"
             width="120">
             <template slot="header" slot-scope="scope">
              <i class="el-icon-view"></i>
@@ -60,6 +60,9 @@
             prop="gameName"
             label="比赛名称"
             width="450">
+            <template slot-scope="scope">
+              {{scope.row.gameName['gameName']}}
+            </template>
           </el-table-column>
           <el-table-column
             prop="startTime"
@@ -122,11 +125,16 @@
               let gameId = infos[i]['Iid']
               let gameApplyEndTime = infos[i]['IApplyEndTime']
               let gameApplyStartTime = infos[i]['IApplyStartTime']
+              let clickCounts = infos[i]['clickCounts']
               this.tableData.push({
-                gameName:gameName,
+                gameName:{
+                  'gameName':gameName,
+                  'gameId':gameId,
+                },
                 gameId:gameId,
                 deltaTime:gameApplyEndTime,
-                startTime:gameApplyStartTime
+                startTime:gameApplyStartTime,
+                clickCounts:clickCounts
               })
             }
           }
@@ -207,7 +215,7 @@
           }
         },
         openDetails(row){
-          this.$router.push({path:'/gameDetail/'+row.gameId})
+          this.$router.push({path:'/gameDetail/'+row.gameName['gameId']})
         },
         select(){
           console.log(this.selectEnd)

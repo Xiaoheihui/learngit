@@ -20,5 +20,5 @@ urlpatterns = [
     url(r'upLoadImage$', backend.views.upLoadImage),
     url(r'getNewestComp$', backend.views.getNewestComp),
     url(r'getHotestComp$', backend.views.getHotestComp),
-    url(r'upLoadCompInfo$', backend.views.upLoadCompInfo),
+    url(r'uploadCompInfo$', backend.views.upLoadCompInfo),
 ]

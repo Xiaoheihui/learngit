@@ -94,6 +94,11 @@
 <script>
     export default {
       name: "gamePublish",
+      props:{
+        userId:{
+          type:Number
+        }
+      },
       data(){
         return{
           form:{
@@ -160,6 +165,7 @@
           this.$refs[formName].validate((valid)=>{
             if(valid){
               this.$api.comp.uploadCompInfo({
+                userId:this.userId,
                 compName:this.form.gameName,
                 compClass:this.form.gameClass,
                 area:this.form.gameArea,
@@ -191,6 +197,12 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss">
+.gamePublish{
+  .el-button{
+    width:60%;
+    margin-left:20%;
+    border-radius: 30px;
+  }
+}
 </style>

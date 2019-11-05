@@ -566,9 +566,9 @@ def upLoadCompInfo(request):
             response['message'] = '无效信息。'
         else:
             # 时间
-            IApplyStartTime = request.POST.get('startTime')
+            IApplyStartTime = request.POST.get('startTime')[:10]
             startTime = datetime.datetime.strptime(IApplyStartTime, '%Y-%m-%d')
-            IApplyEndTime = request.POST.get('endTime')
+            IApplyEndTime = request.POST.get('endTime')[:10]
             endTime = datetime.datetime.strptime(IApplyEndTime, '%Y-%m-%d')
             # 字符串类型：
             NameStr = request.POST.get('compName')
@@ -595,11 +595,12 @@ def upLoadCompInfo(request):
                 "Iurls": Iurls,
             }
             print("接收到的赛事信息： ", info)
-            compInfo = CompInfo.objects.create(**info)
+            CompInfo.objects.create(**info)
+            compInfo = CompInfo.objects.get(IName=NameStr)
             compInfo.comprecord.RPromulgatorID = user
             compInfo.comprecord.save()
 
-            response['compInfo'] = compInfo
+            # response['compInfo'] = compInfo
             response['status'] = 0
             response['message'] = '赛事发布成功！'
     else:
