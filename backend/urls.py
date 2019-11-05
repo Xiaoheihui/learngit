@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'getNewestComp$', backend.views.getNewestComp),
     url(r'getHotestComp$', backend.views.getHotestComp),
     url(r'uploadCompInfo$', backend.views.upLoadCompInfo),
+    url(r'deleteCompInfo$', backend.views.deleteCompInfo),
 ]

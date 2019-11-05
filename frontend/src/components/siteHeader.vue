@@ -16,7 +16,7 @@
       </el-dialog>
       <el-dialog title="比赛发布"
                  :visible.sync="gamePublishVisible"
-                 v-if="gamePublishVisible===true"
+                 v-if="gamePublishVisible&&is_superuser"
                  append-to-body
                  customClass="customWidth">
         <game-publish :userId=userId></game-publish>
@@ -72,6 +72,7 @@
         if(!this.nickName)
           this.nickName = this.username
         this.email = sessionStorage.getItem('email')
+        this.is_superuser = sessionStorage.getItem('is_superuser')
       },
       data(){
         return{
@@ -83,7 +84,8 @@
           nickName:'',
           userId:null,
           email:'',
-          imgurl:''
+          imgurl:'',
+          is_superuser:null,
         }
       },
       methods:{

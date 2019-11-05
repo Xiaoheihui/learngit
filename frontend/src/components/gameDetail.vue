@@ -28,6 +28,7 @@
               <span @click="gameUserInfoVisible=true"><i class="el-icon-user"></i> {{promulgator}}</span>
               <span><i class="el-icon-view"></i> {{chickCount}}</span>
               <el-button size="small" type="primary" icon="el-icon-star-on" @click="addFavorite">{{this.favor}}</el-button>
+              <el-button size="small" type="danger" @click="deleteCompInfo" v-if="is_superuser">删除</el-button>
             </div>
           </div>
           <el-table :data="tableData1"
@@ -109,6 +110,7 @@
       mounted(){
         this.gameId = this.$route.params.gameId
         this.userId = sessionStorage.getItem('userId')
+        this.is_superuser = sessionStorage.getItem('is_superuser')
         this.$api.comp.getCompInfoByCompId({
           compId:this.gameId
         }).then((res)=>{
@@ -188,6 +190,7 @@
           tableData2:[],
           tableData3:[],
           gameUserInfoVisible:false,
+          is_superuser:false,
         }
       },
       methods:{
@@ -225,6 +228,20 @@
             }
             else{
               this.$message.error('收藏失败，请重试！')
+            }
+          })
+        },
+        deleteCompInfo(){
+          this.$api.comp.deleteCompInfo({
+            userId:this.userId,
+            compId:this.gameId
+          }).then((res)=>{
+            if(res.data.status===0){
+              this.$message.success(res.data.message)
+              this.$router.push({path:'/classInfo/1'})
+            }
+            else{
+              this.$message.error(res.data.message)
             }
           })
         }

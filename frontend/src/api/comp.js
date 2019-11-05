@@ -25,7 +25,11 @@ const comp = {
   //发布新比赛
   uploadCompInfo(params){
     return axios.post('/api/uploadCompInfo', qs.stringify(params))
-  }
+  },
+  //删除比赛信息
+  deleteCompInfo(params){
+    return axios.post('/api/deleteCompInfo', qs.stringify(params))
+  },
 }
 
 export default comp;

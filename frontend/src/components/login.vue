@@ -104,6 +104,8 @@
                     sessionStorage.setItem('email', email)
                     let imgurl = info['img']
                     sessionStorage.setItem('imgurl', imgurl)
+                    let is_superuser = info['is_superuser']
+                    sessionStorage.setItem('is_superuser', is_superuser)
                     this.$message.success('登录成功！')
                     this.$router.push('/')
                   }else {
