@@ -57,7 +57,7 @@ export default new Router({
       component: community
     },
     {
-      path: '/bbsDetail',
+      path: '/bbsDetail/:bbsId',
       name: 'bbsDetail',
       component: bbsDetail
     },

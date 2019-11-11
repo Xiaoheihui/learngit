@@ -24,6 +24,7 @@
                   v-loading="loading"
                   element-loading-text="拼命加载中"
                   element-loading-spinner="el-icon-loading"
+                  @row-click="openDetails"
         >
           <el-table-column
             prop="bbsComments"
@@ -144,8 +145,8 @@
           }
       },
       methods:{
-        gotobbsDetail(){
-          this.$router.push({path:'/bbsDetail'})
+        openDetails(row){
+          this.$router.push({path:'/bbsDetail/'+row.bbsName['bbsId']})
         },
         // 每页显示的条数
         handleSizeChange(val) {
