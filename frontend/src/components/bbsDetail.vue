@@ -16,12 +16,18 @@
         <div class="bbsContent">
           <div class="bbsSender">
             <div class="senderHead">
-              <img :src=imgurl class="headimg" alt="touxiang">
-              <span>嘿嘿嘿灰灰 &nbsp;&nbsp;<el-tag effect="dark" type="primary" size="medium">楼主</el-tag></span>
+              <h1>这是测试的标题！</h1>
+              <div class="bbsInfo">
+                <div class="senderName">
+                  <img :src=imgurl class="headimg" alt="touxiang">
+                  <span>嘿嘿嘿灰灰 &nbsp;&nbsp;<el-tag effect="dark" type="primary" size="medium">楼主</el-tag></span>
+                </div>
+                <span><i class="el-icon-chat-dot-square"></i> 11</span>
+                <span><i class="el-icon-time"></i> 2019.11.11 22.31</span>
+              </div>
             </div>
             <el-divider></el-divider>
             <div class="senderContent">
-              <h1>这是测试的标题！</h1>
               <p>
                 看到反光镜，面孔，新裤子痛仰这些老牌乐队这么卖力的在演唱，尤其是彭磊蹦起来的那一瞬间除了感动尊敬，更多的是心疼
                 他们，因为20年前，他们的梦想肯定是都是变成摇滚巨星让全世界听到他们的歌那种梦想吧(像彭磊说的大家都还是很平凡直到
@@ -31,17 +37,20 @@
                 得他的歌儿。
               </p>
             </div>
-            <el-divider></el-divider>
-            <div class="senderEnd">
-              <span><i class="el-icon-time"></i> 2019.11.11 22.31</span>
-            </div>
+
+            <!--<div class="senderEnd">-->
+              <!--<span><i class="el-icon-time"></i> 2019.11.11 22.31</span>-->
+            <!--</div>-->
           </div>
+          <el-divider></el-divider>
           <div class="bbsReply">
             <div class="replyHead">
-              <img :src=imgurl class="headimg" alt="touxiang">
-              <span>嘿嘿嘿 &nbsp;&nbsp;<el-tag effect="dark" type="danger" size="medium">回复</el-tag></span>
+              <div class="replyName">
+                <img :src=imgurl class="headimg" alt="touxiang">
+                <span>嘿嘿嘿 &nbsp;&nbsp;<el-tag effect="dark" type="danger" size="small">回复</el-tag></span>
+              </div>
+              <span># 2</span>
             </div>
-            <el-divider></el-divider>
             <div class="replyContent">
               <p>
                 看到反光镜，面孔，新裤子痛仰这些老牌乐队这么卖力的在演唱，尤其是彭磊蹦起来的那一瞬间除了感动尊敬，更多的是心疼
@@ -49,10 +58,10 @@
                 现在)
               </p>
             </div>
-            <el-divider></el-divider>
             <div class="replyEnd">
               <span><i class="el-icon-time"></i> 2019.11.11 22.31</span>
             </div>
+            <el-divider></el-divider>
           </div>
           <div class="tabListPage">
             <el-pagination @size-change="handleSizeChange"
@@ -63,6 +72,7 @@
                            :total="totalCount">
             </el-pagination>
           </div>
+          <send-reply></send-reply>
         </div>
       </div>
     </div>
@@ -70,9 +80,10 @@
 
 <script>
   import siteHeader from './siteHeader'
+  import sendReply from './sendReply'
     export default {
       name: "bbsDetail",
-      components:{siteHeader},
+      components:{siteHeader, sendReply},
       data(){
         return{
           activeIndex:'8',
@@ -110,24 +121,38 @@
     padding: 0;
     .bbsContent{
       margin-top:180px;
+      padding-bottom:50px;
       width:80%;
       margin-left:10%;
       background-color: aliceblue;
       .bbsSender{
-        margin-left:80px;
-        margin-right:80px;
+        margin-left:100px;
+        margin-right:100px;
         margin-bottom:10px;
         padding-top:30px;
-       padding-bottom:30px;
-        border-style: solid;
-        border-width: 1px;
-        border-color:black;
-        border-radius:10px;
+       padding-bottom:10px;
+        /*border-style: solid;*/
+        /*border-width: 1px;*/
+        /*border-color:black;*/
+        /*border-radius:10px;*/
         .senderHead{
-          display: flex;
-          flex-direction: row;
-          align-items:center;
-          justify-content: start;
+          .bbsInfo{
+            display: flex;
+            flex-direction: row;
+            align-items:center;
+            justify-content: space-around;
+            width:60%;
+            margin-left:20%;
+            .senderName{
+              display: flex;
+              flex-direction: row;
+              align-items:center;
+              justify-content: start;
+              .el-tag{
+                font-size:13px;
+              }
+            }
+          }
           .headimg{
             width:50px;
             height:50px;
@@ -136,7 +161,7 @@
           }
           span{
             text-align: left;
-            font-size:18px;
+            font-size:16px;
           }
         }
         .senderContent{
@@ -146,53 +171,65 @@
             text-align: left;
           }
           p{
-            font-size:19px;
+            font-size:17px;
             text-align: left;
-            line-height:1.8;
+            line-height:1.7;
           }
         }
-        .senderEnd{
-          span{
-            float:right;
-          }
-        }
+        /*.senderEnd{*/
+          /*span{*/
+            /*float:right;*/
+          /*}*/
+        /*}*/
       }
       .bbsReply{
-        margin-left:80px;
-        margin-right:80px;
+        margin-left:100px;
+        margin-right:100px;
         margin-bottom:10px;
-        padding-top:30px;
+        padding-top:10px;
         padding-bottom:30px;
-        border-style: solid;
-        border-width: 1px;
-        border-color:black;
-        border-radius:10px;
+        /*border-style: solid;*/
+        /*border-width: 1px;*/
+        /*border-color:black;*/
+        /*border-radius:10px;*/
         .replyHead{
           display: flex;
           flex-direction: row;
           align-items:center;
-          justify-content: start;
-          .headimg{
-            width:50px;
-            height:50px;
-            border-radius: 50%;
-            margin-right:20px;
+          justify-content: space-between;
+          /*padding-right:40px;*/
+          .replyName{
+            display: flex;
+            flex-direction: row;
+            align-items:center;
+            justify-content: start;
+            .headimg{
+              width:50px;
+              height:50px;
+              border-radius: 50%;
+              margin-right:20px;
+            }
+            span{
+              text-align: left;
+              font-size:15px;
+            }
+            .el-tag{
+              font-size:12px;
+            }
           }
-          span{
-            text-align: left;
-            font-size:18px;
-          }
+
         }
         .replyContent{
           margin-left:10px;
           margin-right:10px;
           p{
-            font-size:19px;
+            font-size:16px;
             text-align: left;
-            line-height:1.8;
+            line-height:1.6;
           }
         }
         .replyEnd{
+          padding-bottom:20px;
           span{
             float:right;
           }

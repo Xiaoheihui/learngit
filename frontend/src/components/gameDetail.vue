@@ -110,7 +110,10 @@
       mounted(){
         this.gameId = this.$route.params.gameId
         this.userId = sessionStorage.getItem('userId')
-        this.is_superuser = sessionStorage.getItem('is_superuser')
+        if(sessionStorage.getItem('is_superuser')==='false'||sessionStorage.getItem('is_superuser')==null)
+          this.is_superuser = false
+        else
+          this.is_superuser = true
         this.$api.comp.getCompInfoByCompId({
           compId:this.gameId
         }).then((res)=>{

@@ -16,7 +16,7 @@
       </el-dialog>
       <el-dialog title="比赛发布"
                  :visible.sync="gamePublishVisible"
-                 v-if="gamePublishVisible&&is_superuser"
+                 v-if="gamePublishVisible"
                  append-to-body
                  customClass="customWidth">
         <game-publish :userId=userId></game-publish>
@@ -43,7 +43,7 @@
             <el-dropdown>
               <span>  您好,{{nickName}}</span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item @click.native="gamePublishVisible=true">比赛发布</el-dropdown-item>
+                <el-dropdown-item @click.native="gamePublishVisible=true" v-if="is_superuser">比赛发布</el-dropdown-item>
                 <el-dropdown-item @click.native="userInfoVisible=true">我的信息</el-dropdown-item>
                 <el-dropdown-item @click.native="myBBSVisible=true">我的论坛</el-dropdown-item>
                 <el-dropdown-item @click.native="favoriteVisible=true">我的收藏</el-dropdown-item>
@@ -72,7 +72,10 @@
         if(!this.nickName)
           this.nickName = this.username
         this.email = sessionStorage.getItem('email')
-        this.is_superuser = sessionStorage.getItem('is_superuser')
+        if(sessionStorage.getItem('is_superuser')==='false'||sessionStorage.getItem('is_superuser')==null)
+          this.is_superuser = false
+        else
+          this.is_superuser = true
       },
       data(){
         return{
@@ -85,7 +88,7 @@
           userId:null,
           email:'',
           imgurl:'',
-          is_superuser:null,
+          is_superuser:false,
         }
       },
       methods:{
