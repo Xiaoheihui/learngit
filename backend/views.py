@@ -355,27 +355,58 @@ def getBBSByUserId(request):
     return JsonResponse(response)
 
 # # 根据用户ID获取回复信息
-# @require_http_methods(["POST"])
-# def getBBSByUserId(request):
-#     response = {}
-#     bbsinfos = []
-#     userId = int(request.POST.get('userId'))
-#     try:
-#         replylist = BBSReply.objects.filter(RUid=userId)
-#         for reply in replylist:
-#             replyinfo = Model_To_Dict(reply)
-#             userinfo = Model_To_Dict(UserMessage.objects.get(id=replyinfo['RUid']))
-#             replyClass = Model_To_Dict(BBSSection.objects.get(Sid=replyinfo['TSid']))['SName']
-#             replyinfo['userName'] = userinfo
-#             replyinfo['bbsClass'] = bbsClass
-#             bbsinfos.append(dict(bbsinfo, **userinfo))
-#         response['bbsinfo'] = bbsinfos
-#         response['status'] = 0
-#         response['message'] = '帖子信息返回成功！'
-#     except:
-#         response['status'] = 1
-#         response['message'] = '帖子信息返回失败，请重试！'
-#     return JsonResponse(response)
+# # @require_http_methods(["POST"])
+# # def getBBSByUserId(request):
+# #     response = {}
+# #     bbsinfos = []
+# #     userId = int(request.POST.get('userId'))
+# #     try:
+# #         replylist = BBSReply.objects.filter(RUid=userId)
+# #         for reply in replylist:
+# #             replyinfo = Model_To_Dict(reply)
+# #             userinfo = Model_To_Dict(UserMessage.objects.get(id=replyinfo['RUid']))
+# #             replyClass = Model_To_Dict(BBSSection.objects.get(Sid=replyinfo['TSid']))['SName']
+# #             replyinfo['userName'] = userinfo
+# #             replyinfo['bbsClass'] = bbsClass
+# #             bbsinfos.append(dict(bbsinfos, **userinfo))
+# #         response['bbsinfo'] = bbsinfos
+# #         response['status'] = 0
+# #         response['message'] = '帖子信息返回成功！'
+# #     except:
+# #         response['status'] = 1
+# #         response['message'] = '帖子信息返回失败，请重试！'
+# #     return JsonResponse(response)
+
+
+# 发表回复
+@require_http_methods(["POST"])
+def uploadReply(request):
+    response = {}
+    bbsId = request.POST.get('bbsId')
+    userId = int(request.POST.get('userId'))
+    sectionid = int(request.POST.get('sectionId'))
+    try:
+        user = User.objects.get(pk=userId).usermessage
+        topicid = BBSTopic.objects.get(Tid=bbsId)
+        sectionId = BBSSection.objects.get(Sid=sectionid)
+        content = request.POST.get('content')
+        levelNum = BBSReply.objects.filter(RTid=topicid).count() + 2
+        BBSReply.objects.create(
+            RTid=topicid,
+            RSid=sectionId,
+            RUid=user,
+            RContent=content,
+            RLevelNum=levelNum
+        )
+        response['status'] = 0
+        response['message'] = '评论成功！'
+    except:
+        response['status'] = 1
+        response['message'] = '评论失败，请稍后重试。'
+    return JsonResponse(response)
+
+
+
 
 # 根据帖子ID来删除帖子
 @require_http_methods(["POST"])
