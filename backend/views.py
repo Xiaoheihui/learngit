@@ -384,11 +384,12 @@ def uploadReply(request):
     response = {}
     bbsId = request.POST.get('bbsId')
     userId = int(request.POST.get('userId'))
-    sectionid = int(request.POST.get('sectionId'))
+    print(bbsId)
+    print(userId)
     try:
         user = User.objects.get(pk=userId).usermessage
         topicid = BBSTopic.objects.get(Tid=bbsId)
-        sectionId = BBSSection.objects.get(Sid=sectionid)
+        sectionId = BBSTopic.objects.get(Tid=bbsId).TSid
         content = request.POST.get('content')
         levelNum = BBSReply.objects.filter(RTid=topicid).count() + 2
         BBSReply.objects.create(
@@ -405,7 +406,47 @@ def uploadReply(request):
         response['message'] = '评论失败，请稍后重试。'
     return JsonResponse(response)
 
+# 根据帖子ID来获得回复信息
+@require_http_methods(["POST"])
+def getReplyByBBSId(request):
+    response = {}
+    bbsId = request.POST.get('bbsId')
+    try:
+        replylist = BBSReply.objects.filter(RTid=bbsId)
+        replyinfos = []
+        for reply in replylist:
+            replyinfo = Model_To_Dict(reply)
+            replyinfo['time'] = reply.RTime.strftime("%Y-%m-%d %H:%M")
+            userinfo = Model_To_Dict(UserMessage.objects.get(id=replyinfo['RUid']))
+            userinfo['img'] = URL_MEDIA + str(userinfo['img'])
+            replyinfos.append(dict(replyinfo, **userinfo))
+        response['replyinfos'] = replyinfos
+        response['status'] = 0
+        response['message'] = '帖子信息返回成功！'
+    except:
+        response['status'] = 1
+        response['message'] = '帖子信息返回失败，请重试！'
+    return JsonResponse(response)
 
+
+# 根据帖子ID来获得发帖信息
+@require_http_methods(["POST"])
+def getBBSByBBSId(request):
+    response = {}
+    bbsId = request.POST.get('bbsId')
+    try:
+        bbs = BBSTopic.objects.get(Tid=bbsId)
+        bbsinfo = Model_To_Dict(bbs)
+        userinfo = Model_To_Dict(UserMessage.objects.get(id=bbsinfo['TUid']))
+        bbsinfo['time'] = bbs.TTime.strftime("%Y-%m-%d %H:%M")
+        bbsinfo['senderName'] = userinfo['Unickname']
+        response['status'] = 0
+        response['bbsinfo'] = bbsinfo
+        response['message'] = '成功获得帖子信息'
+    except:
+        response['status'] = 1
+        response['message'] = '帖子信息返回失败，请重试！'
+    return JsonResponse(response)
 
 
 # 根据帖子ID来删除帖子

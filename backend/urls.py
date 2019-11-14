@@ -22,4 +22,7 @@ urlpatterns = [
     url(r'getHotestComp$', backend.views.getHotestComp),
     url(r'uploadCompInfo$', backend.views.upLoadCompInfo),
     url(r'deleteCompInfo$', backend.views.deleteCompInfo),
+    url(r'uploadReply$', backend.views.uploadReply),
+    url(r'getReplyByBBSId$', backend.views.getReplyByBBSId),
+    url(r'getBBSByBBSId$', backend.views.getBBSByBBSId),
 ]

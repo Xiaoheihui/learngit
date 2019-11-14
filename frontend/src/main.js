@@ -9,8 +9,7 @@ import api from './api'
 import store from './store/index'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-;
-Vue.config.productionTip = false
+
 axios.defaults.baseURL = 'http://127.0.0.1:8000/api'
 Vue.prototype.$axios = axios
 Vue.prototype.$api = api

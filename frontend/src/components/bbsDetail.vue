@@ -16,25 +16,20 @@
         <div class="bbsContent">
           <div class="bbsSender">
             <div class="senderHead">
-              <h1>这是测试的标题！</h1>
+              <h1>{{bbsinfo.bbstopic}}</h1>
               <div class="bbsInfo">
                 <div class="senderName">
                   <img :src=imgurl class="headimg" alt="touxiang">
-                  <span>嘿嘿嘿灰灰 &nbsp;&nbsp;<el-tag effect="dark" type="primary" size="medium">楼主</el-tag></span>
+                  <span>{{bbsinfo.bbsSender}} &nbsp;&nbsp;<el-tag effect="dark" type="primary" size="medium">楼主</el-tag></span>
                 </div>
-                <span><i class="el-icon-chat-dot-square"></i> 11</span>
-                <span><i class="el-icon-time"></i> 2019.11.11 22.31</span>
+                <span><i class="el-icon-chat-dot-square"></i> {{bbsinfo.bbsComments}}</span>
+                <span><i class="el-icon-time"></i> {{bbsinfo.bbsTime}}</span>
               </div>
             </div>
             <el-divider></el-divider>
             <div class="senderContent">
               <p>
-                看到反光镜，面孔，新裤子痛仰这些老牌乐队这么卖力的在演唱，尤其是彭磊蹦起来的那一瞬间除了感动尊敬，更多的是心疼
-                他们，因为20年前，他们的梦想肯定是都是变成摇滚巨星让全世界听到他们的歌那种梦想吧(像彭磊说的大家都还是很平凡直到
-                现在)，都已经中年了，我确定他们离自己当初想要成就的梦想距离还是很远，所以好像特别珍惜这个舞台，现在的音乐环境没
-                有给到属于他们的才华相匹配的舞台和荣耀，他们的才华应该是工人体育馆随随便便开，全国大型巡演分分钟票售罄，幸运的
-                是这帮老炮儿还活跃在舞台上，中途已经不知道有多少优秀的音乐人离开了，真心希望每个拿起吉他的孩子都能让这个世界听
-                得他的歌儿。
+                {{bbsinfo.bbsContent}}
               </p>
             </div>
 
@@ -43,23 +38,21 @@
             <!--</div>-->
           </div>
           <el-divider></el-divider>
-          <div class="bbsReply">
+          <div class="bbsReply" v-for="(item,index) in replyList">
             <div class="replyHead">
               <div class="replyName">
-                <img :src=imgurl class="headimg" alt="touxiang">
-                <span>嘿嘿嘿 &nbsp;&nbsp;<el-tag effect="dark" type="danger" size="small">回复</el-tag></span>
+                <img :src="item['img']"  class="headimg" alt="touxiang">
+                <span>{{item['name']}} &nbsp;&nbsp;<el-tag effect="dark" type="danger" size="small">回复</el-tag></span>
               </div>
-              <span># 2</span>
+              <span># {{item['level']}}</span>
             </div>
             <div class="replyContent">
               <p>
-                看到反光镜，面孔，新裤子痛仰这些老牌乐队这么卖力的在演唱，尤其是彭磊蹦起来的那一瞬间除了感动尊敬，更多的是心疼
-                他们，因为20年前，他们的梦想肯定是都是变成摇滚巨星让全世界听到他们的歌那种梦想吧(像彭磊说的大家都还是很平凡直到
-                现在)
+                {{item['content']}}
               </p>
             </div>
             <div class="replyEnd">
-              <span><i class="el-icon-time"></i> 2019.11.11 22.31</span>
+              <span><i class="el-icon-time"></i> {{item['time']}}</span>
             </div>
             <el-divider></el-divider>
           </div>
@@ -72,7 +65,7 @@
                            :total="totalCount">
             </el-pagination>
           </div>
-          <send-reply></send-reply>
+          <send-reply :userId=userId :bbsId=bbsId></send-reply>
         </div>
       </div>
     </div>
@@ -84,6 +77,42 @@
     export default {
       name: "bbsDetail",
       components:{siteHeader, sendReply},
+      mounted(){
+        this.userId = parseInt(sessionStorage.getItem('userId'))
+        this.bbsId = parseInt(this.$route.params.bbsId)
+        this.totalCount = this.replyList.length
+        this.$api.bbs.getReplyByBBSId({
+          bbsId:this.bbsId
+        }).then((res)=>{
+          if(res.data.status===0){
+            let replyList = res.data.replyinfos
+            for(let i=0;i<replyList.length;++i){
+              this.replyList.push({
+                name:replyList[i]['Unickname'],
+                level:replyList[i]['RLevelNum'],
+                content:replyList[i]['RContent'],
+                time:replyList[i]['time'],
+                img:replyList[i]['img']
+              })
+            }
+          }
+        })
+        this.$api.bbs.getBBSByBBSId({
+          bbsId:this.bbsId
+        }).then((res)=>{
+          if(res.data.status===0){
+            let bbsinfo = res.data.bbsinfo
+            this.bbsinfo.bbsSender = bbsinfo['senderName']
+            this.bbsinfo.bbstopic = bbsinfo['TTopic']
+            this.bbsinfo.bbsComments = bbsinfo['TReplyCount']
+            this.bbsinfo.bbsTime = bbsinfo['time']
+            this.bbsinfo.bbsContent = bbsinfo['TContents']
+          }
+          else{
+            console.log(res.data.message)
+          }
+        })
+      },
       data(){
         return{
           activeIndex:'8',
@@ -92,6 +121,16 @@
           totalCount:0,
           PageSize:8,
           pageSizes:[1,2,3,4],
+          userId:null,
+          bbsId:null,
+          replyList:[],
+          bbsinfo:{
+            bbstopic:'',
+            bbsSender:'',
+            bbsComments:0,
+            bbsTime:'',
+            bbsContent:''
+          }
         }
       },
       methods:{
@@ -109,6 +148,18 @@
         gotoCommunity(){
           this.$router.push({name:'community'})
         },
+        // 每页显示的条数
+        handleSizeChange(val) {
+          // 改变每页显示的条数
+          this.PageSize=val
+          // 注意：在改变每页显示的条数时，要将页码显示到第一页
+          this.currentPage=1
+        },
+        // 显示第几页
+        handlesCurrentChange(val) {
+          // 改变默认的页数
+          this.currentPage=val
+        },
       }
     }
 </script>
@@ -124,7 +175,7 @@
       padding-bottom:50px;
       width:80%;
       margin-left:10%;
-      background-color: aliceblue;
+      /*background-color: aliceblue;*/
       .bbsSender{
         margin-left:100px;
         margin-right:100px;
@@ -173,7 +224,7 @@
           p{
             font-size:17px;
             text-align: left;
-            line-height:1.7;
+            line-height:1.8;
           }
         }
         /*.senderEnd{*/

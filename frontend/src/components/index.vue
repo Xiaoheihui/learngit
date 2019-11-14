@@ -27,7 +27,7 @@
                   style="margin-top:0px;"
                   :show-header="false"
                   :data="tableDataNew">
-                  <el-table-column label="比赛名称" prop="gameName" width="500">
+                  <el-table-column label="比赛名称" prop="gameName" width="450">
                     <template slot-scope="scope">
                       {{scope.row.gameName['gameName']}}
                     </template>
@@ -46,7 +46,7 @@
                   style="margin-top:0px;"
                   :show-header="false"
                   :data="tableDataHot">
-                  <el-table-column label="比赛名称" prop="gameName" width="550">
+                  <el-table-column label="比赛名称" prop="gameName" width="450">
                     <template slot-scope="scope">
                       {{scope.row.gameName['gameName']}}
                     </template>

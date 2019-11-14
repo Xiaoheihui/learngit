@@ -2,10 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4d1087ea-e52a-42e0-bc95-740a81e27182" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/learn.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/learn.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/bbs.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/bbs.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/bbsDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/bbsDetail.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/gameDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/gameDetail.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/index.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/sendReply.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/sendReply.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/siteHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/siteHeader.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/frontend/node_modules/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,24 +34,24 @@
     <session id="-1859894632">
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="1285" />
+          <entry key="py" value="1910" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="1285" />
+          <entry key="Python" value="1910" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="4" />
           <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.5" value="1" />
-          <entry key="project.open.time.6" value="3" />
+          <entry key="project.open.time.6" value="4" />
           <entry key="project.open.time.7" value="3" />
           <entry key="project.open.time.8" value="2" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="11" />
+          <entry key="project.opened" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -91,20 +97,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/backend/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="13524">
-              <caret line="606" selection-start-line="606" selection-end-line="606" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://D:/Anaconda/Lib/site-packages/django/db/models/manager.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="36">
-              <caret line="87" column="20" selection-start-line="87" selection-start-column="20" selection-end-line="87" selection-end-column="20" />
+            <state relative-caret-position="246">
+              <caret line="441" column="48" selection-start-line="441" selection-start-column="48" selection-end-line="441" selection-end-column="48" />
+              <folding>
+                <marker date="1573746615975" expanded="true" signature="15713:16292" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -135,8 +135,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="19" column="46" selection-start-line="19" selection-start-column="46" selection-end-line="19" selection-end-column="46" />
+            <state relative-caret-position="292">
+              <caret line="26" column="23" selection-start-line="26" selection-start-column="10" selection-end-line="26" selection-end-column="23" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -165,6 +165,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>特别行政区</find>
+      <find>time</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -182,22 +183,21 @@
         <option value="$PROJECT_DIR$/../../神经网络作业/第三次作业/work3.py" />
         <option value="$APPLICATION_CONFIG_DIR$/pycharm64.exe.vmoptions" />
         <option value="$PROJECT_DIR$/test1/settings.py" />
-        <option value="$PROJECT_DIR$/backend/views.py" />
         <option value="$PROJECT_DIR$/backend/urls.py" />
+        <option value="$PROJECT_DIR$/backend/views.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-8" />
+    <option name="x" value="952" />
     <option name="width" value="977" />
-    <option name="height" value="523" />
+    <option name="height" value="1038" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -214,6 +214,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -420,9 +421,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15389696" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14993395" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -431,12 +433,12 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.398827" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32991204" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32855093" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32991204" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.39113224" side_tool="true" weight="0.33572453" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.60886776" visible="true" weight="0.18014185" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.60886776" visible="true" weight="0.38723403" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.36363637" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -539,6 +541,13 @@
     <entry file="file://$PROJECT_DIR$/test1/wsgi.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://D:/Anaconda/Lib/site-packages/django/db/models/manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="107" lean-forward="true" selection-start-line="107" selection-end-line="107" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/manage.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -562,13 +571,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13524">
-          <caret line="606" selection-start-line="606" selection-end-line="606" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/backend/admin.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="713">
@@ -586,16 +588,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="19" column="46" selection-start-line="19" selection-start-column="46" selection-end-line="19" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/backend/tests.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="69">
@@ -603,10 +595,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://D:/Anaconda/Lib/site-packages/django/db/models/manager.py">
+    <entry file="file://$PROJECT_DIR$/backend/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36">
-          <caret line="87" column="20" selection-start-line="87" selection-start-column="20" selection-end-line="87" selection-end-column="20" />
+        <state relative-caret-position="292">
+          <caret line="26" column="23" selection-start-line="26" selection-start-column="10" selection-end-line="26" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="441" column="48" selection-start-line="441" selection-start-column="48" selection-end-line="441" selection-end-column="48" />
+          <folding>
+            <marker date="1573746615975" expanded="true" signature="15713:16292" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
