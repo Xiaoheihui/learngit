@@ -389,6 +389,8 @@ def uploadReply(request):
     try:
         user = User.objects.get(pk=userId).usermessage
         topicid = BBSTopic.objects.get(Tid=bbsId)
+        topicid.TReplyCount += 1
+        topicid.save()
         sectionId = BBSTopic.objects.get(Tid=bbsId).TSid
         content = request.POST.get('content')
         levelNum = BBSReply.objects.filter(RTid=topicid).count() + 2
@@ -436,10 +438,13 @@ def getBBSByBBSId(request):
     bbsId = request.POST.get('bbsId')
     try:
         bbs = BBSTopic.objects.get(Tid=bbsId)
+        bbs.TClickCount += 1
+        bbs.save()
         bbsinfo = Model_To_Dict(bbs)
         userinfo = Model_To_Dict(UserMessage.objects.get(id=bbsinfo['TUid']))
         bbsinfo['time'] = bbs.TTime.strftime("%Y-%m-%d %H:%M")
         bbsinfo['senderName'] = userinfo['Unickname']
+        bbsinfo['img'] = URL_MEDIA + str(userinfo['img'])
         response['status'] = 0
         response['bbsinfo'] = bbsinfo
         response['message'] = '成功获得帖子信息'

@@ -2,16 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4d1087ea-e52a-42e0-bc95-740a81e27182" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/learn.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/learn.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/api/bbs.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/bbs.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/bbsDetail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/bbsDetail.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/sendReply.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/sendReply.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/frontend/node_modules/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,24 +27,24 @@
     <session id="-1859894632">
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="1910" />
+          <entry key="py" value="2005" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="1910" />
+          <entry key="Python" value="2005" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="4" />
+          <entry key="project.closed" value="5" />
           <entry key="project.open.time.11" value="1" />
-          <entry key="project.open.time.5" value="1" />
+          <entry key="project.open.time.5" value="2" />
           <entry key="project.open.time.6" value="4" />
           <entry key="project.open.time.7" value="3" />
           <entry key="project.open.time.8" value="2" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="12" />
+          <entry key="project.opened" value="13" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -100,10 +93,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/backend/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="246">
-              <caret line="441" column="48" selection-start-line="441" selection-start-column="48" selection-end-line="441" selection-end-column="48" />
+            <state relative-caret-position="3183">
+              <caret line="446" column="20" selection-start-line="446" selection-start-column="20" selection-end-line="446" selection-end-column="20" />
               <folding>
-                <marker date="1573746615975" expanded="true" signature="15713:16292" ph="..." />
+                <marker date="1573886246653" expanded="true" signature="15769:16454" ph="..." />
               </folding>
             </state>
           </provider>
@@ -135,7 +128,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/urls.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="292">
+            <state relative-caret-position="575">
               <caret line="26" column="23" selection-start-line="26" selection-start-column="10" selection-end-line="26" selection-end-column="23" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
@@ -189,9 +182,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="952" />
-    <option name="width" value="977" />
-    <option name="height" value="1038" />
+    <option name="x" value="-9" />
+    <option name="width" value="978" />
+    <option name="height" value="1039" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -421,7 +414,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14993395" />
@@ -438,7 +431,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32991204" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.39113224" side_tool="true" weight="0.33572453" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.60886776" visible="true" weight="0.38723403" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.60886776" visible="true" weight="0.17304964" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.36363637" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -588,16 +581,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend/tests.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/backend/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
+        <state relative-caret-position="575">
           <caret line="26" column="23" selection-start-line="26" selection-start-column="10" selection-end-line="26" selection-end-column="23" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
@@ -605,12 +591,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/backend/tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="69">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/backend/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="441" column="48" selection-start-line="441" selection-start-column="48" selection-end-line="441" selection-end-column="48" />
+        <state relative-caret-position="3183">
+          <caret line="446" column="20" selection-start-line="446" selection-start-column="20" selection-end-line="446" selection-end-column="20" />
           <folding>
-            <marker date="1573746615975" expanded="true" signature="15713:16292" ph="..." />
+            <marker date="1573886246653" expanded="true" signature="15769:16454" ph="..." />
           </folding>
         </state>
       </provider>

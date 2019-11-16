@@ -27,8 +27,10 @@
               <span><i class="el-icon-time"></i> {{time}}</span>
               <span @click="gameUserInfoVisible=true"><i class="el-icon-user"></i> {{promulgator}}</span>
               <span><i class="el-icon-view"></i> {{chickCount}}</span>
-              <el-button size="small" type="primary" icon="el-icon-star-on" @click="addFavorite">{{this.favor}}</el-button>
-              <el-button size="small" type="danger" @click="deleteCompInfo" v-if="is_superuser" icon="el-icon-delete-solid">删除</el-button>
+              <div>
+                <el-button size="small" type="primary" icon="el-icon-star-on" @click="addFavorite" circle></el-button>
+                <el-button size="small" type="danger" @click="deleteCompInfo" v-if="is_superuser" icon="el-icon-delete-solid" circle></el-button>
+              </div>
             </div>
           </div>
           <el-table :data="tableData1"

@@ -27,6 +27,15 @@
                   @row-click="openDetails"
         >
           <el-table-column
+            prop="bbsViews"
+            label="浏览量"
+            width="120">
+            <template slot-scope="scope">
+              <i class="el-icon-view"></i>
+              <span style="margin-left: 8px">{{ scope.row.bbsViews }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
             prop="bbsComments"
             label="评论数"
             width="150">
@@ -53,7 +62,7 @@
             <template slot="header" slot-scope="scope">
               <el-input
                 v-model="search"
-                placeholder="输入关键字搜索"/>
+                placeholder="输入关键字搜索"></el-input>
             </template>
             <!--<template slot-scope="scope">-->
               <!--<el-button-->
@@ -93,6 +102,7 @@
             for(let i=0;i<info.length;++i){
               this.tableData.push({
                 bbsComments:info[i]['TReplyCount'],
+                bbsViews:info[i]['TClickCount'],
                 bbsName:{
                   'bbsName':info[i]['TTopic'],
                   'bbsId':info[i]['Tid']

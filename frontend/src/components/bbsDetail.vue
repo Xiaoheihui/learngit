@@ -19,7 +19,7 @@
               <h1>{{bbsinfo.bbstopic}}</h1>
               <div class="bbsInfo">
                 <div class="senderName">
-                  <img :src=imgurl class="headimg" alt="touxiang">
+                  <img :src="bbsinfo.img" class="headimg" alt="touxiang">
                   <span>{{bbsinfo.bbsSender}} &nbsp;&nbsp;<el-tag effect="dark" type="primary" size="medium">楼主</el-tag></span>
                 </div>
                 <span><i class="el-icon-chat-dot-square"></i> {{bbsinfo.bbsComments}}</span>
@@ -38,7 +38,8 @@
             <!--</div>-->
           </div>
           <el-divider></el-divider>
-          <div class="bbsReply" v-for="(item,index) in replyList">
+          <span v-if="replyList.length==0" style="padding-bottom:20px;">还没有人回复哦，做第一个回复的吧！<br/><br/></span>
+          <div class="bbsReply" v-for="item in replyList.slice((currentPage-1)*PageSize,currentPage*PageSize)">
             <div class="replyHead">
               <div class="replyName">
                 <img :src="item['img']"  class="headimg" alt="touxiang">
@@ -57,12 +58,10 @@
             <el-divider></el-divider>
           </div>
           <div class="tabListPage">
-            <el-pagination @size-change="handleSizeChange"
-                           @current-change="handlesCurrentChange"
+            <el-pagination @current-change="handlesCurrentChange"
                            :current-page="currentPage"
-                           :page-sizes="pageSizes"
                            :page-size="PageSize" layout="total, prev, pager, next, jumper"
-                           :total="totalCount">
+                           :total="replyList.length">
             </el-pagination>
           </div>
           <send-reply :userId=userId :bbsId=bbsId></send-reply>
@@ -95,6 +94,7 @@
                 img:replyList[i]['img']
               })
             }
+            console.log(this.replyList)
           }
         })
         this.$api.bbs.getBBSByBBSId({
@@ -107,6 +107,7 @@
             this.bbsinfo.bbsComments = bbsinfo['TReplyCount']
             this.bbsinfo.bbsTime = bbsinfo['time']
             this.bbsinfo.bbsContent = bbsinfo['TContents']
+            this.bbsinfo.img = bbsinfo['img']
           }
           else{
             console.log(res.data.message)
@@ -118,9 +119,7 @@
           activeIndex:'8',
           imgurl:"/static/img/timg.jpg",
           currentPage:1,
-          totalCount:0,
-          PageSize:8,
-          pageSizes:[1,2,3,4],
+          PageSize:5,
           userId:null,
           bbsId:null,
           replyList:[],
@@ -129,7 +128,8 @@
             bbsSender:'',
             bbsComments:0,
             bbsTime:'',
-            bbsContent:''
+            bbsContent:'',
+            img:''
           }
         }
       },
@@ -147,13 +147,6 @@
         },
         gotoCommunity(){
           this.$router.push({name:'community'})
-        },
-        // 每页显示的条数
-        handleSizeChange(val) {
-          // 改变每页显示的条数
-          this.PageSize=val
-          // 注意：在改变每页显示的条数时，要将页码显示到第一页
-          this.currentPage=1
         },
         // 显示第几页
         handlesCurrentChange(val) {
@@ -236,9 +229,9 @@
       .bbsReply{
         margin-left:100px;
         margin-right:100px;
-        margin-bottom:10px;
+        margin-bottom:0px;
         padding-top:10px;
-        padding-bottom:30px;
+        padding-bottom:0px;
         /*border-style: solid;*/
         /*border-width: 1px;*/
         /*border-color:black;*/
