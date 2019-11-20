@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'getBBSByClassId$', backend.views.getBBSByClassId),
     url(r'getBBSByUserId$', backend.views.getBBSByUserId),
     url(r'deleteBBS$', backend.views.deleteBBS),
+    url(r'deleteReply$', backend.views.deleteReply),
     url(r'getMarkMessage$', backend.views.getMarkMessage),
     url(r'DeleteMarkMessage$', backend.views.DeleteMarkMessage),
     url(r'markComp$', backend.views.markComp),
@@ -24,5 +25,6 @@ urlpatterns = [
     url(r'deleteCompInfo$', backend.views.deleteCompInfo),
     url(r'uploadReply$', backend.views.uploadReply),
     url(r'getReplyByBBSId$', backend.views.getReplyByBBSId),
+    url(r'getReplyByUserId$', backend.views.getReplyByUserId),
     url(r'getBBSByBBSId$', backend.views.getBBSByBBSId),
 ]
