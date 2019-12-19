@@ -1,5 +1,5 @@
 <template>
-    <div class="header">
+    <div class="header"  style="background-color:#5CACEE;">
       <el-dialog title="我的信息"
                  :visible.sync="userInfoVisible"
                  v-if="userInfoVisible===true"
@@ -29,16 +29,16 @@
         <favorite :userId=userId v-on:childsay="listenChild1"></favorite>
       </el-dialog>
       <div class="header-left">
-        <img src="../static/img/timg.jpg" @click="this.$router.push({path:'/'})">
-        <span>大学生赛事平台</span>
+        <img :src="img" @click="this.$router.push({path:'/'})">
+        <span style="color:white;">大学生赛事平台</span>
       </div>
       <div class="header-right">
         <div class="user">
           <i class="el-icon-user" v-if="username==null"></i>
           <img v-else :src=imgurl class="headimg">
-          <router-link :to="{ path: '/login'}" replace v-if="username==null"><span>登录</span></router-link>
+          <router-link :to="{ path: '/login'}" replace v-if="username==null"><span style="color:white;">登录</span></router-link>
           <el-divider direction="vertical" v-if="username==null"></el-divider>
-          <router-link :to="{ path: '/register'}" replace v-if="username==null"><span>注册</span></router-link>
+          <router-link :to="{ path: '/register'}" replace v-if="username==null"><span style="color:white;">注册</span></router-link>
           <div v-else>
             <el-dropdown>
               <span>  您好,{{nickName}}</span>
@@ -89,6 +89,7 @@
           email:'',
           imgurl:'',
           is_superuser:false,
+          img:"../static/img/cup.png"
         }
       },
       methods:{

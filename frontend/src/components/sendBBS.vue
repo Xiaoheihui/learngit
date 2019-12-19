@@ -78,6 +78,7 @@
                 bbsContent:this.form.bbsContent,
               }).then((res)=>{
                 if(res.data.status==0){
+                  this.$emit('childsay', res.data.bbsinfo)
                   this.$message.success(res.data.message)
                 }
                 else{

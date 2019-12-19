@@ -41,6 +41,7 @@
                 content:this.replyString
               }).then((res)=>{
                 if(res.data.status===0){
+                  this.$emit('childsay', res.data.replyinfos)
                   this.$message.success('回复成功！')
                 }
                 else{

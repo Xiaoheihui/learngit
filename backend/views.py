@@ -272,7 +272,9 @@ def getCompInfoBySelect(request):
             compinfos = CompInfo.objects.filter(IClass=gameClass, ILevel=gamelevel, IApplyStartTime__gte=startTime, IApplyEndTime__lte=endTime, IAreaID=gamearea)
     if compinfos is not None:
         for item in compinfos:
-            comp.append(Model_To_Dict(item))
+            comptemp = Model_To_Dict(item)
+            comptemp['clickCounts'] = item.comprecord.RClickCount
+            comp.append(comptemp)
         response['compInfo'] = comp
         response['status'] = 0
         response['message'] = '筛选成功!'
@@ -299,8 +301,17 @@ def sendBBS(request):
         'TSid':bbssection,
         'TLastClickT':sendTime
     }
+    bbsinfos = []
     try:
         BBSTopic.objects.create(**bbsinfo)
+        bbslist = BBSTopic.objects.filter(TSid=bbsClass)
+        for bbs in bbslist:
+            bbsinfo = Model_To_Dict(bbs)
+            userinfo = Model_To_Dict(UserMessage.objects.get(id=bbsinfo['TUid']))
+            bbsinfo['userName'] = userinfo
+            userinfo['img'] = str(userinfo['img'])
+            bbsinfos.append(dict(bbsinfo, **userinfo))
+        response['bbsinfo'] = bbsinfos
         response['status'] = 0
         response['message'] = '发送成功!'
     except:
@@ -386,8 +397,6 @@ def uploadReply(request):
     response = {}
     bbsId = request.POST.get('bbsId')
     userId = int(request.POST.get('userId'))
-    print(bbsId)
-    print(userId)
     try:
         user = User.objects.get(pk=userId).usermessage
         topicid = BBSTopic.objects.get(Tid=bbsId)
@@ -403,6 +412,15 @@ def uploadReply(request):
             RContent=content,
             RLevelNum=levelNum
         )
+        replylist = BBSReply.objects.filter(RTid=bbsId)
+        replyinfos = []
+        for reply in replylist:
+            replyinfo = Model_To_Dict(reply)
+            replyinfo['time'] = reply.RTime.strftime("%Y-%m-%d %H:%M")
+            userinfo = Model_To_Dict(UserMessage.objects.get(id=replyinfo['RUid']))
+            userinfo['img'] = URL_MEDIA + str(userinfo['img'])
+            replyinfos.append(dict(replyinfo, **userinfo))
+        response['replyinfos'] = replyinfos
         response['status'] = 0
         response['message'] = '评论成功！'
     except:

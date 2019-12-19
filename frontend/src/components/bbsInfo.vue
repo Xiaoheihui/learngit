@@ -5,7 +5,7 @@
                  v-if="bbsVisible===true"
                  append-to-body
                  customClass="customWidth">
-        <sendBBS :bbsClass="bbsClass" :bbsClassName="bbsClassName"></sendBBS>
+        <sendBBS :bbsClass="bbsClass" :bbsClassName="bbsClassName" v-on:childsay="refreshBBS"></sendBBS>
       </el-dialog>
       <h1>欢迎进入{{this.bbsClassName}}板块！</h1>
       <div class="search-header">
@@ -155,6 +155,24 @@
           }
       },
       methods:{
+        refreshBBS:function(data){
+          this.tableData = []
+          this.loading = true
+          let info = data
+          this.totalCount = info.length
+          for(let i=0;i<info.length;++i){
+            this.tableData.push({
+              bbsComments:info[i]['TReplyCount'],
+              bbsViews:info[i]['TClickCount'],
+              bbsName:{
+                'bbsName':info[i]['TTopic'],
+                'bbsId':info[i]['Tid']
+              },
+              bbsSender:info[i]['Unickname'],
+            })
+          }
+          this.loading=false
+        },
         openDetails(row){
           this.$router.push({path:'/bbsDetail/'+row.bbsName['bbsId']})
         },

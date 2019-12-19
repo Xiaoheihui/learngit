@@ -1,14 +1,14 @@
 <template>
     <div class="login">
-      <div class="header">
+      <div class="header" style="background-color:#5CACEE;">
         <div class="header-left">
-          <img src="../static/img/timg.jpg">
-          <span>大学生赛事平台</span>
+          <img :src="img">
+          <span style="color:white;">大学生赛事平台</span>
         </div>
         <div class="header-right">
           <!--<el-button type="text" @click="gotoIndex"><span>返回首页</span></el-button>-->
           <i class="el-icon-s-promotion"></i>
-          <router-link :to="{ path: '/'}" replace><span>返回首页</span></router-link>
+          <router-link :to="{ path: '/'}" replace><span style="color:white;">返回首页</span></router-link>
         </div>
       </div>
       <div class="login-body">
@@ -78,6 +78,7 @@
             username:'',
             nickName:'',
             userId:'',
+            img:"../static/img/cup.png"
           }
       },
       methods:{
