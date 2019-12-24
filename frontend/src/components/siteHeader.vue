@@ -41,7 +41,7 @@
           <router-link :to="{ path: '/register'}" replace v-if="username==null"><span style="color:white;">注册</span></router-link>
           <div v-else>
             <el-dropdown>
-              <span>  您好,{{nickName}}</span>
+              <span style="color:white;">  您好,{{nickName}}</span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item @click.native="gamePublishVisible=true" v-if="is_superuser">比赛发布</el-dropdown-item>
                 <el-dropdown-item @click.native="userInfoVisible=true">我的信息</el-dropdown-item>
