@@ -72,6 +72,7 @@ class UserMessage(models.Model):
     UIfAdmin	    bool	    Not null	    是否管理员
     Unickname       varchar     not null        昵称
     """
+    # 指向系统用户表的外键
     UserBase = models.OneToOneField(User, on_delete=models.CASCADE)
     # 个人资料
     UBirthday  = models.DateField(u'用户生日', null=True, blank=True)

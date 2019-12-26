@@ -28,6 +28,7 @@
                  customClass="customWidth">
         <favorite :userId=userId v-on:childsay="listenChild1"></favorite>
       </el-dialog>
+
       <div class="header-left">
         <img src="../static/img/timg.jpg" @click="this.$router.push({path:'/'})">
         <span>大学生赛事平台</span>
@@ -96,7 +97,6 @@
           sessionStorage.clear();
           this.$store.dispatch('UserLogout')
           if(! this.$store.state.token){
-
             this.$router.go(0)
           }else{
             this.$message.error('退出失败');

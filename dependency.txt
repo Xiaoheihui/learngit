@@ -1,0 +1,10 @@
+Django==2.2.8
+django-cors-headers==3.1.0
+django-simpleui==3.7
+django-suit==0.2.28
+django-webpack-loader==0.6.0
+PyMySQL==0.9.3
+pytz==2019.3
+virtualenv==16.7.2
+wrapt==1.11.2
+xlrd==1.2.0

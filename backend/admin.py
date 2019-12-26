@@ -31,6 +31,3 @@ class RecordAdmin(admin.ModelAdmin):
 class MarkAdmin(admin.ModelAdmin):
     list_display = ('CompRecordId', 'UsersId')
 
-
-# admin.site.register(CompInfo)
-# admin.site.register(Area)
