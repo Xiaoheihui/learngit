@@ -119,7 +119,6 @@
         this.$api.comp.getCompInfoByCompId({
           compId:this.gameId
         }).then((res)=>{
-          console.log(res)
           if(res.data.status==0){
             let info = res.data
             this.gameName = info['IName']

@@ -272,7 +272,9 @@ def getCompInfoBySelect(request):
             compinfos = CompInfo.objects.filter(IClass=gameClass, ILevel=gamelevel, IApplyStartTime__gte=startTime, IApplyEndTime__lte=endTime, IAreaID=gamearea)
     if compinfos is not None:
         for item in compinfos:
-            comp.append(Model_To_Dict(item))
+            comptemp = Model_To_Dict(item)
+            comptemp['clickCounts'] = item.comprecord.RClickCount
+            comp.append(comptemp)
         response['compInfo'] = comp
         response['status'] = 0
         response['message'] = '筛选成功!'
@@ -299,8 +301,17 @@ def sendBBS(request):
         'TSid':bbssection,
         'TLastClickT':sendTime
     }
+    bbsinfos = []
     try:
         BBSTopic.objects.create(**bbsinfo)
+        bbslist = BBSTopic.objects.filter(TSid=bbsClass)
+        for bbs in bbslist:
+            bbsinfo = Model_To_Dict(bbs)
+            userinfo = Model_To_Dict(UserMessage.objects.get(id=bbsinfo['TUid']))
+            bbsinfo['userName'] = userinfo
+            userinfo['img'] = str(userinfo['img'])
+            bbsinfos.append(dict(bbsinfo, **userinfo))
+        response['bbsinfo'] = bbsinfos
         response['status'] = 0
         response['message'] = '发送成功!'
     except:
@@ -344,6 +355,7 @@ def getBBSByUserId(request):
             bbsClass = Model_To_Dict(BBSSection.objects.get(Sid=bbsinfo['TSid']))['SName']
             bbsinfo['userName'] = userinfo
             bbsinfo['bbsClass'] = bbsClass
+            bbsinfo['sendTime'] = bbs.TTime.strftime("%Y-%m-%d %H:%M")
             userinfo['img'] = str(userinfo['img'])
             bbsinfos.append(dict(bbsinfo, **userinfo))
         response['bbsinfo'] = bbsinfos
@@ -354,28 +366,29 @@ def getBBSByUserId(request):
         response['message'] = '帖子信息返回失败，请重试！'
     return JsonResponse(response)
 
-# # 根据用户ID获取回复信息
-# # @require_http_methods(["POST"])
-# # def getBBSByUserId(request):
-# #     response = {}
-# #     bbsinfos = []
-# #     userId = int(request.POST.get('userId'))
-# #     try:
-# #         replylist = BBSReply.objects.filter(RUid=userId)
-# #         for reply in replylist:
-# #             replyinfo = Model_To_Dict(reply)
-# #             userinfo = Model_To_Dict(UserMessage.objects.get(id=replyinfo['RUid']))
-# #             replyClass = Model_To_Dict(BBSSection.objects.get(Sid=replyinfo['TSid']))['SName']
-# #             replyinfo['userName'] = userinfo
-# #             replyinfo['bbsClass'] = bbsClass
-# #             bbsinfos.append(dict(bbsinfos, **userinfo))
-# #         response['bbsinfo'] = bbsinfos
-# #         response['status'] = 0
-# #         response['message'] = '帖子信息返回成功！'
-# #     except:
-# #         response['status'] = 1
-# #         response['message'] = '帖子信息返回失败，请重试！'
-# #     return JsonResponse(response)
+
+# 根据用户ID获取回复信息
+@require_http_methods(["POST"])
+def getReplyByUserId(request):
+    response = {}
+    bbsinfos = []
+    userId = int(request.POST.get('userId'))
+    try:
+        replylist = BBSReply.objects.filter(RUid=userId)
+        for reply in replylist:
+            replyinfo = Model_To_Dict(reply)
+            bbsName = Model_To_Dict(BBSTopic.objects.get(Tid=replyinfo['RTid']))['TTopic']
+            replyTime = reply.RTime.strftime("%Y-%m-%d %H:%M")
+            replyinfo['bbsName'] = bbsName
+            replyinfo['replyTime'] = replyTime
+            bbsinfos.append(dict(replyinfo))
+        response['bbsinfo'] = bbsinfos
+        response['status'] = 0
+        response['message'] = '帖子信息返回成功！'
+    except:
+        response['status'] = 1
+        response['message'] = '帖子信息返回失败，请重试！'
+    return JsonResponse(response)
 
 
 # 发表回复
@@ -384,8 +397,6 @@ def uploadReply(request):
     response = {}
     bbsId = request.POST.get('bbsId')
     userId = int(request.POST.get('userId'))
-    print(bbsId)
-    print(userId)
     try:
         user = User.objects.get(pk=userId).usermessage
         topicid = BBSTopic.objects.get(Tid=bbsId)
@@ -401,6 +412,15 @@ def uploadReply(request):
             RContent=content,
             RLevelNum=levelNum
         )
+        replylist = BBSReply.objects.filter(RTid=bbsId)
+        replyinfos = []
+        for reply in replylist:
+            replyinfo = Model_To_Dict(reply)
+            replyinfo['time'] = reply.RTime.strftime("%Y-%m-%d %H:%M")
+            userinfo = Model_To_Dict(UserMessage.objects.get(id=replyinfo['RUid']))
+            userinfo['img'] = URL_MEDIA + str(userinfo['img'])
+            replyinfos.append(dict(replyinfo, **userinfo))
+        response['replyinfos'] = replyinfos
         response['status'] = 0
         response['message'] = '评论成功！'
     except:
@@ -468,6 +488,25 @@ def deleteBBS(request):
         response['status'] = 1
         response['message'] = '帖子删除失败，请重试！'
     return JsonResponse(response)
+
+
+# 根据回复ID来删除回复
+@require_http_methods(["POST"])
+def deleteReply(request):
+    response = {}
+    replyId = request.POST.get('replyId')
+    try:
+        bbs = BBSReply.objects.get(Rid=replyId).RTid
+        BBSReply.objects.get(Rid=replyId).delete()
+        bbs.TReplyCount -= 1
+        bbs.save()
+        response['status'] = 0
+        response['message'] = '回复删除成功！'
+    except:
+        response['status'] = 1
+        response['message'] = '回复删除失败，请重试！'
+    return JsonResponse(response)
+
 
 # 收藏
 @require_http_methods(["POST"])

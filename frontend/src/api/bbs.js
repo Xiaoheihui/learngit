@@ -18,9 +18,17 @@ const bbs = {
   deleteBBS(params){
     return axios.post('/api/deleteBBS', qs.stringify(params))
   },
+  //根据回复ID删除回复
+  deleteReply(params){
+    return axios.post('/api/deleteReply', qs.stringify(params))
+  },
   // 根据帖子ID获取帖子回复信息
   getReplyByBBSId(params){
     return axios.post('/api/getReplyByBBSId', qs.stringify(params))
+  },
+  // 根据用户ID获取帖子回复信息
+  getReplyByUserId(params){
+    return axios.post('/api/getReplyByUserId', qs.stringify(params))
   },
   // 根据用户ID发表评论
   uploadReply(params){

@@ -246,11 +246,16 @@
                 let gameId = infos[i]['Iid']
                 let gameApplyEndTime = infos[i]['IApplyEndTime']
                 let gameApplyStartTime = infos[i]['IApplyStartTime']
+                let clickCounts = infos[i]['clickCounts']
                 this.tableData.push({
-                  gameName:gameName,
+                  gameName:{
+                    'gameName':gameName,
+                    'gameId':gameId,
+                  },
                   gameId:gameId,
                   deltaTime:gameApplyEndTime,
-                  startTime:gameApplyStartTime
+                  startTime:gameApplyStartTime,
+                  clickCounts:clickCounts
                 })
               }
               this.$message.success(res.data.message)

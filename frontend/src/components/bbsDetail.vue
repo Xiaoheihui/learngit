@@ -64,7 +64,7 @@
                            :total="replyList.length">
             </el-pagination>
           </div>
-          <send-reply :userId=userId :bbsId=bbsId></send-reply>
+          <send-reply :userId=userId :bbsId=bbsId v-on:childsay="refreshReply"></send-reply>
         </div>
       </div>
     </div>
@@ -94,7 +94,6 @@
                 img:replyList[i]['img']
               })
             }
-            console.log(this.replyList)
           }
         })
         this.$api.bbs.getBBSByBBSId({
@@ -134,6 +133,19 @@
         }
       },
       methods:{
+        refreshReply:function(data){
+          this.replyList = []
+          let replyList = data
+          for(let i=0;i<replyList.length;++i){
+            this.replyList.push({
+              name:replyList[i]['Unickname'],
+              level:replyList[i]['RLevelNum'],
+              content:replyList[i]['RContent'],
+              time:replyList[i]['time'],
+              img:replyList[i]['img']
+            })
+          }
+        },
         gotoClassInfo(classNum){
           // this.activeIndex = classNum
           this.$router.push({path:'/classInfo/'+classNum})

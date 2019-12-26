@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import pymysql         # 一定要添加这两行！           
+pymysql.install_as_MySQLdb()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -34,7 +36,7 @@ SECRET_KEY = '^^h(lg7sp^d4@!37a&g9g5+a@r9t7rjvbxlbjmdn#7&yb)9poq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['106.53.25.237']
 
 
 # Application definition
@@ -119,9 +121,9 @@ DATABASES = {
     # 使用MySQL数据库
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'Learn',
+        'NAME': 'learn',
         'USER': 'root',
-        'PASSWORD': '123456',
+        'PASSWORD': 'Xxzhsg99474!',
         'HOST':'localhost',
         'PORT':'3306',
     }
@@ -164,9 +166,9 @@ USE_L10N = True
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+#STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "frontend/dist/static"),
 ]
 
 # 针对webpack的设置
